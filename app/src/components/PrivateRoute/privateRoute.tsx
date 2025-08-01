@@ -2,7 +2,7 @@ import React, { ReactNode, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import Cookies from "universal-cookie";
-import { ROUTES } from "@/router/routes";
+import { Routes } from "@/router/routes";
 import { logout } from "@/store/slices/auth.slice";
 import { useDispatch } from "react-redux";
 
@@ -33,7 +33,7 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ redirectUrl, roles, childre
       const redirectPath = redirectUrl || currentPath;
 
       // Redirect to login with the redirect parameter in URL (not state)
-      navigate(`${ROUTES.LOGIN}?redirect=${encodeURIComponent(redirectPath)}`);
+      navigate(`${Routes.Login}?redirect=${encodeURIComponent(redirectPath)}`);
       return;
     }
 
@@ -47,7 +47,7 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ redirectUrl, roles, childre
         alert(`You are not authorized. Only users with the following roles can view this page: ${roles.join(', ')}`);
 
         // Redirect to login with the redirect parameter
-        navigate(`${ROUTES.LOGIN}`);
+        navigate(`${Routes.Login}`);
 
         dispatch(logout())
         return;

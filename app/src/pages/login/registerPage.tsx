@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 // registerPage.tsx
 import React, { useState } from "react";
 
-import { ROUTES } from "@/router/routes";
+import { Routes } from "@/router/routes";
 import { useFormik } from "formik";
 
 // Define the user type
@@ -104,7 +104,7 @@ const RegisterPage: React.FC = () => {
           // Redirect to login page after brief delay 
           // (no redirect URL parameter as specified)
           setTimeout(() => {
-            navigate(ROUTES.LOGIN);
+            navigate(Routes.Login);
           }, 1500);
         } catch (err) {
           setError("Registration failed. Please try again.");
@@ -202,7 +202,7 @@ const RegisterPage: React.FC = () => {
           </Button>
           <Typography sx={{ mt: 2 }}>
             Already have an account?{" "}
-            <Link to={ROUTES.LOGIN} style={{ textDecoration: "none", color: "#1976d2" }}>
+            <Link to={Routes.Login} style={{ textDecoration: "none", color: "#1976d2" }}>
               Login
             </Link>
           </Typography>

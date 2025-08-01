@@ -6,9 +6,9 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { LoginCredentials, TUser } from "../../lib/types/authTypes";
 import { useDispatch, useSelector } from "react-redux";
 
-import { ROUTES } from "@/router/routes";
 // loginPage.tsx
 import React from "react";
+import { Routes } from "@/router/routes";
 import { loginUser } from "../../store/slices/auth.slice";
 import { useFormik } from "formik";
 
@@ -25,7 +25,7 @@ const LoginPage: React.FC = () => {
   // Get auth state from Redux store instead of local state
   const { loading, error } = useSelector((state: RootState) => state.auth);
   
-  const redirectPath = new URLSearchParams(location.search).get("redirect") || ROUTES.BASE;
+  const redirectPath = new URLSearchParams(location.search).get("redirect") || Routes.Base;
 
   // Destructure useFormik hook directly
   const { values, touched, errors, handleChange, handleSubmit } = useFormik<LoginCredentials>({
@@ -90,7 +90,7 @@ const LoginPage: React.FC = () => {
             disabled={loading}
           />
           <Box sx={{ textAlign: "right", mt: 1 }}>
-            <Link to={ROUTES.FORGOT_PASSWORD} style={{ textDecoration: "none", color: "#1976d2" }}>
+            <Link to={Routes.ForgotPassword} style={{ textDecoration: "none", color: "#1976d2" }}>
               Forgot Password?
             </Link>
           </Box>
@@ -106,7 +106,7 @@ const LoginPage: React.FC = () => {
           </Button>
           <Typography sx={{ mt: 2 }}>
             Don't have an account?{" "}
-            <Link to={ROUTES.REGISTER} style={{ textDecoration: "none", color: "#1976d2" }}>
+            <Link to={Routes.Register} style={{ textDecoration: "none", color: "#1976d2" }}>
               Sign Up
             </Link>
           </Typography>

@@ -4,8 +4,8 @@ networks:
   app_network:
 
 services:
-  reacttemplate:
-    image: reacttemplate
+  coachboard_fe:
+    image: coachboard_fe
     build:
       context: app
       dockerfile: ./Dockerfile
