@@ -1,0 +1,67 @@
+{
+  "current": "English",
+
+  "app": {
+    "name": "WarHouse"
+  },
+  "static": {
+    "autoEmails": "Auto Emails",
+    "autoEmailsDescription": "When enabled, Auto Emails automatically send a push notification each time a reminder is triggered.",
+    "logOut": "Log Out",
+    "profile": "Profile",
+    "login": "Login",
+    "addWorkspace": "New Workspace",
+    "editWorkspace": "Edit Workspace",
+    "fullname": "Fullname",
+    "submit": "Submit",
+    "wellcomeTo": "Wellcome to",
+    "wellcome": "Wellcome",
+    "createdBy": "Created By",
+    "items": "items",
+    "add": "Add",
+    "email": "Email",
+    "success": "Success",
+    "bookADemo":"Register", 
+    "incorrectUsername":"Incorrect Username", 
+    "addCompany": "Add Company",
+    "editCompany": "Edit Company",
+    "addUser": "Add User",
+    "editUser": "Edit User",
+    "resetPassword": "Reset Password",
+    "resetPasswordMessage": "Your Password is set by admin. You need to reset your password for the first time",
+    "autoSmartReminder": "Auto Smart Reminder",
+    "autoSmartReminderDesc": "Mustscan AI agent generates Reminders when file is uploaded by you",
+
+    "recieveAutoSmartReminder": "Recieve Auto Smart Reminders",
+    "recieveAutoSmartReminderDesc": "Mustscan AI agent generates Reminders when file is uploaded by managers"
+  },
+  "user": {
+    "username": "Username",
+    "password": "Password",
+    "newPassword": "New Password"
+  },
+  "messages": {
+    "requiredField": "Required",
+    "passwordMin": "Minimum Password Length is 8",
+    "passwordMax": "Maximum Password Length is 20",
+    "areYouSure": "Are You Sure",
+    "unableToRevert": "You won't be able to revert this",
+    "yesDelete": "Yes, delete it",
+    "yesDisable": "Yes, Disable it",
+    "yesSend": "Yes Send it",
+    "tooManyAttempts": "Too many attemps please try again later",
+    "incorrectPassword": "Incorrect Password Or Username",
+    "deleted": "Deleted",
+    "deleteSuccessful": "Successfuly Delleted",
+    "existingReminderWillBeDeleted": "Existing reminder will be deleted",
+    "invitationSentToUserEmail": "Invitation Sent to User's Email",
+    "sendNotification": "Send Notification?",
+    "useDifferentPassword": "New Password is Required",
+
+    "reminderOffAlert": "By disabling this future you won't get reminders when new file is uploaded by you",
+    "revieceReminderOffAlert": "By disabling this future you won't get reminders when new file is uploaded by admin",
+    "sendNotificationDesc": "Users in this workspace will get email about file upload",
+    "success": "Success",
+    "tokenMissing": "Token is missing. Please use the reset link from your email."
+  }
+}

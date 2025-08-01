@@ -1,0 +1,18 @@
+version: '3.4'
+
+networks:
+  app_network:
+
+services:
+  reacttemplate:
+    image: reacttemplate
+    build:
+      context: app
+      dockerfile: ./Dockerfile
+      
+    environment:
+      - NODE_ENV=production
+    networks:
+      - app_network
+    ports:
+      - "8080:92"
