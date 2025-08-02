@@ -7,7 +7,7 @@ export type TeamMatch = {
 };
 
 export type Match = {
-  id: number;
+  id: string;
   date: string;
   stadium: string;
   note: string;

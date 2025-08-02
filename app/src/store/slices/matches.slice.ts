@@ -24,7 +24,7 @@ export const fetchMatches = createAsyncThunk(
   }
 );
 
-export const fetchMatchById = createAsyncThunk("matches/fetchById", async (id: number, { rejectWithValue }) => {
+export const fetchMatchById = createAsyncThunk("matches/fetchById", async (id: string, { rejectWithValue }) => {
   try {
     const response = await matchesService.getById(id);
     return response.data as Match;
@@ -44,7 +44,7 @@ export const createMatch = createAsyncThunk("matches/create", async (dto: MatchP
 
 export const updateMatch = createAsyncThunk(
   "matches/update",
-  async ({ id, dto }: { id: number; dto: MatchPutDto }, { rejectWithValue }) => {
+  async ({ id, dto }: { id: string; dto: MatchPutDto }, { rejectWithValue }) => {
     try {
       await matchesService.update(id, dto);
       return { id, dto };
@@ -54,7 +54,7 @@ export const updateMatch = createAsyncThunk(
   }
 );
 
-export const deleteMatch = createAsyncThunk("matches/delete", async (id: number, { rejectWithValue }) => {
+export const deleteMatch = createAsyncThunk("matches/delete", async (id: string, { rejectWithValue }) => {
   try {
     await matchesService.delete(id);
     return id;

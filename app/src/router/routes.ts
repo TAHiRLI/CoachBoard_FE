@@ -8,6 +8,7 @@ export const Routes = {
   Shard: "/shared",
   Matches: {
     Base: "/Matches",
+    Details: "/Matches/:id",
   },
   Seasons: {
     Base: "/Seasons",

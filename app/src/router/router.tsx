@@ -4,6 +4,7 @@ import ForgotPasswordPage from "@/pages/login/forgotPassword";
 import HomePage from "@/pages/home/homePage";
 import Layout from "@/components/layout/layout";
 import LoginPage from "@/pages/login/loginPage";
+import MatchDetailsPage from "@/pages/matches/matchDetails";
 import MatchesPage from "@/pages/matches/matchesPage";
 import NotFoundPage from "@/pages/notFoundPage/notFoundPage";
 import PrivateRoute from "@/components/PrivateRoute/privateRoute";
@@ -32,9 +33,21 @@ export const router = createBrowserRouter([
     path: Routes.Matches.Base,
     element: (
       <>
-        <PrivateRoute roles={["admin", "manager"]}>
+        <PrivateRoute>
           <Layout pageTitle="Matches">
             <MatchesPage />
+          </Layout>
+        </PrivateRoute>
+      </>
+    ),
+  },
+  {
+    path: Routes.Matches.Details,
+    element: (
+      <>
+        <PrivateRoute>
+          <Layout>
+            <MatchDetailsPage />
           </Layout>
         </PrivateRoute>
       </>
@@ -44,7 +57,7 @@ export const router = createBrowserRouter([
     path: Routes.Seasons.Base,
     element: (
       <>
-        <PrivateRoute roles={["admin", "manager"]}>
+        <PrivateRoute>
           <Layout pageTitle="Seasons">
             <SeasonsPage />
           </Layout>
@@ -56,7 +69,7 @@ export const router = createBrowserRouter([
     path: Routes.Shard,
     element: (
       <>
-        <PrivateRoute roles={["admin", "manager"]}>
+        <PrivateRoute>
           <Layout>
             <SharedPage />
           </Layout>

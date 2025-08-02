@@ -1,0 +1,48 @@
+.loginPage {
+    min-height: 100vh;
+  }
+  
+  .loginPage::after {
+    background-color: var(--v-primary-base);
+    border-radius: 50%;
+    content: "";
+    height: 400px;
+    opacity: 0.2;
+    position: fixed;
+    right: -150px;
+    top: -150px;
+    width: 400px;
+  }
+  
+  .loginPage::before {
+    border: 70px solid var(--v-primary-base);
+    border-radius: 50%;
+    bottom: -200px;
+    content: "";
+    height: 500px;
+    left: -200px;
+    position: fixed;
+    width: 500px;
+  }
+  
+  .loginPage .content {
+    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2),
+                0 2px 2px 0 rgba(0, 0, 0, 0.14), 
+                0 1px 5px 0 rgba(0, 0, 0, 0.12);
+  }
+  
+  .loginPage .content_info {
+    background-color: var(--v-primary-base);
+  }
+  
+  .loginPage .content .login_form h2 {
+    color: var(--v-primary-base);
+    font-size: 2.125rem !important;
+    font-weight: 600;
+    letter-spacing: 0.0073529412em !important;
+    line-height: 2.5rem;
+  }
+  
+  .loginPage .content .login_form .label-focused {
+    color: var(--v-primary-base) !important;
+  }

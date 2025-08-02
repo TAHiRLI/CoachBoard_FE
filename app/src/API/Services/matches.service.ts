@@ -12,7 +12,7 @@ class MatchesService {
     return apiClient.get(`api/Matches?${params.toString()}`);
   }
 
-  async getById(id: number) {
+  async getById(id: string) {
     return apiClient.get(`api/Matches/${id}`);
   }
 
@@ -20,11 +20,11 @@ class MatchesService {
     return apiClient.post("api/Matches", dto);
   }
 
-  async update(id: number, dto: MatchPutDto) {
+  async update(id: string, dto: MatchPutDto) {
     return apiClient.put(`api/Matches/${id}`, dto);
   }
 
-  async delete(id: number) {
+  async delete(id: string) {
     return apiClient.delete(`api/Matches/${id}`);
   }
 }

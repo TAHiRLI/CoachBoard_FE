@@ -114,15 +114,17 @@ const Layout: React.FC<LayoutProps> = ({
         </header>
 
         <div className="page-content">
-          <div className="page-header">
-            <div className="header-content">
-              <div className="title-section">
-                <h1 className="page-title">{pageTitle}</h1>
-                {pageSubtitle && <p className="page-subtitle">{pageSubtitle}</p>}
+          {pageSubtitle && (
+            <div className="page-header">
+              <div className="header-content">
+                <div className="title-section">
+                  <h1 className="page-title">{pageTitle}</h1>
+                  {pageSubtitle && <p className="page-subtitle">{pageSubtitle}</p>}
+                </div>
+                {actionButtons && <div className="header-actions">{actionButtons}</div>}
               </div>
-              {actionButtons && <div className="header-actions">{actionButtons}</div>}
             </div>
-          </div>
+          )}
 
           {children}
         </div>

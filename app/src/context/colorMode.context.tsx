@@ -39,7 +39,7 @@ const getDesignTokens = (mode: "light" | "dark") =>
             },
             background: {
               default: "#fff",
-              paper: "#f4f4f4",
+              paper: "#fff",
             },
             text: {
               primary: "#141619", // Very dark grey for text

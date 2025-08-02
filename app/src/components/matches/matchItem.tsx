@@ -28,7 +28,7 @@ const MatchItem = ({ match }: { match: Match }) => {
   };
 
   const handleDelete = useCallback(
-    (id: number) => {
+    (id: string ) => {
       if (!id) {
         return;
       }
