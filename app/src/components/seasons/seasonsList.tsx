@@ -1,4 +1,4 @@
-import { Alert, Box, LinearProgress, Paper, Snackbar } from "@mui/material";
+import { Alert, Box, LinearProgress, Snackbar } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { clearSeasonError, deleteSeason, fetchSeasons, selectSeason } from "@/store/slices/seasons.slice";

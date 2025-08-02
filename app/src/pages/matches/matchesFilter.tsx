@@ -1,10 +1,13 @@
 // app/src/pages/matches/matchesFilter.tsx
 import { Box, Button, FormControl, MenuItem, Select } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "@/store/store";
+import { useEffect, useState } from "react";
 
 import { Add } from "@mui/icons-material";
+import AddMatch from "@/components/matches/addMatch";
+import CustomModal from "@/components/customModal/customModal";
+import { fetchMatches } from "@/store/slices/matches.slice";
 import { selectSeason } from "@/store/slices/seasons.slice";
-import { useEffect } from "react";
 
 const MatchesFilter = () => {
   const dispatch = useAppDispatch();
@@ -16,9 +19,11 @@ const MatchesFilter = () => {
   };
   useEffect(() => {
     if (!selectedSeason && seasons.length > 0) {
-      dispatch(selectSeason(seasons[seasons.length -1]));
+      dispatch(selectSeason(seasons[seasons.length - 1]));
     }
   }, [selectedSeason, seasons, dispatch]);
+
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <Box className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 mb-8">
@@ -42,11 +47,20 @@ const MatchesFilter = () => {
           </FormControl>
         </Box>
         <Box className="flex gap-2 flex-wrap">
-          <Button color="success" variant="contained" startIcon={<Add />}>
+          <Button onClick={() => setIsOpen(true)} color="success" variant="contained" startIcon={<Add />}>
             New Match
           </Button>
         </Box>
       </Box>
+      <CustomModal open={isOpen} setOpen={setIsOpen}>
+        <AddMatch
+          onSuccess={() => {
+            dispatch(fetchMatches({ seasonId: selectedSeason?.id })).then(() => {
+              setIsOpen(false);
+            });
+          }}
+        />
+      </CustomModal>
     </Box>
   );
 };
