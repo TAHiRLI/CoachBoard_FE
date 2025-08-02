@@ -1,5 +1,6 @@
 import { AdminPage, SharedPage } from "@/pages/testPages/testPages";
 
+import ClubsPage from "@/pages/clubs/clubsPage";
 import ForgotPasswordPage from "@/pages/login/forgotPassword";
 import HomePage from "@/pages/home/homePage";
 import Layout from "@/components/layout/layout";
@@ -48,6 +49,18 @@ export const router = createBrowserRouter([
         <PrivateRoute>
           <Layout>
             <MatchDetailsPage />
+          </Layout>
+        </PrivateRoute>
+      </>
+    ),
+  },
+  {
+    path: Routes.Clubs.Base,
+    element: (
+      <>
+        <PrivateRoute>
+          <Layout pageTitle="Clubs">
+            <ClubsPage />
           </Layout>
         </PrivateRoute>
       </>

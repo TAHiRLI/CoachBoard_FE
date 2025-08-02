@@ -49,6 +49,16 @@ const MatchInfoCard: React.FC<Props> = ({ match }) => {
             <p className="text-sm text-gray-500">Location</p>
             <p className="text-base font-medium text-gray-800">{match.stadium}</p>
           </div>
+          <div>
+            <p className="text-sm text-gray-500">Note</p>
+            <p className="text-base font-medium text-gray-800">{match.note}</p>
+          </div>
+          <div>
+            <p className="text-sm text-gray-500">Link</p>
+            <a target="_blank" href={match.gameUrl} className="text-base font-medium text-gray-800">
+              {match.gameUrl}
+            </a>
+          </div>
           <div className="col-span-2 md:col-span-4 mt-4">
             <p className="text-sm text-gray-500">Final Score</p>
             <div className="flex items-center gap-2 mt-1 text-lg font-bold text-gray-800">

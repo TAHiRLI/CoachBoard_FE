@@ -1,15 +1,14 @@
 import { useAppDispatch, useAppSelector } from "@/store/store";
-import { useNavigate, useParams } from "react-router-dom";
 
+import { Add } from "@mui/icons-material";
+import { Button } from "@mui/material";
 import MatchInfoCard from "@/components/matches/matchInfoCard";
 import { fetchMatchById } from "@/store/slices/matches.slice";
 import { useEffect } from "react";
-import { useTranslation } from "react-i18next";
+import { useParams } from "react-router-dom";
 
 const MatchDetailsPage = () => {
-  const { t } = useTranslation();
   const { id } = useParams();
-  const navigate = useNavigate();
 
   const { selectedMatch } = useAppSelector((state) => state.matchData);
 
@@ -21,6 +20,12 @@ const MatchDetailsPage = () => {
 
   return (
     <div>
+      <div className="my-3 justify-end flex">
+        <Button variant="contained" startIcon={<Add />}>
+          Add Clip
+        </Button>
+      </div>
+
       <h1 className="page-title">
         {selectedMatch?.homeTeam.teamName} vs {selectedMatch?.awayTeam.teamName}
       </h1>

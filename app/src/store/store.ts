@@ -3,6 +3,7 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { persistReducer, persistStore } from "redux-persist";
 
 import authSlice from "./slices/auth.slice";
+import clubsSlice from "./slices/clubs.slice";
 import matchesSlice from "./slices/matches.slice";
 import seasonsSlice from "./slices/seasons.slice";
 import storage from "redux-persist/lib/storage"; // Default localStorage for web
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
   seasonData: seasonsSlice.reducer,
   matchData: matchesSlice.reducer,
   teamData: teamsSlice.reducer,
+  clubData: clubsSlice.reducer,
 });
 
 // Wrap rootReducer with persistReducer

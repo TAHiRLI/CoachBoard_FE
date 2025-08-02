@@ -31,7 +31,7 @@ const getDesignTokens = (mode: "light" | "dark") =>
       ...(mode === "light"
         ? {
             primary: {
-              main: "#2c376c", // Vibrant primary color
+              main: "#2258de", // Vibrant primary color
               dark: "#3e2c80",
             },
             secondary: {

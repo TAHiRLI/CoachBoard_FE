@@ -13,4 +13,7 @@ export const Routes = {
   Seasons: {
     Base: "/Seasons",
   },
+  Clubs: {
+    Base: "/Clubs",
+  },
 };
