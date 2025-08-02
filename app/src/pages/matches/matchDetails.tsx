@@ -1,13 +1,18 @@
 import { useAppDispatch, useAppSelector } from "@/store/store";
+import { useEffect, useState } from "react";
 
 import { Add } from "@mui/icons-material";
+import AddClip from "@/components/clips/AddClip";
 import { Button } from "@mui/material";
+import CustomModal from "@/components/customModal/customModal";
+import MatchClips from "./matchClips";
 import MatchInfoCard from "@/components/matches/matchInfoCard";
+import { fetchClips } from "@/store/slices/clips.slice";
 import { fetchMatchById } from "@/store/slices/matches.slice";
-import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 const MatchDetailsPage = () => {
+  const [isOpen, setIsOpen] = useState(false);
   const { id } = useParams();
 
   const { selectedMatch } = useAppSelector((state) => state.matchData);
@@ -21,7 +26,7 @@ const MatchDetailsPage = () => {
   return (
     <div>
       <div className="my-3 justify-end flex">
-        <Button variant="contained" startIcon={<Add />}>
+        <Button onClick={() => setIsOpen(true)} variant="contained" startIcon={<Add />}>
           Add Clip
         </Button>
       </div>
@@ -32,6 +37,20 @@ const MatchDetailsPage = () => {
       <p className="page-subtitle">Complete match analysis with clips and coach evaluations</p>
 
       <div className="my-4">{selectedMatch && <MatchInfoCard match={selectedMatch} />}</div>
+      <div className="my-4">{selectedMatch && <MatchClips match={selectedMatch} />}</div>
+
+      <CustomModal open={isOpen} setOpen={setIsOpen}>
+        <AddClip
+          coachId={"2"}
+          matchUrl={selectedMatch?.gameUrl}
+          matchId={selectedMatch?.id}
+          onCancel={() => setIsOpen(false)}
+          onSuccess={() => {
+            dispatch(fetchClips({ matchId: selectedMatch?.id }));
+            setIsOpen(false);
+          }}
+        />
+      </CustomModal>
     </div>
   );
 };

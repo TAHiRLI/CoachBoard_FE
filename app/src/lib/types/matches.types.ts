@@ -1,5 +1,5 @@
 export type TeamMatch = {
-  teamid: string;
+  teamId: string;
   teamName: string;
   clubName: string;
   logo: string;
@@ -13,7 +13,7 @@ export type Match = {
   note: string;
   homeTeam: TeamMatch;
   awayTeam: TeamMatch;
-  seasonid: string;
+  seasonId: string;
   seasonName: string;
   gameUrl: string;
   clipCount: number;
@@ -25,9 +25,9 @@ export type MatchPostDto = {
   homeTeamScore: number;
   awayTeamScore: number;
   note: string;
-  homeTeamId: number | "";
-  awayTeamId: number | "";
-  seasonId: number | "";
+  homeTeamId: string;
+  awayTeamId: string;
+  seasonId: string;
   gameUrl: string;
 };
 
@@ -39,4 +39,3 @@ export type MatchState = {
   error: string | null;
   selectedMatch: Match | null;
 };
-

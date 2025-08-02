@@ -6,7 +6,6 @@ import { useAppDispatch, useAppSelector } from "@/store/store";
 import { useMemo, useRef } from "react";
 
 import { Edit } from "@mui/icons-material";
-import { fetchTeams } from "@/store/slices/teams.slice";
 import { updateClub } from "@/store/slices/clubs.slice";
 import { useFormik } from "formik";
 
