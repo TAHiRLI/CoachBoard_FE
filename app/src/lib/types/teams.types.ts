@@ -2,14 +2,14 @@ export type Team = {
   id: number;
   name: string;
   league: string;
-  clubId: number;
+  clubId: string;
   clubName: string;
 };
 
 export type TeamPostDto = {
   name: string;
   league: string;
-  clubId: number;
+  clubId: string;
 };
 
 export type TeamPutDto = {

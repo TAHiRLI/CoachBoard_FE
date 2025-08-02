@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from "@/store/store";
 import { useMemo, useRef } from "react";
 
 import { Edit } from "@mui/icons-material";
+import { fetchTeams } from "@/store/slices/teams.slice";
 import { updateClub } from "@/store/slices/clubs.slice";
 import { useFormik } from "formik";
 
@@ -63,11 +64,7 @@ const EditClub: React.FC<EditClubProps> = ({ club, onSuccess, onCancel }) => {
           }}
         />
 
-        <Button
-          onClick={() => fileRef.current?.click()}
-          variant="outlined"
-          sx={{ textTransform: "none" }}
-        >
+        <Button onClick={() => fileRef.current?.click()} variant="outlined" sx={{ textTransform: "none" }}>
           {values.logo?.name || "Change Logo"}
         </Button>
 
@@ -75,12 +72,7 @@ const EditClub: React.FC<EditClubProps> = ({ club, onSuccess, onCancel }) => {
           <Button onClick={onCancel} color="warning" variant="contained">
             Cancel
           </Button>
-          <Button
-            type="submit"
-            variant="contained"
-            startIcon={<Edit />}
-            disabled={loading || isSubmitting}
-          >
+          <Button type="submit" variant="contained" startIcon={<Edit />} disabled={loading || isSubmitting}>
             Save
           </Button>
         </div>
@@ -90,4 +82,3 @@ const EditClub: React.FC<EditClubProps> = ({ club, onSuccess, onCancel }) => {
 };
 
 export default EditClub;
-

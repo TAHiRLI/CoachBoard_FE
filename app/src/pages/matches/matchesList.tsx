@@ -1,7 +1,7 @@
 import { Fragment, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 
-import MatchItem from "@/components/matches/MatchItem";
+import MatchItem from "@/components/matches/matchItem";
 import { fetchMatches } from "@/store/slices/matches.slice";
 
 const MatchesList = () => {

@@ -16,4 +16,7 @@ export const Routes = {
   Clubs: {
     Base: "/Clubs",
   },
+  Teams: {
+    Base: "/Teams",
+  },
 };

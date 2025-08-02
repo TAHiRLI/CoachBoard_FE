@@ -23,7 +23,7 @@ const SeasonsPage = () => {
       <SeasonsList />
 
       <CustomModal setOpen={setIsOpen} open={isOpen}>
-        <AddSeason onSuccess={() => setIsOpen(false)} />
+        <AddSeason  onCancel={() => setIsOpen(false)}  onSuccess={() => setIsOpen(false)} />
       </CustomModal>
     </div>
   );

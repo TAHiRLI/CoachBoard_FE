@@ -1,4 +1,4 @@
-import { Apartment, Loop, Menu } from "@mui/icons-material";
+import { Apartment, Group, Loop, Menu } from "@mui/icons-material";
 import React, { useEffect, useState } from "react";
 
 import { IconButton } from "@mui/material";
@@ -33,6 +33,7 @@ const Layout: React.FC<LayoutProps> = ({
     { id: "matches", label: "Matches", icon: "⚽", href: Routes.Matches.Base },
     { id: "seasons", label: "Seasons", icon: <Loop />, href: Routes.Seasons.Base },
     { id: "Clubs", label: "Clubs", icon: <Apartment />, href: Routes.Clubs.Base },
+    { id: "Teams", label: "Teams", icon: <Group />, href: Routes.Teams.Base },
     { id: "players", label: "Players", icon: "👥", href: "#" },
     { id: "stats", label: "Stats", icon: "📊", href: "#" },
     { id: "videos", label: "Video Library", icon: "🎬", href: "#" },
