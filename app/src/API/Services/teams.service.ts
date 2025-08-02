@@ -7,7 +7,7 @@ class TeamsService {
     return apiClient.get("api/Teams");
   }
 
-  async getById(id: number) {
+  async getById(id: string) {
     return apiClient.get(`api/Teams/${id}`);
   }
 
@@ -15,11 +15,11 @@ class TeamsService {
     return apiClient.post("api/Teams", dto);
   }
 
-  async update(id: number, dto: TeamPutDto) {
+  async update(id: string, dto: TeamPutDto) {
     return apiClient.put(`api/Teams/${id}`, dto);
   }
 
-  async delete(id: number) {
+  async delete(id: string) {
     return apiClient.delete(`api/Teams/${id}`);
   }
 }

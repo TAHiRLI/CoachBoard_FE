@@ -26,7 +26,7 @@ export const fetchTeams = createAsyncThunk("teams/fetchAll", async (_, { rejectW
   }
 });
 
-export const fetchTeamById = createAsyncThunk("teams/fetchById", async (id: number, { rejectWithValue }) => {
+export const fetchTeamById = createAsyncThunk("teams/fetchById", async (id: string, { rejectWithValue }) => {
   try {
     const response = await teamsService.getById(id);
     return response.data as Team;
@@ -46,7 +46,7 @@ export const createTeam = createAsyncThunk("teams/create", async (dto: TeamPostD
 
 export const updateTeam = createAsyncThunk(
   "teams/update",
-  async ({ id, dto }: { id: number; dto: TeamPutDto }, { rejectWithValue }) => {
+  async ({ id, dto }: { id: string; dto: TeamPutDto }, { rejectWithValue }) => {
     try {
       await teamsService.update(id, dto);
       return { id, dto };
@@ -56,7 +56,7 @@ export const updateTeam = createAsyncThunk(
   }
 );
 
-export const deleteTeam = createAsyncThunk("teams/delete", async (id: number, { rejectWithValue }) => {
+export const deleteTeam = createAsyncThunk("teams/delete", async (id: string, { rejectWithValue }) => {
   try {
     await teamsService.delete(id);
     return id;

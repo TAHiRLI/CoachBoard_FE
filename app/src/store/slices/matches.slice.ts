@@ -14,7 +14,7 @@ const initialState: MatchState = {
 // Async thunks
 export const fetchMatches = createAsyncThunk(
   "matches/fetchAll",
-  async (filters: { seasonId?: number; startDate?: string; endDate?: string } = {}, { rejectWithValue }) => {
+  async (filters: { seasonId?: string; startDate?: string; endDate?: string } = {}, { rejectWithValue }) => {
     try {
       const response = await matchesService.getAll(filters);
       return response.data as Match[];

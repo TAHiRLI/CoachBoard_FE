@@ -8,6 +8,7 @@ import LoginPage from "@/pages/login/loginPage";
 import MatchDetailsPage from "@/pages/matches/matchDetails";
 import MatchesPage from "@/pages/matches/matchesPage";
 import NotFoundPage from "@/pages/notFoundPage/notFoundPage";
+import PlayersPage from "@/pages/players/PlayersPage";
 import PrivateRoute from "@/components/PrivateRoute/privateRoute";
 import RegisterPage from "@/pages/login/registerPage";
 import ResetPasswordPage from "@/pages/login/resetPassword";
@@ -74,6 +75,18 @@ export const router = createBrowserRouter([
         <PrivateRoute>
           <Layout pageTitle="Teams">
             <TeamsPage />
+          </Layout>
+        </PrivateRoute>
+      </>
+    ),
+  },
+  {
+    path: Routes.Players.Base,
+    element: (
+      <>
+        <PrivateRoute>
+          <Layout pageTitle="Teams">
+            <PlayersPage />
           </Layout>
         </PrivateRoute>
       </>

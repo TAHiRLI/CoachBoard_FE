@@ -27,7 +27,7 @@ const TeamsList = () => {
   };
 
   const handleDelete = useCallback(
-    (id: number) => {
+    (id: string) => {
       Swal.fire({
         title: "Are you sure?",
         text: "This cannot be undone!",

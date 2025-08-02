@@ -9,7 +9,7 @@ export type ClubWithTeams = Club & {
     id: string;
     name: string;
     league: string;
-    clubId: number;
+    clubid: string;
     clubName: string;
   }[];
 };

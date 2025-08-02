@@ -3,7 +3,7 @@ import { MatchPostDto, MatchPutDto } from "@/lib/types/matches.types";
 import { apiClient } from "../apiClient";
 
 class MatchesService {
-  async getAll(filters: { seasonId?: number; startDate?: string; endDate?: string }) {
+  async getAll(filters: { seasonId?: string; startDate?: string; endDate?: string }) {
     const params = new URLSearchParams();
     if (filters.seasonId) params.append("seasonId", filters.seasonId.toString());
     if (filters.startDate) params.append("startDate", filters.startDate);

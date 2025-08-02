@@ -1,0 +1,17 @@
+export const playerPositions = [
+  { label: "Goalkeeper", value: "Goalkeeper" },
+  { label: "Center Back", value: "CenterBack" },
+  { label: "Left Back", value: "LeftBack" },
+  { label: "Right Back", value: "RightBack" },
+  { label: "Left Wing Back", value: "LeftWingBack" },
+  { label: "Right Wing Back", value: "RightWingBack" },
+  { label: "Defensive Midfielder", value: "DefensiveMidfielder" },
+  { label: "Central Midfielder", value: "CentralMidfielder" },
+  { label: "Attacking Midfielder", value: "AttackingMidfielder" },
+  { label: "Left Midfielder", value: "LeftMidfielder" },
+  { label: "Right Midfielder", value: "RightMidfielder" },
+  { label: "Striker", value: "Striker" },
+  { label: "Center Forward", value: "CenterForward" },
+  { label: "Left Winger", value: "LeftWinger" },
+  { label: "Right Winger", value: "RightWinger" },
+];

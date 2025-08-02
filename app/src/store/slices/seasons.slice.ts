@@ -21,7 +21,7 @@ export const fetchSeasons = createAsyncThunk("seasons/fetchAll", async (_, { rej
   }
 });
 
-export const fetchSeasonById = createAsyncThunk("seasons/fetchById", async (id: number, { rejectWithValue }) => {
+export const fetchSeasonById = createAsyncThunk("seasons/fetchById", async (id: string, { rejectWithValue }) => {
   try {
     const response = await seasonsService.getById(id);
     return response.data as Season;
@@ -41,7 +41,7 @@ export const createSeason = createAsyncThunk("seasons/create", async (dto: Seaso
 
 export const updateSeason = createAsyncThunk(
   "seasons/update",
-  async ({ id, dto }: { id: number; dto: SeasonPutDto }, { rejectWithValue }) => {
+  async ({ id, dto }: { id: string; dto: SeasonPutDto }, { rejectWithValue }) => {
     try {
       await seasonsService.update(id, dto);
       return { id, dto };
@@ -51,7 +51,7 @@ export const updateSeason = createAsyncThunk(
   }
 );
 
-export const deleteSeason = createAsyncThunk("seasons/delete", async (id: number, { rejectWithValue }) => {
+export const deleteSeason = createAsyncThunk("seasons/delete", async (id: string, { rejectWithValue }) => {
   try {
     await seasonsService.delete(id);
     return id;

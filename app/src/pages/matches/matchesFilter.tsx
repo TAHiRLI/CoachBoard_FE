@@ -13,7 +13,7 @@ const MatchesFilter = () => {
   const dispatch = useAppDispatch();
   const { seasons, selectedSeason } = useAppSelector((state) => state.seasonData);
 
-  const handleSeasonChange = (id: number) => {
+  const handleSeasonChange = (id: string) => {
     const season = seasons.find((s) => s.id == id) ?? null;
     dispatch(selectSeason(season));
   };

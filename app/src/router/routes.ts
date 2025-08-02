@@ -19,4 +19,7 @@ export const Routes = {
   Teams: {
     Base: "/Teams",
   },
+  Players: {
+    Base: "/Players",
+  },
 };

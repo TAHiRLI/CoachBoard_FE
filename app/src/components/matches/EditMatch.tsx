@@ -62,7 +62,7 @@ const EditMatch: React.FC<EditMatchProps> = ({ match, onSuccess, onCancel }) => 
       gameUrl: match.gameUrl,
       seasonId: match.seasonId,
     },
-    enableReinitialize: true, 
+    enableReinitialize: true,
     validationSchema,
     onSubmit: (values) => {
       dispatch(updateMatch({ id: match.id, dto: values }))

@@ -7,7 +7,7 @@ class SeasonsService {
     return apiClient.get("api/Seasons");
   }
 
-  async getById(id: number) {
+  async getById(id: string) {
     return apiClient.get(`api/Seasons/${id}`);
   }
 
@@ -15,11 +15,11 @@ class SeasonsService {
     return apiClient.post("api/Seasons", dto);
   }
 
-  async update(id: number, dto: SeasonPutDto) {
+  async update(id: string, dto: SeasonPutDto) {
     return apiClient.put(`api/Seasons/${id}`, dto);
   }
 
-  async delete(id: number) {
+  async delete(id: string) {
     return apiClient.delete(`api/Seasons/${id}`);
   }
 }

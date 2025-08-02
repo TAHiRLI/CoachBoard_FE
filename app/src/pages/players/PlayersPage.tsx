@@ -1,28 +1,26 @@
 import { Add } from "@mui/icons-material";
-import AddTeam from "@/components/teams/addTeam";
+import AddPlayer from "@/components/players/AddPlayer";
 import { Button } from "@mui/material";
 import CustomModal from "@/components/customModal/customModal";
-import TeamsList from "@/components/teams/teamsList";
+import PlayersList from "@/components/players/PlayersList";
 import { useState } from "react";
 
-const TeamsPage = () => {
+const PlayersPage = () => {
   const [isOpen, setIsOpen] = useState(false);
-
   return (
     <div>
       <div className="flex justify-end mb-3">
-        <Button variant="contained" startIcon={<Add />} onClick={() => setIsOpen(true)}>
+        <Button variant="contained" startIcon={<Add />} onClick={() => setIsOpen(true)} title="Create">
           Create
         </Button>
       </div>
-
-      <TeamsList />
+      <PlayersList />
 
       <CustomModal setOpen={setIsOpen} open={isOpen}>
-        <AddTeam onCancel={() => setIsOpen(false)} onSuccess={() => setIsOpen(false)} />
+        <AddPlayer onCancel={() => setIsOpen(false)} onSuccess={() => setIsOpen(false)} />
       </CustomModal>
     </div>
   );
 };
 
-export default TeamsPage;
+export default PlayersPage;

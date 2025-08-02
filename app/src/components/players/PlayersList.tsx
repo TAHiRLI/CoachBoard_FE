@@ -1,40 +1,40 @@
 import { Alert, Box, LinearProgress, Snackbar } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { clearSeasonError, deleteSeason, fetchSeasons, selectSeason } from "@/store/slices/seasons.slice";
+import { clearPlayerError, deletePlayer, fetchPlayers, selectPlayer } from "@/store/slices/players.slice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 
 import CustomModal from "../customModal/customModal";
-import EditSeason from "./editSeason";
+import EditPlayer from "./EditPlayer";
 import { GridColDef } from "@mui/x-data-grid";
+import { Player } from "@/lib/types/players.types";
 import RowActions from "../rowActions/rowActions";
-import { Season } from "@/lib/types/seasons.types";
 import StyledDataGrid from "../styledDatagrid/styledDatagrid";
 import Swal from "sweetalert2";
+import { apiUrl } from "@/lib/constants/constants";
 import dayjs from "dayjs";
 import { useTranslation } from "react-i18next";
 
-const SeasonsList: React.FC = () => {
+const PlayersList: React.FC = () => {
   const { t } = useTranslation();
-
   const dispatch = useAppDispatch();
-  const { seasons, selectedSeason, loading, error } = useAppSelector((state) => state.seasonData);
+  const { players, selectedPlayer, loading, error } = useAppSelector((state) => state.playerData);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
-  // State
 
   useEffect(() => {
-    dispatch(fetchSeasons());
+    dispatch(fetchPlayers());
   }, []);
 
   const handleCloseSnackbar = () => {
     setSnackbarOpen(false);
     if (error) {
-      dispatch(clearSeasonError());
+      dispatch(clearPlayerError());
     }
   };
-  const handleEdit = (season: Season) => {
-    dispatch(selectSeason(season));
+
+  const handleEdit = (player: Player) => {
+    dispatch(selectPlayer(player));
     setEditOpen(true);
   };
 
@@ -51,35 +51,45 @@ const SeasonsList: React.FC = () => {
         cancelButtonColor: "#d33",
         confirmButtonText: t("messages:yesDelete"),
       }).then(async (result) => {
-        if (result.isConfirmed && id) {
-          dispatch(deleteSeason(id))
+        if (result.isConfirmed) {
+          dispatch(deletePlayer(id))
             .unwrap()
-            .then(() => {
-              Swal.fire("Success", "", "success");
-            });
+            .then(() => Swal.fire("Success", "", "success"));
         }
       });
     },
     [dispatch, t]
   );
+
   const columns = useMemo<GridColDef[]>(
     () => [
       {
-        field: "name",
-        headerName: "Name",
-        flex: 1,
+        field: "photo",
+        headerName: "Photo",
+        renderCell: ({ value }) => {
+          if (!value) return <></>;
+          return (
+            <div className="flex items-center h-full">
+              <img src={apiUrl + "/" + value} alt="player" style={{aspectRatio: 4/3, objectFit: "cover", height: '100%' }} />
+            </div>
+          );
+        },
       },
+      { field: "fullName", headerName: "Name", flex: 1 },
+      { field: "position", headerName: "Position", flex: 1 },
       {
-        field: "startDate",
-        headerName: "Start",
-        flex: 1,
+        field: "birthDate",
+        headerName: "Birth Date",
         valueGetter: (params) => (params ? dayjs(params).format("DD.MM.YYYY") : ""),
       },
       {
-        field: "endDate",
-        headerName: "End",
+        field: "age",
+        headerName: "Age",
         flex: 1,
-        valueGetter: (params) => (params ? dayjs(params).format("DD.MM.YYYY") : ""),
+        valueFormatter: (_, row) => {
+          const birthDate = dayjs(row.birthDate);
+          return birthDate.isValid() ? dayjs().diff(birthDate, "year") : "";
+        },
       },
       {
         field: "actions",
@@ -112,31 +122,30 @@ const SeasonsList: React.FC = () => {
   return (
     <>
       {loading && <LinearProgress />}
-      <div className="">
-        <Box sx={{ display: "grid", gridTemplateColumns: "1fr" }}>
-          <StyledDataGrid
-            rowHeight={30}
-            rows={seasons}
-            columns={columns}
-            disableRowSelectionOnClick
-            loading={loading}
-            hideFooter
-          />
-        </Box>
-      </div>
-      {selectedSeason && (
+      <Box sx={{ display: "grid", gridTemplateColumns: "1fr" }}>
+        <StyledDataGrid
+          rowHeight={100}
+          rows={players}
+          columns={columns}
+          disableRowSelectionOnClick
+          loading={loading}
+          hideFooter
+        />
+      </Box>
+      {selectedPlayer && (
         <CustomModal open={editOpen} setOpen={setEditOpen}>
-          <EditSeason season={selectedSeason} onSuccess={() => setEditOpen(false)} />
+          <EditPlayer
+            player={selectedPlayer}
+            onSuccess={() => {
+              dispatch(fetchPlayers()).then(() => {
+                setEditOpen(false);
+              });
+            }}
+          />
         </CustomModal>
       )}
-      {/* Snackbar for notifications */}
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={6000}
-        onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-      >
-        <Alert onClose={handleCloseSnackbar} severity={"error"} variant="filled">
+      <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+        <Alert onClose={handleCloseSnackbar} severity="error" variant="filled">
           {error}
         </Alert>
       </Snackbar>
@@ -144,4 +153,4 @@ const SeasonsList: React.FC = () => {
   );
 };
 
-export default SeasonsList;
+export default PlayersList;

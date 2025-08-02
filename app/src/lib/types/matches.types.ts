@@ -1,5 +1,5 @@
 export type TeamMatch = {
-  teamId: number;
+  teamid: string;
   teamName: string;
   clubName: string;
   logo: string;
@@ -13,7 +13,7 @@ export type Match = {
   note: string;
   homeTeam: TeamMatch;
   awayTeam: TeamMatch;
-  seasonId: number;
+  seasonid: string;
   seasonName: string;
   gameUrl: string;
   clipCount: number;

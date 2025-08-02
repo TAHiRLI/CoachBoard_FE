@@ -34,7 +34,7 @@ const Layout: React.FC<LayoutProps> = ({
     { id: "seasons", label: "Seasons", icon: <Loop />, href: Routes.Seasons.Base },
     { id: "Clubs", label: "Clubs", icon: <Apartment />, href: Routes.Clubs.Base },
     { id: "Teams", label: "Teams", icon: <Group />, href: Routes.Teams.Base },
-    { id: "players", label: "Players", icon: "👥", href: "#" },
+    { id: "players", label: "Players", icon: "👥", href: Routes.Players.Base },
     { id: "stats", label: "Stats", icon: "📊", href: "#" },
     { id: "videos", label: "Video Library", icon: "🎬", href: "#" },
     { id: "reports", label: "Reports", icon: "📋", href: "#" },
