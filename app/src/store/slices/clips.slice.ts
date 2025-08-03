@@ -28,6 +28,14 @@ export const fetchClips = createAsyncThunk(
     }
   }
 );
+export const fetchClipById = createAsyncThunk("clips/fetchClipbyId", async (clipId: string, { rejectWithValue }) => {
+  try {
+    const res = await clipsService.getById(clipId);
+    return res.data;
+  } catch (err: any) {
+    return rejectWithValue(err.response?.data || "Error fetching clip");
+  }
+});
 
 export const createClip = createAsyncThunk("clips/createClip", async (dto: ClipPostDto, { rejectWithValue }) => {
   try {
@@ -84,7 +92,18 @@ const clipsSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-
+      .addCase(fetchClipById.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchClipById.fulfilled, (state, action) => {
+        state.selectedClip = action.payload;
+        state.loading = false;
+      })
+      .addCase(fetchClipById.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
       .addCase(updateClip.fulfilled, (state, action) => {
         const index = state.clips.findIndex((c) => c.id === action.payload.id);
         if (index !== -1) {

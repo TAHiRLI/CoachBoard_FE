@@ -1,6 +1,7 @@
-import { AdminPage, SharedPage } from "@/pages/testPages/testPages";
-
+import { AdminPage } from "@/pages/testPages/testPages";
+import ClipDetailsPage from "@/pages/clips/clipDetailsPage";
 import ClubsPage from "@/pages/clubs/clubsPage";
+import EpisodesPage from "@/pages/episodes/episodesPage";
 import ForgotPasswordPage from "@/pages/login/forgotPassword";
 import HomePage from "@/pages/home/homePage";
 import Layout from "@/components/layout/layout";
@@ -105,12 +106,24 @@ export const router = createBrowserRouter([
     ),
   },
   {
-    path: Routes.Shard,
+    path: Routes.Clips.Details,
     element: (
       <>
         <PrivateRoute>
           <Layout>
-            <SharedPage />
+            <ClipDetailsPage />
+          </Layout>
+        </PrivateRoute>
+      </>
+    ),
+  },
+  {
+    path: Routes.Episodes.Base,
+    element: (
+      <>
+        <PrivateRoute>
+          <Layout pageTitle="Episodes">
+            <EpisodesPage />
           </Layout>
         </PrivateRoute>
       </>

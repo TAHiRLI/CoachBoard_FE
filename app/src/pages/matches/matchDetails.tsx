@@ -41,7 +41,6 @@ const MatchDetailsPage = () => {
 
       <CustomModal open={isOpen} setOpen={setIsOpen}>
         <AddClip
-          coachId={"2"}
           matchUrl={selectedMatch?.gameUrl}
           matchId={selectedMatch?.id}
           onCancel={() => setIsOpen(false)}

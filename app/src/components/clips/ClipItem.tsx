@@ -1,12 +1,12 @@
 import { Card, CardContent, CardMedia, Typography } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
+import EditClip, { formatSeconds } from "./EditClip";
 import { deleteClip, fetchClips, selectClip } from "@/store/slices/clips.slice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { useCallback, useState } from "react";
 
 import { Clip } from "@/lib/types/clips.types";
 import CustomModal from "../customModal/customModal";
-import EditClip from "./EditClip";
 import { Link } from "react-router-dom";
 import RowActions from "../rowActions/rowActions";
 import Swal from "sweetalert2";
@@ -65,7 +65,7 @@ const ClipItem: React.FC<ClipItemProps> = ({ clip }) => {
   );
 
   return (
-    <Card sx={{ display: "flex", flexDirection: "column", p: 2, gap: 2, position: "relative" }}>
+    <Card elevation={0} sx={{ display: "flex", flexDirection: "column", p: 2, gap: 2, position: "relative" }}>
       <Link to={`/clips/${clip.id}`}>
         <p className="whitespace-nowrap overflow-hidden text-md" color="primary">
           🎬 Clip #{clip.id}: {clip.name}
@@ -98,7 +98,7 @@ const ClipItem: React.FC<ClipItemProps> = ({ clip }) => {
 
       <CardContent sx={{ paddingBottom: "0.5rem !important" }}>
         <Typography variant="body2" color="text.secondary">
-          {clip.startTime} - {clip.endTime} • Duration: {getDuration()}
+          {formatSeconds(Number(clip.startTime))} - {formatSeconds(Number(clip.endTime))} • Duration: {getDuration()}
         </Typography>
         <Typography variant="body2" color="text.secondary">
           Match: {clip.matchName || "N/A"} • Coach: {clip.coachName}

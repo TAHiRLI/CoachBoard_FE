@@ -22,7 +22,7 @@ const MatchInfoCard: React.FC<Props> = ({ match }) => {
   });
 
   return (
-    <Card className="shadow-md rounded-2xl">
+    <Card elevation={0} className=" rounded-2xl">
       <CardHeader
         title={
           <Typography variant="h6" className="text-xl font-semibold">

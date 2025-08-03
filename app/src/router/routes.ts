@@ -22,4 +22,12 @@ export const Routes = {
   Players: {
     Base: "/Players",
   },
+  Clips: {
+    Base: "/Clips",
+    Details: "/Clips/:id",
+  },
+  Episodes: {
+    Base: "/Episodes",
+    Details: "/Episodes/:id",
+  },
 };

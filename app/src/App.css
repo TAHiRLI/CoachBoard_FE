@@ -225,13 +225,10 @@
   gap: 0.75rem;
   padding: 0.5rem;
   border-radius: 8px;
-  cursor: pointer;
   transition: background-color 0.2s ease;
 }
 
-.coach-profile:hover {
-  background-color: #f1f5f9;
-}
+
 
 .coach-avatar {
   width: 36px;

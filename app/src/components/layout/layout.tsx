@@ -1,9 +1,11 @@
-import { Apartment, Group, Loop, Menu } from "@mui/icons-material";
+import { Apartment, Category, Group, Logout, Loop, Menu } from "@mui/icons-material";
+import { Avatar, IconButton } from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "@/store/store";
 
-import { IconButton } from "@mui/material";
-import { Link } from "react-router-dom";
 import { Routes } from "@/router/routes";
+import { logout } from "@/store/slices/auth.slice";
 
 interface Breadcrumb {
   label: string;
@@ -27,6 +29,9 @@ const Layout: React.FC<LayoutProps> = ({
   actionButtons = null,
 }) => {
   const [sidebarVisible, setSidebarVisible] = useState(false);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const { user } = useAppSelector((x) => x.auth);
 
   const navigationItems = [
     { id: "dashboard", label: "Dashboard", icon: "🏠", href: Routes.Base },
@@ -35,10 +40,8 @@ const Layout: React.FC<LayoutProps> = ({
     { id: "Clubs", label: "Clubs", icon: <Apartment />, href: Routes.Clubs.Base },
     { id: "Teams", label: "Teams", icon: <Group />, href: Routes.Teams.Base },
     { id: "players", label: "Players", icon: "👥", href: Routes.Players.Base },
-    { id: "stats", label: "Stats", icon: "📊", href: "#" },
-    { id: "videos", label: "Video Library", icon: "🎬", href: "#" },
+    { id: "Episodes", label: "Episodes", icon: <Category />, href: Routes.Episodes.Base },
     { id: "reports", label: "Reports", icon: "📋", href: "#" },
-    { id: "settings", label: "Settings", icon: "⚙️", href: "#" },
   ];
 
   useEffect(() => {
@@ -101,16 +104,22 @@ const Layout: React.FC<LayoutProps> = ({
           </div>
 
           <div className="topbar-right">
-            <button className="notification-btn">
-              <span>🔔</span>
-              <span className="notification-badge"></span>
-            </button>
             <div className="coach-profile">
-              <div className="coach-avatar">JD</div>
+              <Avatar className="coach-avatar">{user?.fullname?.[0] || user?.username?.[0]}</Avatar>
               <div className="coach-info">
-                <h4>John Doe</h4>
-                <p>Head Coach</p>
+                <h4>{user?.fullname}</h4>
+                <p>{user?.username}</p>
               </div>
+              <IconButton
+                className="logout-button"
+                onClick={() => {
+                  dispatch(logout());
+                  navigate("/login");
+                }}
+                title="Logout"
+              >
+                <Logout />
+              </IconButton>
             </div>
           </div>
         </header>

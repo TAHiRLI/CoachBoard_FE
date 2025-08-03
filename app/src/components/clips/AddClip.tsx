@@ -12,7 +12,6 @@ import { useFormik } from "formik";
 interface AddClipProps {
   onSuccess?: () => void;
   onCancel?: () => void;
-  coachId: string;
   matchId?: string;
   matchUrl?: string;
 }
@@ -22,9 +21,10 @@ export const parseTimeToSeconds = (value: string): number => {
   const seconds = parseInt(secStr);
   return (minutes || 0) * 60 + (seconds || 0);
 };
-const AddClip: React.FC<AddClipProps> = ({ onSuccess, onCancel, coachId, matchId, matchUrl }) => {
+const AddClip: React.FC<AddClipProps> = ({ onSuccess, onCancel, matchId, matchUrl }) => {
   const dispatch = useAppDispatch();
   const { loading } = useAppSelector((s) => s.clipData);
+  const { user } = useAppSelector((s) => s.auth);
   const [mode, setMode] = useState<"external" | "upload">("external");
 
   const validationSchema = useMemo(() => {
@@ -38,7 +38,7 @@ const AddClip: React.FC<AddClipProps> = ({ onSuccess, onCancel, coachId, matchId
     initialValues: {
       name: "",
       matchId: matchId,
-      createdByCoachId: coachId,
+      createdByCoachId: user?.coachId ?? "",
       startTime: "",
       endTime: "0",
       videoUrl: matchUrl ?? "",

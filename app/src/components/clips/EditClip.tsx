@@ -15,7 +15,11 @@ interface EditClipProps {
   onSuccess?: () => void;
   onCancel?: () => void;
 }
-
+export const formatSeconds = (seconds: number): string => {
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
+};
 const EditClip: React.FC<EditClipProps> = ({ clip, onSuccess, onCancel }) => {
   const dispatch = useAppDispatch();
   const { loading } = useAppSelector((s) => s.clipData);
@@ -27,12 +31,6 @@ const EditClip: React.FC<EditClipProps> = ({ clip, onSuccess, onCancel }) => {
       videoUrl: mode === "external" ? yup.string().url("Invalid URL").required("Required") : yup.string(),
     });
   }, [mode]);
-
-  const formatSeconds = (seconds: number): string => {
-    const m = Math.floor(seconds / 60);
-    const s = seconds % 60;
-    return `${m.toString().padStart(2, "2")}:${s.toString().padStart(2, "2")}`;
-  };
 
   const formik = useFormik<ClipPutDto>({
     initialValues: {
