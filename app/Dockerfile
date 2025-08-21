@@ -12,6 +12,9 @@ RUN npm install
 # Copy all project files
 COPY . .
 
+ARG VITE_API_URL
+ENV VITE_API_URL=$VITE_API_URL
+RUN : "${VITE_API_URL:?VITE_API_URL build arg is required}" && echo ">>> VITE_API_URL=$VITE_API_URL"
 
 # Build the Vite project
 RUN npm run build
