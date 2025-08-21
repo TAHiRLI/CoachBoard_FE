@@ -10,7 +10,7 @@ services:
       context: app
       dockerfile: ./Dockerfile
       args:
-        VITE_API_URL: "http://46.62.131.42:5023"
+        VITE_API_URL: "https://api.coachboard.az"
     environment:
       - NODE_ENV=production
     networks:
