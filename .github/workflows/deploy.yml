@@ -46,7 +46,7 @@ jobs:
         port: ${{ secrets.SERVER_PROD_PORT }}
         script: |
           # Production-specific deployment script
-          cd /root/coachboard/frontend/prod
+          cd /root/coacboard/frontend/prod
           docker pull tahirli/coachboard_fe:latest
           docker compose down
           docker compose up -d
