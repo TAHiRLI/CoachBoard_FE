@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from "@/store/store";
 import { EvaluationPostDto } from "@/lib/types/evaluation.types";
 import { Save } from "@mui/icons-material";
 import { createEvaluation } from "@/store/slices/evaluations.slice";
+import { fetchEpisodes } from "@/store/slices/episodes.slice";
 import { fetchPlayers } from "@/store/slices/players.slice";
 import { useEffect } from "react";
 import { useFormik } from "formik";
@@ -20,10 +21,12 @@ const AddEvaluation = ({ clipId, onSuccess, onCancel }: props) => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
   const { loading } = useAppSelector((state) => state.evaluationData);
+  const { episodes } = useAppSelector((state) => state.episodeData);
   const { players } = useAppSelector((state) => state.playerData);
 
   useEffect(() => {
     dispatch(fetchPlayers());
+    dispatch(fetchEpisodes());
   }, []);
   const schema = yup.object({
     clipId: yup.string().required(),
@@ -37,6 +40,7 @@ const AddEvaluation = ({ clipId, onSuccess, onCancel }: props) => {
       playerId: "",
       episodeId: "",
       notes: "",
+      occurrenceCount: 0, 
       coachId: user?.coachId ?? "",
       isCritical: false,
       isSuccessful: false,
@@ -70,8 +74,20 @@ const AddEvaluation = ({ clipId, onSuccess, onCancel }: props) => {
         )}
       />
 
-      <TextField fullWidth label="Episode ID" {...formik.getFieldProps("episodeId")} />
-
+      <Autocomplete
+        options={episodes}
+        getOptionLabel={(option) => option.name}
+        onChange={(_, value) => formik.setFieldValue("episodeId", value?.id || "")}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label="Episode"
+            error={formik.touched.episodeId && Boolean(formik.errors.episodeId)}
+            helperText={formik.touched.episodeId && formik.errors.episodeId}
+          />
+        )}
+      />
+      <TextField fullWidth label="Occurance Count" type="number"  {...formik.getFieldProps("occurrenceCount")} />
       <TextField fullWidth label="Notes" multiline rows={3} {...formik.getFieldProps("notes")} />
 
       <div className="grid grid-cols-3">

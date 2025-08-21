@@ -1,4 +1,4 @@
-import { Apartment, Category, Group, Logout, Loop, Menu } from "@mui/icons-material";
+import { AccountBox, AccountCircle, Apartment, Category, Group, Groups, Logout, Loop, Menu } from "@mui/icons-material";
 import { Avatar, IconButton } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
@@ -38,10 +38,12 @@ const Layout: React.FC<LayoutProps> = ({
     { id: "matches", label: "Matches", icon: "⚽", href: Routes.Matches.Base },
     { id: "seasons", label: "Seasons", icon: <Loop />, href: Routes.Seasons.Base },
     { id: "Clubs", label: "Clubs", icon: <Apartment />, href: Routes.Clubs.Base },
-    { id: "Teams", label: "Teams", icon: <Group />, href: Routes.Teams.Base },
+    { id: "Teams", label: "Teams", icon: <Groups />, href: Routes.Teams.Base },
+    { id: "Coaches", label: "Coaches", icon: <AccountBox />, href: Routes.Coaches.Base },
     { id: "players", label: "Players", icon: "👥", href: Routes.Players.Base },
     { id: "Episodes", label: "Episodes", icon: <Category />, href: Routes.Episodes.Base },
     { id: "reports", label: "Reports", icon: "📋", href: "#" },
+    { id: "Users", label: "Users", icon: <AccountCircle />, href: Routes.Episodes.Base },
   ];
 
   useEffect(() => {

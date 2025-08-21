@@ -1,14 +1,30 @@
 import { Card, CardContent, CardHeader, Typography } from "@mui/material";
+import { Delete, Edit } from "@mui/icons-material";
+import { Link, useNavigate } from "react-router-dom";
+import { deleteMatch, fetchMatches, selectMatch } from "@/store/slices/matches.slice";
+import { useAppDispatch, useAppSelector } from "@/store/store";
+import { useCallback, useState } from "react";
 
+import CustomModal from "../customModal/customModal";
+import EditMatch from "./EditMatch";
 import { Match } from "@/lib/types/matches.types";
+import RowActions from "../rowActions/rowActions";
+import Swal from "sweetalert2";
+import { apiUrl } from "@/lib/constants/constants";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   match: Match;
-  apiUrl?: string; // Optional base URL for team logos
 };
-const apiUrl = import.meta.env.VITE_API_URL;
 
 const MatchInfoCard: React.FC<Props> = ({ match }) => {
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const { selectedSeason } = useAppSelector((x) => x.seasonData);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const dispatch = useAppDispatch();
+
   const matchDate = new Date(match.date);
   const formattedDate = matchDate.toLocaleDateString(undefined, {
     year: "numeric",
@@ -20,14 +36,65 @@ const MatchInfoCard: React.FC<Props> = ({ match }) => {
     hour: "2-digit",
     minute: "2-digit",
   });
+  const handleEdit = () => {
+    dispatch(selectMatch(match));
+    setIsOpen(true);
+  };
 
+  const handleDelete = useCallback(
+    (id: string) => {
+      if (!id) {
+        return;
+      }
+      Swal.fire({
+        title: t("messages:areYouSure"),
+        text: t("messages:unableToRevert"),
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: t("messages:yesDelete"),
+      }).then(async (result) => {
+        if (result.isConfirmed && id) {
+          dispatch(deleteMatch(id))
+            .unwrap()
+            .then(() => {
+              Swal.fire("Success", "", "success").then(() => {
+                navigate(-1);
+              });
+            });
+        }
+      });
+    },
+    [dispatch, t]
+  );
   return (
-    <Card elevation={0} className=" rounded-2xl">
+    <Card elevation={0} className="relative rounded-2xl">
+      <div className="absolute top-4 right-2">
+        <RowActions
+          actions={[
+            {
+              icon: <Edit fontSize="small" />,
+              label: "Edit",
+              onClick: () => handleEdit(),
+              color: "warning",
+            },
+            {
+              icon: <Delete fontSize="small" />,
+              label: "Delete",
+              onClick: () => handleDelete(match.id),
+              color: "error",
+            },
+          ]}
+        />
+      </div>
       <CardHeader
         title={
-          <Typography variant="h6" className="text-xl font-semibold">
-            📋 Match Information
-          </Typography>
+          <Link to={`/matches/${match.id}`}>
+            <Typography variant="h6" className="text-xl font-semibold">
+              📋 Match Information
+            </Typography>
+          </Link>
         }
         className="border-b border-gray-200"
       />
@@ -85,6 +152,15 @@ const MatchInfoCard: React.FC<Props> = ({ match }) => {
           </div>
         </div>
       </CardContent>
+      <CustomModal open={isOpen} setOpen={setIsOpen}>
+        <EditMatch
+          match={match}
+          onSuccess={() => {
+            dispatch(fetchMatches({ seasonId: selectedSeason?.id }));
+            setIsOpen(false);
+          }}
+        />
+      </CustomModal>
     </Card>
   );
 };

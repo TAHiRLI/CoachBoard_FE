@@ -10,6 +10,7 @@ export interface Evaluation {
   coachName: string;
   matchId: string;
   matchName: string;
+  occurrenceCount: number, 
   isSuccessful: boolean;
   isCritical: boolean;
   isExternal: boolean;
@@ -22,6 +23,7 @@ export interface EvaluationPostDto {
   playerId: string;
   episodeId: string;
   coachId: string;
+  occurrenceCount: number, 
   isSuccessful: boolean;
   isCritical: boolean;
   couldBeBetter: boolean;
@@ -29,6 +31,7 @@ export interface EvaluationPostDto {
 }
 
 export interface EvaluationPutDto {
+  occurrenceCount: number, 
   isSuccessful: boolean;
   isCritical: boolean;
   couldBeBetter: boolean;

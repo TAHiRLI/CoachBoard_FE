@@ -87,6 +87,13 @@ const matchesSlice = createSlice({
       .addCase(fetchMatches.fulfilled, (state, action) => {
         state.loading = false;
         state.matches = action.payload;
+
+        if (state.selectedMatch) {
+          const updatedSelected = action.payload.find(m => m.id === state.selectedMatch?.id);
+          if (updatedSelected) {
+            state.selectedMatch = updatedSelected;
+          }
+        }
       })
       .addCase(fetchMatches.rejected, (state, action) => {
         state.loading = false;

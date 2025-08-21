@@ -7,6 +7,7 @@ import { Button } from "@mui/material";
 import CustomModal from "@/components/customModal/customModal";
 import MatchClips from "./matchClips";
 import MatchInfoCard from "@/components/matches/matchInfoCard";
+import MatchParticipations from "./matchParticipations";
 import { fetchClips } from "@/store/slices/clips.slice";
 import { fetchMatchById } from "@/store/slices/matches.slice";
 import { useParams } from "react-router-dom";
@@ -38,6 +39,7 @@ const MatchDetailsPage = () => {
 
       <div className="my-4">{selectedMatch && <MatchInfoCard match={selectedMatch} />}</div>
       <div className="my-4">{selectedMatch && <MatchClips match={selectedMatch} />}</div>
+      <div className="my-4">{selectedMatch && <MatchParticipations match={selectedMatch} />}</div>
 
       <CustomModal open={isOpen} setOpen={setIsOpen}>
         <AddClip

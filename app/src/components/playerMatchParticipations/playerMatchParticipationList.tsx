@@ -1,37 +1,42 @@
-import { Box, LinearProgress, Tooltip, Typography } from "@mui/material";
+import { Alert, Box, LinearProgress, Snackbar } from "@mui/material";
 import { Cancel, CheckCircle, Delete, Edit } from "@mui/icons-material";
-import { deleteEvaluation, fetchEvaluations, selectEvaluation } from "@/store/slices/evaluations.slice";
+import {
+  clearParticipationError,
+  deleteParticipation,
+  fetchParticipations,
+  selectParticipation,
+} from "@/store/slices/playerMatchParticipation.slice";
 import { green, red } from "@mui/material/colors";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { useEffect, useMemo, useState } from "react";
 
 import CustomModal from "@/components/customModal/customModal";
-import EditEvaluation from "./EditEvaluation";
+import EditPlayerMatchParticipation from "./EditPlayerMatchParticipation";
 import { GridColDef } from "@mui/x-data-grid";
+import { PlayerMatchParticipation } from "@/lib/types/playerMatchParticipation.types";
 import RowActions from "@/components/rowActions/rowActions";
 import StyledDataGrid from "@/components/styledDatagrid/styledDatagrid";
 import Swal from "sweetalert2";
+import dayjs from "dayjs";
 
-const EvaluationsList = () => {
+const PlayerMatchParticipationsList = () => {
   const dispatch = useAppDispatch();
-  const { evaluations, loading, selectedEvaluation } = useAppSelector((state) => state.evaluationData);
-  const { selectedClip } = useAppSelector((state) => state.clipData);
-
+  const { participations, loading, error, selectedParticipation } = useAppSelector((state) => state.participationData);
   const [editOpen, setEditOpen] = useState(false);
 
   useEffect(() => {
-    dispatch(fetchEvaluations({ clipId: selectedClip?.id }));
-  }, [selectedClip]);
+    dispatch(fetchParticipations({}));
+  }, []);
 
-  const handleEdit = (row: any) => {
-    dispatch(selectEvaluation(row));
+  const handleEdit = (pmp: PlayerMatchParticipation) => {
+    dispatch(selectParticipation(pmp));
     setEditOpen(true);
   };
 
   const handleDelete = (id: string) => {
     Swal.fire({
       title: "Are you sure?",
-      text: "This action cannot be undone!",
+      text: "This action cannot be undone",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -39,77 +44,54 @@ const EvaluationsList = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        dispatch(deleteEvaluation(id));
+        dispatch(deleteParticipation(id));
       }
     });
+  };
+
+  const handleCloseSnackbar = () => {
+    if (error) dispatch(clearParticipationError());
   };
 
   const columns: GridColDef[] = useMemo(
     () => [
       { field: "playerName", headerName: "Player", flex: 1 },
-      { field: "episodeName", headerName: "Episode", flex: 1 },
-      { field: "occurrenceCount", headerName: "Occurrence Count", flex: 1 },
+      {
+        field: "matchDate",
+        headerName: "Match Date",
+        flex: 1,
+        valueGetter: (params) => (params ? dayjs(params).format("DD.MM.YYYY") : ""),
+      },
+      { field: "minutesPlayed", headerName: "Minutes", flex: 1 },
       {
         field: "isSuccessful",
-        headerName: "Success",
+        headerName: "Successful",
         flex: 1,
+        type: "boolean",
+        hide: true,
         renderCell: (params) =>
           params.value ? <CheckCircle sx={{ color: green[500] }} /> : <Cancel sx={{ color: red[500] }} />,
       },
-      {
-        field: "isCritical",
-        headerName: "Critical",
-        flex: 1,
-        renderCell: (params) =>
-          params.value ? <CheckCircle sx={{ color: green[500] }} /> : <Cancel sx={{ color: red[500] }} />,
-      },
-      {
-        field: "couldBeBetter",
-        headerName: "Could Be Better",
-        flex: 1,
-        renderCell: (params) =>
-          params.value ? <CheckCircle sx={{ color: green[500] }} /> : <Cancel sx={{ color: red[500] }} />,
-      },
-      {
-        field: "notes",
-        headerName: "Note",
-        flex: 1.5,
-        renderCell: (params) => (
-          <Tooltip title={params.value || ""} arrow>
-            <Typography
-              variant="body2"
-              sx={{
-                whiteSpace: "nowrap",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                maxWidth: "100%",
-              }}
-            >
-              {params.value}
-            </Typography>
-          </Tooltip>
-        ),
-      },
-      { field: "coachName", headerName: "Coach", flex: 1 },
+      { field: "note", headerName: "Note", flex: 1, hide: true },
       {
         field: "actions",
         headerName: "Actions",
-        sortable: false,
         width: 100,
+        sortable: false,
         renderCell: (params) => (
           <RowActions
             actions={[
               {
                 icon: <Edit fontSize="small" />,
                 label: "Edit",
-                color: "warning",
                 onClick: () => handleEdit(params.row),
+                color: "warning",
               },
               {
                 icon: <Delete fontSize="small" />,
                 label: "Delete",
-                color: "error",
                 onClick: () => handleDelete(params.row.id),
+                color: "error",
               },
             ]}
           />
@@ -124,21 +106,44 @@ const EvaluationsList = () => {
       {loading && <LinearProgress />}
       <Box sx={{ display: "grid", gridTemplateColumns: "1fr" }}>
         <StyledDataGrid
-          rowHeight={30}
-          rows={evaluations}
+          rows={participations}
           columns={columns}
+          rowHeight={40}
+          initialState={{
+            columns: {
+              columnVisibilityModel: {
+                isSuccessful: false,
+                note: false,
+              },
+            },
+          }}
           disableRowSelectionOnClick
           loading={loading}
-          hideFooter
         />
       </Box>
-      {selectedEvaluation && (
+
+      {selectedParticipation && (
         <CustomModal open={editOpen} setOpen={setEditOpen}>
-          <EditEvaluation evaluation={selectedEvaluation} onSuccess={() => setEditOpen(false)} />
+          <EditPlayerMatchParticipation
+            participation={selectedParticipation}
+            onSuccess={() => setEditOpen(false)}
+            onCancel={() => setEditOpen(false)}
+          />
         </CustomModal>
       )}
+
+      <Snackbar
+        open={!!error}
+        autoHideDuration={5000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+      >
+        <Alert onClose={handleCloseSnackbar} severity="error" variant="filled">
+          {error}
+        </Alert>
+      </Snackbar>
     </>
   );
 };
 
-export default EvaluationsList;
+export default PlayerMatchParticipationsList;
