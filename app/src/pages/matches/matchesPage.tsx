@@ -3,8 +3,10 @@ import MatchesList from "./matchesList";
 import { fetchSeasons } from "@/store/slices/seasons.slice";
 import { useAppDispatch } from "@/store/store";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 const MatchesPage = () => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -13,7 +15,7 @@ const MatchesPage = () => {
 
   return (
     <div>
-      <p className="page-subtitle">Manage and analyze all your team's matches across different seasons</p>
+      <p className="page-subtitle"> {t("static.manageMatchesSubtitle")}</p>
 
       <MatchesFilter />
 

@@ -4,8 +4,10 @@ import { Link, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 
+import LangSelect from "../langSelect/langSelect";
 import { Routes } from "@/router/routes";
 import { logout } from "@/store/slices/auth.slice";
+import { useTranslation } from "react-i18next";
 
 interface Breadcrumb {
   label: string;
@@ -31,19 +33,20 @@ const Layout: React.FC<LayoutProps> = ({
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { user } = useAppSelector((x) => x.auth);
 
   const navigationItems = [
-    { id: "dashboard", label: "Dashboard", icon: "🏠", href: Routes.Base },
-    { id: "matches", label: "Matches", icon: "⚽", href: Routes.Matches.Base },
-    { id: "seasons", label: "Seasons", icon: <Loop />, href: Routes.Seasons.Base },
-    { id: "Clubs", label: "Clubs", icon: <Apartment />, href: Routes.Clubs.Base },
-    { id: "Teams", label: "Teams", icon: <Groups />, href: Routes.Teams.Base },
-    { id: "Coaches", label: "Coaches", icon: <AccountBox />, href: Routes.Coaches.Base },
-    { id: "players", label: "Players", icon: "👥", href: Routes.Players.Base },
-    { id: "Episodes", label: "Episodes", icon: <Category />, href: Routes.Episodes.Base },
-    { id: "reports", label: "Reports", icon: "📋", href: "#" },
-    { id: "Users", label: "Users", icon: <AccountCircle />, href: Routes.Episodes.Base },
+    { id: "dashboard", label: t("static.dashboard"), icon: "🏠", href: Routes.Base },
+    { id: "matches", label: t("static.matches"), icon: "⚽", href: Routes.Matches.Base },
+    { id: "seasons", label: t("static.seasons"), icon: <Loop />, href: Routes.Seasons.Base },
+    { id: "Clubs", label: t("static.clubs"), icon: <Apartment />, href: Routes.Clubs.Base },
+    { id: "Teams", label: t("static.teams"), icon: <Groups />, href: Routes.Teams.Base },
+    { id: "Coaches", label: t("static.coaches"), icon: <AccountBox />, href: Routes.Coaches.Base },
+    { id: "players", label: t("static.players"), icon: "👥", href: Routes.Players.Base },
+    { id: "Episodes", label: t("static.episodes"), icon: <Category />, href: Routes.Episodes.Base },
+    { id: "reports", label: t("static.reports"), icon: "📋", href: "#" },
+    { id: "Users", label: t("static.users"), icon: <AccountCircle />, href: Routes.Episodes.Base },
   ];
 
   useEffect(() => {
@@ -106,6 +109,7 @@ const Layout: React.FC<LayoutProps> = ({
           </div>
 
           <div className="topbar-right">
+            <LangSelect />
             <div className="coach-profile">
               <Avatar className="coach-avatar">{user?.fullname?.[0] || user?.username?.[0]}</Avatar>
               <div className="coach-info">
@@ -118,7 +122,7 @@ const Layout: React.FC<LayoutProps> = ({
                   dispatch(logout());
                   navigate("/login");
                 }}
-                title="Logout"
+                title={t("static.logout")}
               >
                 <Logout />
               </IconButton>

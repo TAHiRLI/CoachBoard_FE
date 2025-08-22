@@ -14,6 +14,7 @@ import { fetchSeasons } from "@/store/slices/seasons.slice";
 import { fetchTeams } from "@/store/slices/teams.slice";
 import { updateMatch } from "@/store/slices/matches.slice";
 import { useFormik } from "formik";
+import { useTranslation } from "react-i18next";
 
 interface EditMatchProps {
   match: Match;
@@ -22,6 +23,7 @@ interface EditMatchProps {
 }
 
 const EditMatch: React.FC<EditMatchProps> = ({ match, onSuccess, onCancel }) => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { teams } = useAppSelector((s) => s.teamData);
   const { seasons } = useAppSelector((s) => s.seasonData);
@@ -35,17 +37,17 @@ const EditMatch: React.FC<EditMatchProps> = ({ match, onSuccess, onCancel }) => 
   const validationSchema = useMemo(
     () =>
       yup.object({
-        date: yup.string().required("Required"),
-        stadium: yup.string().required("Required"),
+        date: yup.string().required(t("static.required")),
+        stadium: yup.string().required(t("static.required")),
         note: yup.string(),
-        homeTeamId: yup.number().required("Required"),
+        homeTeamId: yup.number().required(t("static.required")),
         awayTeamId: yup
           .number()
-          .required("Required")
-          .test("not-same", "Teams must be different", function (value) {
+          .required(t("static.required"))
+          .test("not-same", t("static.teamsMustBeDifferent"), function (value) {
             return value !== this.parent.homeTeamId;
           }),
-        seasonId: yup.number().required("Required"),
+        seasonId: yup.number().required(t("static.required")),
       }),
     []
   );
@@ -77,10 +79,10 @@ const EditMatch: React.FC<EditMatchProps> = ({ match, onSuccess, onCancel }) => 
 
   return (
     <form onSubmit={handleSubmit}>
-      <h1 className="text-2xl my-2 text-center font-bold">Edit Match</h1>
+      <h1 className="text-2xl my-2 text-center font-bold">{t("static.editMatch")}</h1>
       <div className="flex flex-col gap-3">
         <TextField
-          label="Stadium"
+          label={t("static.stadium")}
           fullWidth
           {...getFieldProps("stadium")}
           error={touched.stadium && Boolean(errors.stadium)}
@@ -88,7 +90,7 @@ const EditMatch: React.FC<EditMatchProps> = ({ match, onSuccess, onCancel }) => 
         />
 
         <TextField
-          label="Note"
+          label={t("static.note")}
           fullWidth
           {...getFieldProps("note")}
           error={touched.note && Boolean(errors.note)}
@@ -100,7 +102,7 @@ const EditMatch: React.FC<EditMatchProps> = ({ match, onSuccess, onCancel }) => 
           dateAdapter={AdapterDayjs}
         >
           <DatePicker
-            label="Match Date"
+            label={t("static.matchDate")}
             format="DD.MM.YYYY"
             value={dayjs(values.date)}
             onChange={(val) => {
@@ -113,7 +115,7 @@ const EditMatch: React.FC<EditMatchProps> = ({ match, onSuccess, onCancel }) => 
 
         <TextField
           select
-          label="Home Team"
+          label={t("static.homeTeam")}
           fullWidth
           {...getFieldProps("homeTeamId")}
           error={touched.homeTeamId && Boolean(errors.homeTeamId)}
@@ -128,7 +130,7 @@ const EditMatch: React.FC<EditMatchProps> = ({ match, onSuccess, onCancel }) => 
 
         <TextField
           select
-          label="Away Team"
+          label={t("static.awayTeam")}
           fullWidth
           {...getFieldProps("awayTeamId")}
           error={touched.awayTeamId && Boolean(errors.awayTeamId)}
@@ -143,7 +145,7 @@ const EditMatch: React.FC<EditMatchProps> = ({ match, onSuccess, onCancel }) => 
 
         <TextField
           select
-          label="Season"
+          label={t("static.season")}
           fullWidth
           {...getFieldProps("seasonId")}
           error={touched.seasonId && Boolean(errors.seasonId)}
@@ -156,15 +158,15 @@ const EditMatch: React.FC<EditMatchProps> = ({ match, onSuccess, onCancel }) => 
           ))}
         </TextField>
 
-        <TextField label="Home Score" type="number" fullWidth {...getFieldProps("homeTeamScore")} />
+        <TextField label={t("static.homeScore")} type="number" fullWidth {...getFieldProps("homeTeamScore")} />
 
-        <TextField label="Away Score" type="number" fullWidth {...getFieldProps("awayTeamScore")} />
+        <TextField label={t("static.awayScore")} type="number" fullWidth {...getFieldProps("awayTeamScore")} />
 
-        <TextField label="Game URL" fullWidth {...getFieldProps("gameUrl")} />
+        <TextField label={t("static.gameUrl")} fullWidth {...getFieldProps("gameUrl")} />
 
         <div className="flex justify-end gap-3">
           <Button onClick={onCancel} color="warning" variant="contained" sx={{ borderRadius: "8px" }}>
-            Cancel
+            {t("static.cancel")}
           </Button>
           <Button
             type="submit"
@@ -173,7 +175,7 @@ const EditMatch: React.FC<EditMatchProps> = ({ match, onSuccess, onCancel }) => 
             disabled={loading || isSubmitting}
             sx={{ borderRadius: "8px" }}
           >
-            Save
+            {t("static.save")}
           </Button>
         </div>
       </div>

@@ -2,6 +2,7 @@ import * as yup from "yup";
 
 import { Button, TextField } from "@mui/material";
 import { FC, useEffect, useMemo } from "react";
+
 import { Formik } from "formik";
 import LangSelect from "../../components/langSelect/langSelect";
 import Swal from "sweetalert2";
@@ -44,7 +45,7 @@ const ForgotPasswordPage: FC = () => {
       if (res.status === 204) {
         Swal.fire({
           icon: "success", 
-          title: t("static:success"), 
+          title: t("static.success"), 
           text: "Email Verification sent to your mail"
         });
       } else {
@@ -64,10 +65,10 @@ const ForgotPasswordPage: FC = () => {
           <div className="content_info p-6 py-14 relative">
             <div className="content_info_salut text-center">
               <h4 className="text-2xl font-semibold mt-5">
-                {t("static:wellcomeTo")} <span>{t("app:name")}</span>
+                {t("static.wellcomeTo")} <span>{t("app:name")}</span>
               </h4>
               <small>
-                <span>{t("static:createdBy")} </span>
+                <span>{t("static.createdBy")} </span>
                 <a href="https://www.google.az" target="_blank" rel="noreferrer">
                   example
                 </a>
@@ -76,8 +77,8 @@ const ForgotPasswordPage: FC = () => {
           </div>
 
           <div className="login_form xl:p-14 p-6 pb-20 relative flex flex-col">
-            <h2>{t("static:resetPassword")}</h2>
-            <p className="text-sm my-3">{t("static:wellcome")}</p>
+            <h2>{t("static.resetPassword")}</h2>
+            <p className="text-sm my-3">{t("static.wellcome")}</p>
 
             <Formik
               initialValues={{ username: "" }}
@@ -109,7 +110,7 @@ const ForgotPasswordPage: FC = () => {
                   />
 
                   <Button variant="contained" type="submit" disabled={isSubmitting}>
-                    {t("static:submit")}
+                    {t("static.submit")}
                   </Button>
                 </form>
               )}

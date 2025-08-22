@@ -103,7 +103,7 @@ const LoginPage: React.FC = () => {
             </div>
             <div className="content_info_salut text-center">
               <h4 className="text-2xl font-semibold mt-5">
-                {t("static:wellcomeTo")} <span>{t("app:name")}</span>
+                {t("static.wellcomeTo")} <span>{t("app:name")}</span>
               </h4>
               <small>
                 <span>Created By </span>

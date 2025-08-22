@@ -74,14 +74,14 @@ const MatchInfoCard: React.FC<Props> = ({ match }) => {
         <RowActions
           actions={[
             {
-              icon: <Edit fontSize="small" />,
-              label: "Edit",
+              icon: <Edit color="info" fontSize="small" />,
+              label: t("static.edit"),
               onClick: () => handleEdit(),
               color: "warning",
             },
             {
-              icon: <Delete fontSize="small" />,
-              label: "Delete",
+              icon: <Delete color="error" fontSize="small" />,
+              label: t("static.delete"),
               onClick: () => handleDelete(match.id),
               color: "error",
             },
@@ -92,7 +92,7 @@ const MatchInfoCard: React.FC<Props> = ({ match }) => {
         title={
           <Link to={`/matches/${match.id}`}>
             <Typography variant="h6" className="text-xl font-semibold">
-              📋 Match Information
+              📋 {t("static.matchInformation")}
             </Typography>
           </Link>
         }
@@ -101,33 +101,33 @@ const MatchInfoCard: React.FC<Props> = ({ match }) => {
       <CardContent>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div>
-            <p className="text-sm text-gray-500">Season</p>
+            <p className="text-sm text-gray-500">{t("static.season")}</p>
             <p className="text-base font-medium text-gray-800">{match.seasonName}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-500">Date</p>
+            <p className="text-sm text-gray-500">{t("static.date")}</p>
             <p className="text-base font-medium text-gray-800">{formattedDate}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-500">Time</p>
+            <p className="text-sm text-gray-500">{t("static.time")}</p>
             <p className="text-base font-medium text-gray-800">{formattedTime}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-500">Location</p>
+            <p className="text-sm text-gray-500">{t("static.location")}</p>
             <p className="text-base font-medium text-gray-800">{match.stadium}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-500">Note</p>
+            <p className="text-sm text-gray-500">{t("static.note")}</p>
             <p className="text-base font-medium text-gray-800">{match.note}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-500">Link</p>
+            <p className="text-sm text-gray-500">{t("static.link")}</p>
             <a target="_blank" href={match.gameUrl} className="text-base font-medium text-gray-800">
               {match.gameUrl}
             </a>
           </div>
           <div className="col-span-2 md:col-span-4 mt-4">
-            <p className="text-sm text-gray-500">Final Score</p>
+            <p className="text-sm text-gray-500">{t("static.finalScore")}</p>
             <div className="flex items-center gap-2 mt-1 text-lg font-bold text-gray-800">
               {match.homeTeam.logo && (
                 <img
@@ -154,6 +154,7 @@ const MatchInfoCard: React.FC<Props> = ({ match }) => {
       </CardContent>
       <CustomModal open={isOpen} setOpen={setIsOpen}>
         <EditMatch
+        onCancel={()=> setIsOpen(false)}
           match={match}
           onSuccess={() => {
             dispatch(fetchMatches({ seasonId: selectedSeason?.id }));

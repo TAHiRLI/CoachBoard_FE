@@ -1,9 +1,12 @@
-import { Select, MenuItem, FormControl, SelectChangeEvent } from '@mui/material';
-import { useEffect } from 'react';
-import ru from "../../assets/images/ru.png";
+import { FormControl, MenuItem, Select, SelectChangeEvent } from '@mui/material';
+
+import aze from "../../assets/images/az-flag.png";
 import en from "../../assets/images/en.png";
-import { useTranslation } from 'react-i18next';
+import ru from "../../assets/images/ru.png";
+import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+
 // import i18n from '../../../i18n'; // Use direct import of i18n
 
 // Define option type
@@ -12,13 +15,13 @@ interface LangOption {
   value: string;
   text: string;
 }
-
 const LangSelect = () => {
   const { i18n } = useTranslation(); // Only get translation function, not i18n
   const [searchParams, setSearchParams] = useSearchParams();
 
   // Define available languages
   const options: LangOption[] = [
+    { image: aze, value: "aze", text: "Azerbaijan" },
     { image: ru, value: "ru", text: "Russian" },
     { image: en, value: "en", text: "English" },
   ];
@@ -119,7 +122,7 @@ const LangSelect = () => {
   };
 
   return (
-    <FormControl variant="standard" size="small">
+    <FormControl variant='outlined' size="small">
       <Select
         value={i18n.language || getStoredLang()}
         onChange={handleChange}

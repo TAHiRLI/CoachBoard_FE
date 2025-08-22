@@ -14,6 +14,7 @@ import { enUS } from "@mui/x-date-pickers/locales";
 import { fetchSeasons } from "@/store/slices/seasons.slice";
 import { fetchTeams } from "@/store/slices/teams.slice";
 import { useFormik } from "formik";
+import { useTranslation } from "react-i18next";
 
 interface AddMatchProps {
   onSuccess?: () => void;
@@ -21,6 +22,7 @@ interface AddMatchProps {
 }
 
 const AddMatch: React.FC<AddMatchProps> = ({ onSuccess, onCancel }) => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { teams } = useAppSelector((s) => s.teamData);
   const { seasons } = useAppSelector((s) => s.seasonData);
@@ -75,10 +77,10 @@ const AddMatch: React.FC<AddMatchProps> = ({ onSuccess, onCancel }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <h1 className="text-2xl my-2 text-center font-bold">Create Match</h1>
+      <h1 className="text-2xl my-2 text-center font-bold">{t("static.createMatch")}</h1>
       <div className="flex flex-col gap-3">
         <TextField
-          label="Stadium"
+          label={t("static.stadium")}
           fullWidth
           {...getFieldProps("stadium")}
           error={touched.stadium && Boolean(errors.stadium)}
@@ -86,7 +88,7 @@ const AddMatch: React.FC<AddMatchProps> = ({ onSuccess, onCancel }) => {
         />
 
         <TextField
-          label="Note"
+          label={t("static.note")}
           fullWidth
           {...getFieldProps("note")}
           error={touched.note && Boolean(errors.note)}
@@ -98,7 +100,7 @@ const AddMatch: React.FC<AddMatchProps> = ({ onSuccess, onCancel }) => {
           dateAdapter={AdapterDayjs}
         >
           <DatePicker
-            label="Match Date"
+            label={t("static.matchDate")}
             format="DD.MM.YYYY"
             value={dayjs(values.date)}
             onChange={(val) => {
@@ -111,7 +113,7 @@ const AddMatch: React.FC<AddMatchProps> = ({ onSuccess, onCancel }) => {
 
         <TextField
           select
-          label="Home Team"
+          label={t("static.homeTeam")}
           fullWidth
           {...getFieldProps("homeTeamId")}
           error={touched.homeTeamId && Boolean(errors.homeTeamId)}
@@ -126,7 +128,7 @@ const AddMatch: React.FC<AddMatchProps> = ({ onSuccess, onCancel }) => {
 
         <TextField
           select
-          label="Away Team"
+          label={t("static.awayTeam")}
           fullWidth
           {...getFieldProps("awayTeamId")}
           error={touched.awayTeamId && Boolean(errors.awayTeamId)}
@@ -134,14 +136,14 @@ const AddMatch: React.FC<AddMatchProps> = ({ onSuccess, onCancel }) => {
         >
           {teams.map((team) => (
             <MenuItem key={team.id} value={team.id}>
-              {team.clubName} - {team.name}{" "}
+              {team.clubName} - {team.name}
             </MenuItem>
           ))}
         </TextField>
 
         <TextField
           select
-          label="Season"
+          label={t("static.season")}
           fullWidth
           {...getFieldProps("seasonId")}
           error={touched.seasonId && Boolean(errors.seasonId)}
@@ -154,15 +156,15 @@ const AddMatch: React.FC<AddMatchProps> = ({ onSuccess, onCancel }) => {
           ))}
         </TextField>
 
-        <TextField label="Home Score" type="number" fullWidth {...getFieldProps("homeTeamScore")} />
+        <TextField label={t("static.homeScore")} type="number" fullWidth {...getFieldProps("homeTeamScore")} />
 
-        <TextField label="Away Score" type="number" fullWidth {...getFieldProps("awayTeamScore")} />
+        <TextField label={t("static.awayScore")} type="number" fullWidth {...getFieldProps("awayTeamScore")} />
 
-        <TextField label="Game URL" fullWidth {...getFieldProps("gameUrl")} />
+        <TextField label={t("static.gameUrl")} fullWidth {...getFieldProps("gameUrl")} />
 
         <div className="flex justify-end gap-3">
           <Button onClick={onCancel} color="warning" variant="contained" sx={{ borderRadius: "8px" }}>
-            Cancel
+            {t("static.cancel")}
           </Button>
           <Button
             type="submit"
@@ -171,7 +173,7 @@ const AddMatch: React.FC<AddMatchProps> = ({ onSuccess, onCancel }) => {
             disabled={loading || isSubmitting}
             sx={{ borderRadius: "8px" }}
           >
-            Save
+            {t("static.save")}
           </Button>
         </div>
       </div>

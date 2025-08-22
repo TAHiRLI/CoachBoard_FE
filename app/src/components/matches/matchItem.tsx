@@ -28,10 +28,11 @@ const MatchItem = ({ match }: { match: Match }) => {
   };
 
   const handleDelete = useCallback(
-    (id: string ) => {
+    (id: string) => {
       if (!id) {
         return;
       }
+
       Swal.fire({
         title: t("messages:areYouSure"),
         text: t("messages:unableToRevert"),
@@ -45,7 +46,7 @@ const MatchItem = ({ match }: { match: Match }) => {
           dispatch(deleteMatch(id))
             .unwrap()
             .then(() => {
-              Swal.fire("Success", "", "success");
+              Swal.fire(t("static.success"), "", "success");
             });
         }
       });
@@ -85,7 +86,7 @@ const MatchItem = ({ match }: { match: Match }) => {
         </Tooltip>
         <span>
           ({match.homeTeam.score}
-          <span className="text-slate-400">-</span>
+          <span className="text-slate-400">{t("static.scoreSeparator")}</span>
           {match.awayTeam.score})
         </span>
         <Tooltip title={match.awayTeam.clubName}>
@@ -109,7 +110,7 @@ const MatchItem = ({ match }: { match: Match }) => {
 
       <div className="flex items-center justify-between text-slate-500 text-sm border-t pt-3 mt-3">
         <div className="flex items-center gap-1">
-          <Movie fontSize="small" /> {match.clipCount} clips
+          <Movie fontSize="small" /> {match.clipCount} {t("static.clips")}
         </div>
         <div className="flex items-center gap-1">
           <Loop fontSize="small" /> {match.seasonName}
@@ -119,7 +120,7 @@ const MatchItem = ({ match }: { match: Match }) => {
       <div className="mt-4 flex justify-between items-center">
         <Link to={`/matches/${match.id}`}>
           <Button variant="contained" color="success" className="rounded-lg px-6">
-            View Details
+            {t("static.viewDetails")}
           </Button>
         </Link>
 
@@ -127,13 +128,13 @@ const MatchItem = ({ match }: { match: Match }) => {
           actions={[
             {
               icon: <Edit fontSize="small" />,
-              label: "Edit",
+              label: t("static.edit"),
               onClick: () => handleEdit(),
               color: "warning",
             },
             {
               icon: <Delete fontSize="small" />,
-              label: "Delete",
+              label: t("static.delete"),
               onClick: () => handleDelete(match.id),
               color: "error",
             },
@@ -142,6 +143,9 @@ const MatchItem = ({ match }: { match: Match }) => {
       </div>
       <CustomModal open={isOpen} setOpen={setIsOpen}>
         <EditMatch
+          onCancel={() => {
+            setIsOpen(false); 
+          }}
           match={match}
           onSuccess={() => {
             dispatch(fetchMatches({ seasonId: selectedSeason?.id }));

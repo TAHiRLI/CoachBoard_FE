@@ -8,8 +8,10 @@ import AddMatch from "@/components/matches/addMatch";
 import CustomModal from "@/components/customModal/customModal";
 import { fetchMatches } from "@/store/slices/matches.slice";
 import { selectSeason } from "@/store/slices/seasons.slice";
+import { useTranslation } from "react-i18next";
 
 const MatchesFilter = () => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { seasons, selectedSeason } = useAppSelector((state) => state.seasonData);
 
@@ -29,7 +31,7 @@ const MatchesFilter = () => {
     <Box className="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 mb-8">
       <Box className="flex flex-wrap justify-between items-center gap-4">
         <Box className="flex items-center gap-4">
-          <span className="font-semibold text-slate-800">Season:</span>
+          <span className="font-semibold text-slate-800">{t("static.season")}:</span>
           <FormControl size="small">
             <Select
               value={selectedSeason?.id ?? ""}
@@ -48,7 +50,7 @@ const MatchesFilter = () => {
         </Box>
         <Box className="flex gap-2 flex-wrap">
           <Button onClick={() => setIsOpen(true)} color="success" variant="contained" startIcon={<Add />}>
-            New Match
+            {t("static.newMatch")}
           </Button>
         </Box>
       </Box>

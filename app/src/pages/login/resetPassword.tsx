@@ -191,10 +191,10 @@ const ResetPassword: FC<Props> = ({ token: propToken, username: propUsername }) 
                     <div className="content_info p-6 py-14 relative">
                         <div className="content_info_salut text-center">
                             <h4 className="text-2xl font-semibold mt-5">
-                                {t("static:wellcomeTo")} <span>{t("app:name")}</span>
+                                {t("static.wellcomeTo")} <span>{t("app:name")}</span>
                             </h4>
                             <small>
-                                <span>{t("static:createdBy")} </span>
+                                <span>{t("static.createdBy")} </span>
                                 <a href="https://www.google.az" target="_blank" rel="noreferrer">
                                     example
                                 </a>
@@ -203,8 +203,8 @@ const ResetPassword: FC<Props> = ({ token: propToken, username: propUsername }) 
                     </div>
 
                     <div className="login_form xl:p-14 p-6 pb-20 relative flex flex-col">
-                        <h2>{t("static:resetPassword")}</h2>
-                        <p className="text-sm my-3">{t("static:resetPasswordMessage")}</p>
+                        <h2>{t("static.resetPassword")}</h2>
+                        <p className="text-sm my-3">{t("static.resetPasswordMessage")}</p>
 
                         <form onSubmit={handleSubmit} className="flex flex-col grow gap-5 justify-evenly">
                             <TextField
@@ -257,7 +257,7 @@ const ResetPassword: FC<Props> = ({ token: propToken, username: propUsername }) 
                                 type="submit"
                                 disabled={isSubmitting || formikSubmitting}
                             >
-                                {isSubmitting || formikSubmitting ? t("static:submitting") : t("static:submit")}
+                                {isSubmitting || formikSubmitting ? t("static.submitting") : t("static.submit")}
                             </Button>
                         </form>
 
