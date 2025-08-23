@@ -45,6 +45,17 @@
     "gameUrl": "Game URL",
     "teamsMustBeDifferent": "Teams must be different",
     "createMatch": "Create Match",
+    "create": "Create",
+    "matchParticipations": "Match Participations",
+    "areYouSure": "Are you sure?",
+    "cannotBeUndone": "This action cannot be undone",
+    "yesDeleteIt": "Yes, delete it!",
+    "player": "Player",
+    "minutes": "Minutes",
+    "successful": "Successful",
+    "actions": "Actions",
+    "editParticipation": "Edit Participation",
+    "minutesPlayed": "Minutes Played",
     "matchInformation": "Match Information",
     "date": "Date",
     "time": "Time",
@@ -52,6 +63,17 @@
     "note": "Note",
     "link": "Link",
     "finalScore": "Final Score",
+"addParticipation": "Add Participation",
+
+
+
+
+
+
+
+
+
+
 
     "autoEmails": "Auto Emails",
     "autoEmailsDescription": "When enabled, Auto Emails automatically send a push notification each time a reminder is triggered.",

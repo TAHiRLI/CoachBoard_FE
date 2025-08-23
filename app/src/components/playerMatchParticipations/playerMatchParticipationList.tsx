@@ -18,8 +18,11 @@ import RowActions from "@/components/rowActions/rowActions";
 import StyledDataGrid from "@/components/styledDatagrid/styledDatagrid";
 import Swal from "sweetalert2";
 import dayjs from "dayjs";
+import { useTranslation } from "react-i18next";
 
 const PlayerMatchParticipationsList = () => {
+    
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { participations, loading, error, selectedParticipation } = useAppSelector((state) => state.participationData);
   const [editOpen, setEditOpen] = useState(false);
@@ -35,13 +38,13 @@ const PlayerMatchParticipationsList = () => {
 
   const handleDelete = (id: string) => {
     Swal.fire({
-      title: "Are you sure?",
-      text: "This action cannot be undone",
+      title: t("static.areYouSure"),
+      text: t("static.cannotBeUndone"),
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: t("static.yesDeleteIt"),
     }).then((result) => {
       if (result.isConfirmed) {
         dispatch(deleteParticipation(id));
@@ -55,27 +58,27 @@ const PlayerMatchParticipationsList = () => {
 
   const columns: GridColDef[] = useMemo(
     () => [
-      { field: "playerName", headerName: "Player", flex: 1 },
+      { field: "playerName", headerName: t("static.player"), flex: 1 },
       {
         field: "matchDate",
-        headerName: "Match Date",
+        headerName: t("static.matchDate"),
         flex: 1,
         valueGetter: (params) => (params ? dayjs(params).format("DD.MM.YYYY") : ""),
       },
-      { field: "minutesPlayed", headerName: "Minutes", flex: 1 },
+      { field: "minutesPlayed", headerName: t("static.minutes"), flex: 1 },
       {
         field: "isSuccessful",
-        headerName: "Successful",
+        headerName:t("static.successful"),
         flex: 1,
         type: "boolean",
         hide: true,
         renderCell: (params) =>
           params.value ? <CheckCircle sx={{ color: green[500] }} /> : <Cancel sx={{ color: red[500] }} />,
       },
-      { field: "note", headerName: "Note", flex: 1, hide: true },
+      { field: "note", headerName: t("static.note"), flex: 1, hide: true },
       {
         field: "actions",
-        headerName: "Actions",
+        headerName: t("static.actions"),
         width: 100,
         sortable: false,
         renderCell: (params) => (
@@ -83,13 +86,13 @@ const PlayerMatchParticipationsList = () => {
             actions={[
               {
                 icon: <Edit fontSize="small" />,
-                label: "Edit",
+                label: t("static.edit"),
                 onClick: () => handleEdit(params.row),
                 color: "warning",
               },
               {
                 icon: <Delete fontSize="small" />,
-                label: "Delete",
+                label: t("static.delete"),
                 onClick: () => handleDelete(params.row.id),
                 color: "error",
               },

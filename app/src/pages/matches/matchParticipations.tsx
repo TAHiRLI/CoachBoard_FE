@@ -8,12 +8,15 @@ import { Match } from "@/lib/types/matches.types";
 import PlayerMatchParticipationsList from "@/components/playerMatchParticipations/playerMatchParticipationList";
 import { fetchParticipations } from "@/store/slices/playerMatchParticipation.slice";
 import { useAppDispatch } from "@/store/store";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   match: Match;
 };
 
 const MatchParticipations: FC<Props> = ({ match }) => {
+    
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -26,7 +29,7 @@ const MatchParticipations: FC<Props> = ({ match }) => {
       <CardHeader
         title={
           <Typography variant="h6" className="text-xl font-semibold">
-            Match Participations
+            {t("static.matchParticipations")}
           </Typography>
         }
         action={
@@ -37,7 +40,7 @@ const MatchParticipations: FC<Props> = ({ match }) => {
             onClick={() => setIsOpen(true)}
             title="Create"
           >
-            Create
+            {t("static.create")}
           </Button>
         }
         className="border-b border-gray-200"

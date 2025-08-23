@@ -8,6 +8,7 @@ import { Save } from "@mui/icons-material";
 import { createParticipation } from "@/store/slices/playerMatchParticipation.slice";
 import { fetchPlayers } from "@/store/slices/players.slice";
 import { useFormik } from "formik";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   matchId: string;
@@ -16,6 +17,7 @@ interface Props {
 }
 
 const AddPlayerMatchParticipation: React.FC<Props> = ({ matchId, onSuccess, onCancel }) => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { players } = useAppSelector((state) => state.playerData);
   const { loading } = useAppSelector((state) => state.participationData);
@@ -24,9 +26,9 @@ const AddPlayerMatchParticipation: React.FC<Props> = ({ matchId, onSuccess, onCa
     dispatch(fetchPlayers());
   }, []);
   const schema = yup.object({
-    playerId: yup.string().required("Required"),
-    matchId: yup.string().required("Required"),
-    minutesPlayed: yup.number().min(0).required("Required"),
+    playerId: yup.string().required(t("static.required")),
+    matchId: yup.string().required(t("static.required")),
+    minutesPlayed: yup.number().min(0).required(t("static.required")),
   });
 
   const formik = useFormik({
@@ -47,10 +49,10 @@ const AddPlayerMatchParticipation: React.FC<Props> = ({ matchId, onSuccess, onCa
 
   return (
     <form onSubmit={formik.handleSubmit} className="flex flex-col gap-4">
-      <h2 className="text-xl font-bold text-center">Add Participation</h2>
+      <h2 className="text-xl font-bold text-center">{t("static.addParticipation")}</h2>
       <TextField
         select
-        label="Player"
+        label={t("static.player")}
         fullWidth
         {...formik.getFieldProps("playerId")}
         error={!!formik.touched.playerId && !!formik.errors.playerId}
@@ -64,7 +66,7 @@ const AddPlayerMatchParticipation: React.FC<Props> = ({ matchId, onSuccess, onCa
       </TextField>
       <TextField
         type="number"
-        label="Minutes Played"
+        label={t("static.minutesPlayed")}
         fullWidth
         {...formik.getFieldProps("minutesPlayed")}
         error={!!formik.touched.minutesPlayed && !!formik.errors.minutesPlayed}
@@ -72,15 +74,15 @@ const AddPlayerMatchParticipation: React.FC<Props> = ({ matchId, onSuccess, onCa
       />
       <FormControlLabel
         control={<Checkbox {...formik.getFieldProps("isSuccessful")} checked={formik.values.isSuccessful} />}
-        label="Successful"
+        label={t("static.successful")}
       />
-      <TextField multiline rows={3} label="Note" fullWidth {...formik.getFieldProps("note")} />
+      <TextField multiline rows={3} label={t("static.note")} fullWidth {...formik.getFieldProps("note")} />
       <div className="flex justify-end gap-3">
         <Button onClick={onCancel} variant="outlined" color="warning">
-          Cancel
+          {t("static.cancel")}
         </Button>
         <Button type="submit" variant="contained" startIcon={<Save />} disabled={loading}>
-          Save
+          {t("static.save")}
         </Button>
       </div>
     </form>

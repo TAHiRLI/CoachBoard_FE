@@ -1,5 +1,5 @@
 {
-  "current": "English",
+  "current": "Azerbaijan",
 
   "app": {
     "name": "CoachBoard"
@@ -20,7 +20,7 @@
     "players": "Oyunçular",
     "episodes": "Epizodlar",
     "manageMatchesSubtitle": "Komandanızın bütün oyunlarını müxtəlif mövsümlər üzrə idarə edin və analiz edin",
-    "season": "Mövsüm",
+    "season": "Mövsümre",
     "newMatch": "Yeni oyun",
     "reports": "Hesabatlar",
     "users": "İstifadəçilər",
@@ -41,6 +41,17 @@
     "awayScore": "Qonaq komandasının hesabı",
     "gameUrl": "Oyun linki",
     "createMatch": "Oyun yarat",
+    "create": "Əlavə et",
+    "matchParticipations": "Oyun iştirakçıları",
+    "areYouSure": "Əminsiniz?",
+    "cannotBeUndone": "Bu əməliyyatı geri qaytarmaq mümkün deyil",
+    "yesDeleteIt": "Bəli, sil!",
+    "player": "Oyunçu",
+    "minutes": "Dəqiqə",
+    "successful": "Uğurlu",
+    "editParticipation": "İştirakı redaktə et",
+    "minutesPlayed": "Oynanılan dəqiqə",
+    "actions": "Əməliyyatlar",
     "teamsMustBeDifferent": "Komandalar fərqli olmalıdır",
     "autoEmails": "Auto Emails",
     "autoEmailsDescription": "When enabled, Auto Emails automatically send a push notification each time a reminder is triggered.",
@@ -59,7 +70,6 @@
     "email": "Email",
     "upcoming": "Yaxınlaşır",
     "played": "Oynanıb",
-
     "addClip": "Klip əlavə et",
     "matchAnalysisSubtitle": "Kliplər və məşqçi qiymətləndirmələri ilə tam oyun analizi",
     "matchInformation": "Oyun Məlumatı",
@@ -69,8 +79,12 @@
     "note": "Qeyd",
     "link": "Keçid",
     "finalScore": "Yekun Hesab",
+    "addParticipation": "İştirak əlavə et",
 
-    "bookADemo": "Register",
+
+
+
+
     "incorrectUsername": "Incorrect Username",
     "addCompany": "Add Company",
     "editCompany": "Edit Company",

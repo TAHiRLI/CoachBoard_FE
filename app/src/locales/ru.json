@@ -1,6 +1,10 @@
 {
-  "welcome": "Добро пожаловать",
-  "hello": "Привет, {{name}}!",
+  "current": "Russian",
+
+  "app": {
+    "name": "CoachBoard"
+  },
+
   "static": {
     "createClub": "Создать клуб",
     "name": "Название",
@@ -44,11 +48,28 @@
     "awayScore": "Счёт гостей",
     "gameUrl": "Ссылка на игру",
     "createMatch": "Создать матч",
-    "teamsMustBeDifferent": "Команды должны быть разными",
+    "create": "Создать",
     "time": "Время",
     "location": "Локация",
+    "static.matchParticipations": "Участники матча",
+    "areYouSure": "Вы уверены?",
+    "cannotBeUndone": "Это действие нельзя отменить",
+    "yesDeleteIt": "Да, удалить!",
+    "player": "Игрок",
+    "minutes": "Минуты",
+    "editParticipation": "Редактировать участие",
+    "minutesPlayed": "Сыгранные минуты",
+    "successful": "Успешно",
+    "actions": "Действия",
     "note": "Заметка",
     "link": "Ссылка",
+    "addParticipation": "Добавить участие",
+
+
+
+
+
+    
     "finalScore": "Окончательный счёт"
   }
 }
