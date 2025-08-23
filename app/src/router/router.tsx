@@ -99,7 +99,7 @@ export const router = createBrowserRouter([
     element: (
       <>
         <PrivateRoute>
-          <Layout pageTitle="Teams">
+          <Layout pageTitle="static.players">
             <PlayersPage />
           </Layout>
         </PrivateRoute>

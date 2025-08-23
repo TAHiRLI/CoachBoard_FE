@@ -101,6 +101,34 @@
     "startTimeSeconds": "Начало (с)",
     "endTimeSeconds": "Конец (с)",
 
+    "goalkeeper": "Вратарь",
+    "centerBack": "Центральный защитник",
+    "leftBack": "Левый защитник",
+    "rightBack": "Правый защитник",
+    "leftWingBack": "Левый латераль",
+    "rightWingBack": "Правый латераль",
+    "defensiveMidfielder": "Опорный полузащитник",
+    "centralMidfielder": "Центральный полузащитник",
+    "attackingMidfielder": "Атакующий полузащитник",
+    "leftMidfielder": "Левый полузащитник",
+    "rightMidfielder": "Правый полузащитник",
+    "striker": "Нападающий",
+    "centerForward": "Центральный нападающий",
+    "leftWinger": "Левый вингер",
+    "rightWinger": "Правый вингер",
+    "photo": "Фото",
+    "age": "Возраст",
+
+    "createPlayer": "Создать игрока",
+    "editPlayer": "Редактировать игрока",
+    "heightCm": "Рост (см)",
+    "position": "Позиция",
+    "birthDate": "Дата рождения",
+    "team": "Команда",
+    "none": "Нет",
+    "heightMin": "Минимальный рост — 100 см",
+    "heightMax": "Максимальный рост — 250 см",
+
     "finalScore": "Окончательный счёт"
   }
 }

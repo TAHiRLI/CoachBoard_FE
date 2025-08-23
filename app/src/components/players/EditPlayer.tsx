@@ -7,9 +7,10 @@ import { useEffect, useMemo } from "react";
 
 import { Edit } from "@mui/icons-material";
 import { fetchTeams } from "@/store/slices/teams.slice";
-import { playerPositions } from "@/lib/constants/playerPositions";
 import { updatePlayer } from "@/store/slices/players.slice";
 import { useFormik } from "formik";
+import { usePlayerPositions } from "@/hooks/usePlayerPositions";
+import { useTranslation } from "react-i18next";
 
 interface EditPlayerProps {
   player: Player;
@@ -18,9 +19,11 @@ interface EditPlayerProps {
 }
 
 const EditPlayer: React.FC<EditPlayerProps> = ({ player, onSuccess, onCancel }) => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { loading } = useAppSelector((s) => s.playerData);
   const { teams } = useAppSelector((s) => s.teamData);
+  const playerPositions = usePlayerPositions();
 
   useEffect(() => {
     dispatch(fetchTeams());
@@ -28,10 +31,14 @@ const EditPlayer: React.FC<EditPlayerProps> = ({ player, onSuccess, onCancel }) 
 
   const validationSchema = useMemo(() => {
     return yup.object({
-      fullName: yup.string().required("Required"),
-      position: yup.string().required("Required"),
-      height: yup.number().required("Required").min(100).max(250),
-      birthDate: yup.date().required("Required"),
+      fullName: yup.string().required(t("static.required")),
+      position: yup.string().required(t("static.required")),
+      height: yup
+        .number()
+        .required(t("static.required"))
+        .min(100, t("static.heightMin"))
+        .max(250, t("static.heightMax")),
+      birthDate: yup.date().required(t("static.required")),
       teamId: yup.number().optional(),
     });
   }, []);
@@ -55,10 +62,10 @@ const EditPlayer: React.FC<EditPlayerProps> = ({ player, onSuccess, onCancel }) 
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <h1 className="text-2xl my-2 text-center font-bold">Edit Player</h1>
+      <h1 className="text-2xl my-2 text-center font-bold">{t("static.editPlayer")}</h1>
       <div className="flex flex-col gap-3">
         <TextField
-          label="Full Name"
+          label={t("static.fullName")}
           fullWidth
           {...formik.getFieldProps("fullName")}
           error={formik.touched.fullName && Boolean(formik.errors.fullName)}
@@ -66,7 +73,7 @@ const EditPlayer: React.FC<EditPlayerProps> = ({ player, onSuccess, onCancel }) 
         />
 
         <TextField
-          label="Height (cm)"
+          label={t("static.heightCm")}
           type="number"
           fullWidth
           {...formik.getFieldProps("height")}
@@ -75,7 +82,7 @@ const EditPlayer: React.FC<EditPlayerProps> = ({ player, onSuccess, onCancel }) 
         />
 
         <TextField
-          label="Position"
+          label={t("static.position")}
           select
           fullWidth
           {...formik.getFieldProps("position")}
@@ -90,7 +97,7 @@ const EditPlayer: React.FC<EditPlayerProps> = ({ player, onSuccess, onCancel }) 
         </TextField>
 
         <TextField
-          label="Birth Date"
+          label={t("static.birthDate")}
           type="date"
           fullWidth
           InputLabelProps={{ shrink: true }}
@@ -101,18 +108,16 @@ const EditPlayer: React.FC<EditPlayerProps> = ({ player, onSuccess, onCancel }) 
         />
 
         <TextField
-          label="Team"
+          label={t("static.team")}
           select
           fullWidth
           value={formik.values.teamId || ""}
-          onChange={(e) =>
-            formik.setFieldValue("teamId", e.target.value ? parseInt(e.target.value) : undefined)
-          }
+          onChange={(e) => formik.setFieldValue("teamId", e.target.value ? parseInt(e.target.value) : undefined)}
         >
-          <MenuItem value="">None</MenuItem>
+          <MenuItem value="">{t("static.none")}</MenuItem>
           {teams.map((team) => (
             <MenuItem key={team.id} value={team.id}>
-              {team.name}
+              {team.clubName} - {team.name}
             </MenuItem>
           ))}
         </TextField>
@@ -129,15 +134,10 @@ const EditPlayer: React.FC<EditPlayerProps> = ({ player, onSuccess, onCancel }) 
 
         <div className="flex justify-end gap-3">
           <Button onClick={onCancel} color="warning" variant="contained">
-            Cancel
+            {t("static.cancel")}
           </Button>
-          <Button
-            type="submit"
-            variant="contained"
-            startIcon={<Edit />}
-            disabled={loading}
-          >
-            Save
+          <Button type="submit" variant="contained" startIcon={<Edit />} disabled={loading}>
+            {t("static.save")}
           </Button>
         </div>
       </div>

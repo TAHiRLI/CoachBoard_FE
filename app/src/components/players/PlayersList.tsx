@@ -43,18 +43,18 @@ const PlayersList: React.FC = () => {
       if (!id) return;
 
       Swal.fire({
-        title: t("messages:areYouSure"),
-        text: t("messages:unableToRevert"),
+        title: t("static.areYouSure"),
+        text: t("static.cannotBeUndone"),
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: t("messages:yesDelete"),
+        confirmButtonText: t("static.yesDeleteIt"),
       }).then(async (result) => {
         if (result.isConfirmed) {
           dispatch(deletePlayer(id))
             .unwrap()
-            .then(() => Swal.fire("Success", "", "success"));
+            .then(() => Swal.fire(t("static.success"), "", "success"));
         }
       });
     },
@@ -65,26 +65,36 @@ const PlayersList: React.FC = () => {
     () => [
       {
         field: "photo",
-        headerName: "Photo",
+        headerName: t("static.photo"),
         renderCell: ({ value }) => {
           if (!value) return <></>;
           return (
             <div className="flex items-center h-full">
-              <img src={apiUrl + "/" + value} alt="player" style={{aspectRatio: 4/3, objectFit: "cover", height: '100%' }} />
+              <img
+                src={apiUrl + "/" + value}
+                alt="player"
+                style={{ aspectRatio: 4 / 3, objectFit: "cover", height: "100%" }}
+              />
             </div>
           );
         },
       },
-      { field: "fullName", headerName: "Name", flex: 1 },
-      { field: "position", headerName: "Position", flex: 1 },
+      { field: "fullName", headerName: t("static.fullname"), flex: 1 },
+      { field: "position", headerName: t("static.position"), flex: 1 },
       {
         field: "birthDate",
-        headerName: "Birth Date",
+        headerName: t("static.birthDate"),
         valueGetter: (params) => (params ? dayjs(params).format("DD.MM.YYYY") : ""),
+        flex: 1,
+      },
+      {
+        field: "height",
+        headerName: t("static.heightCm"),
+        flex: 1,
       },
       {
         field: "age",
-        headerName: "Age",
+        headerName: t("static.age"),
         flex: 1,
         valueFormatter: (_, row) => {
           const birthDate = dayjs(row.birthDate);
@@ -93,21 +103,21 @@ const PlayersList: React.FC = () => {
       },
       {
         field: "actions",
-        headerName: "Actions",
+        headerName: t("static.actions"),
         sortable: false,
         width: 100,
         renderCell: (params) => (
           <RowActions
             actions={[
               {
-                icon: <Edit fontSize="small" />,
-                label: "Edit",
+                icon: <Edit color="info" fontSize="small" />,
+                label: t("static.edit"),
                 onClick: () => handleEdit(params.row),
                 color: "warning",
               },
               {
-                icon: <Delete fontSize="small" />,
-                label: "Delete",
+                icon: <Delete color="error" fontSize="small" />,
+                label: t("static.delete"),
                 onClick: () => handleDelete(params.row.id),
                 color: "error",
               },
