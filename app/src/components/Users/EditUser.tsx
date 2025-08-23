@@ -1,7 +1,7 @@
 import * as yup from "yup";
 
 import { AppUserDto, UserRole } from "@/lib/types/appUser.types";
-import { Box, Button, Chip, FormControl, MenuItem, OutlinedInput, Select, TextField, Typography } from "@mui/material";
+import { Button, Chip, FormControl, MenuItem, OutlinedInput, Select, TextField, Typography } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { useEffect, useState } from "react";
 
