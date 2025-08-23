@@ -38,7 +38,7 @@ export const router = createBrowserRouter([
     element: (
       <>
         <PrivateRoute>
-          <Layout pageTitle="Matches">
+          <Layout pageTitle="static.matches">
             <MatchesPage />
           </Layout>
         </PrivateRoute>
@@ -98,7 +98,7 @@ export const router = createBrowserRouter([
     element: (
       <>
         <PrivateRoute>
-          <Layout pageTitle="Seasons">
+          <Layout pageTitle="static.seasons">
             <SeasonsPage />
           </Layout>
         </PrivateRoute>

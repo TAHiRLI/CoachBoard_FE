@@ -34,13 +34,13 @@ const MatchItem = ({ match }: { match: Match }) => {
       }
 
       Swal.fire({
-        title: t("messages:areYouSure"),
-        text: t("messages:unableToRevert"),
+        title: t("static.areYouSure"),
+        text: t("static.cannotBeUndone"),
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: t("messages:yesDelete"),
+        confirmButtonText: t("static.yesDeleteIt"),
       }).then(async (result) => {
         if (result.isConfirmed && id) {
           dispatch(deleteMatch(id))

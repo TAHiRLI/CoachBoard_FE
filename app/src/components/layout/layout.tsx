@@ -17,19 +17,11 @@ interface Breadcrumb {
 interface LayoutProps {
   children: React.ReactNode;
   pageTitle?: string;
-  pageSubtitle?: string;
   breadcrumbs?: Breadcrumb[];
   showSearch?: boolean;
-  actionButtons?: React.ReactNode;
 }
 
-const Layout: React.FC<LayoutProps> = ({
-  children,
-  pageTitle,
-  pageSubtitle = "",
-  breadcrumbs = [],
-  actionButtons = null,
-}) => {
+const Layout: React.FC<LayoutProps> = ({ children, pageTitle, breadcrumbs = [] }) => {
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -131,17 +123,13 @@ const Layout: React.FC<LayoutProps> = ({
         </header>
 
         <div className="page-content">
-          {pageSubtitle && (
-            <div className="page-header">
-              <div className="header-content">
-                <div className="title-section">
-                  <h1 className="page-title">{pageTitle}</h1>
-                  {pageSubtitle && <p className="page-subtitle">{pageSubtitle}</p>}
-                </div>
-                {actionButtons && <div className="header-actions">{actionButtons}</div>}
+          <div className="page-header">
+            <div className="header-content">
+              <div className="title-section">
+                <h1 className="page-title">{pageTitle && t(pageTitle)}</h1>
               </div>
             </div>
-          )}
+          </div>
 
           {children}
         </div>

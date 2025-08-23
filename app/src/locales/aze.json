@@ -20,7 +20,7 @@
     "players": "Oyunçular",
     "episodes": "Epizodlar",
     "manageMatchesSubtitle": "Komandanızın bütün oyunlarını müxtəlif mövsümlər üzrə idarə edin və analiz edin",
-    "season": "Mövsümre",
+    "season": "Mövsüm",
     "newMatch": "Yeni oyun",
     "reports": "Hesabatlar",
     "users": "İstifadəçilər",
@@ -91,6 +91,13 @@
     "youtubeExternalUrl": "YouTube / Xarici URL",
     "startTimeSeconds": "Başlama vaxtı (s)",
     "endTimeSeconds": "Bitmə vaxtı (s)",
+    "createClip": "Klip yarat",
+    "addEvaluation": "Rəy əlavə et",
+    "editEvaluation": "Rəyi redaktə et",
+    "start": "Başlanğıc",
+    "end": "Son",
+    "createSeason": "Mövsüm yarat",
+    "editSeason": "Mövsümü redaktə et",
 
     "incorrectUsername": "Incorrect Username",
     "addCompany": "Add Company",
@@ -101,7 +108,10 @@
     "resetPasswordMessage": "Your Password is set by admin. You need to reset your password for the first time",
     "autoSmartReminder": "Auto Smart Reminder",
     "autoSmartReminderDesc": "Mustscan AI agent generates Reminders when file is uploaded by you",
-
+    "episode": "Epizod",
+    "occurrenceCount": "Təkrarlanma sayı",
+    "critical": "Kritik",
+    "couldBeBetter": "Daha yaxşı",
     "recieveAutoSmartReminder": "Recieve Auto Smart Reminders",
     "recieveAutoSmartReminderDesc": "Mustscan AI agent generates Reminders when file is uploaded by managers"
   },
@@ -131,7 +141,7 @@
     "reminderOffAlert": "By disabling this future you won't get reminders when new file is uploaded by you",
     "revieceReminderOffAlert": "By disabling this future you won't get reminders when new file is uploaded by admin",
     "sendNotificationDesc": "Users in this workspace will get email about file upload",
-    "success": "Success",
+    "success": "Uğurlu",
     "tokenMissing": "Token is missing. Please use the reset link from your email."
   }
 }

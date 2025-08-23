@@ -12,8 +12,11 @@ import { fetchClipById } from "@/store/slices/clips.slice";
 import { fetchEvaluations } from "@/store/slices/evaluations.slice";
 import { fetchMatchById } from "@/store/slices/matches.slice";
 import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const ClipDetailsPage = () => {
+    
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { selectedClip } = useAppSelector((x) => x.clipData);
   const { selectedMatch } = useAppSelector((state) => state.matchData);
@@ -59,7 +62,7 @@ const ClipDetailsPage = () => {
       <div className="my-5">
         <div className="flex justify-end mb-3">
           <Button variant="contained" startIcon={<Add />} onClick={() => setIsOpen(true)}>
-            Create Evaluation
+            {t("static.addEvaluation")}
           </Button>
         </div>
         <EvaluationsList />

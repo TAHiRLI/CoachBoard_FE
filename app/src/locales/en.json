@@ -70,14 +70,17 @@
     "match": "Match",
     "coach": "Coach",
     "notAvailable": "N/A",
-
+    "createClip": "Create Clip",
+    "episode": "Episode",
+    "occurrenceCount": "Occurrence Count",
+    "critical": "Critical",
+    "couldBeBetter": "Could Be Better",
     "editClip": "Edit Clip",
     "clipSource": "Clip Source",
     "uploadVideo": "Upload Video",
     "youtubeExternalUrl": "YouTube / External URL",
     "startTimeSeconds": "Start Time (s)",
     "endTimeSeconds": "End Time (s)",
-
     "autoEmails": "Auto Emails",
     "autoEmailsDescription": "When enabled, Auto Emails automatically send a push notification each time a reminder is triggered.",
     "logOut": "Log Out",
@@ -104,6 +107,14 @@
     "resetPasswordMessage": "Your Password is set by admin. You need to reset your password for the first time",
     "autoSmartReminder": "Auto Smart Reminder",
     "autoSmartReminderDesc": "Mustscan AI agent generates Reminders when file is uploaded by you",
+    "addEvaluation": "Add Evaluation",
+    "editEvaluation": "Edit Evaluation",
+    "start": "Start",
+    "end": "End",
+
+    "createSeason": "Create Season",
+
+    "editSeason": "Edit Season",
 
     "recieveAutoSmartReminder": "Recieve Auto Smart Reminders",
     "recieveAutoSmartReminderDesc": "Mustscan AI agent generates Reminders when file is uploaded by managers"

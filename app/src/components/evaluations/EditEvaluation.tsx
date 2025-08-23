@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "@/store/store";
 import { Edit } from "@mui/icons-material";
 import { updateEvaluation } from "@/store/slices/evaluations.slice";
 import { useFormik } from "formik";
+import { useTranslation } from "react-i18next";
 
 const EditEvaluation = ({
   evaluation,
@@ -17,6 +18,8 @@ const EditEvaluation = ({
   onSuccess?: () => void;
   onCancel?: () => void;
 }) => {
+    
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { loading } = useAppSelector((state) => state.evaluationData);
 
@@ -42,9 +45,9 @@ const EditEvaluation = ({
 
   return (
     <form onSubmit={formik.handleSubmit} className="flex flex-col gap-4">
-      <h1 className="text-xl font-bold text-center">Edit Evaluation</h1>
-        <TextField fullWidth label="Occurance Count" type="number" {...formik.getFieldProps("occurrenceCount")} />
-      <TextField fullWidth label="Notes" multiline rows={3} {...formik.getFieldProps("notes")} />
+      <h1 className="text-xl font-bold text-center">{t("static.editEvaluation")}</h1>
+        <TextField fullWidth label={t("static.occurrenceCount")} type="number" {...formik.getFieldProps("occurrenceCount")} />
+      <TextField fullWidth label={t("static.note")} multiline rows={3} {...formik.getFieldProps("notes")} />
       <div className="grid grid-cols-3">
 
         <FormControlLabel
@@ -54,7 +57,7 @@ const EditEvaluation = ({
               onChange={(e) => formik.setFieldValue("isSuccessful", e.target.checked)}
             />
           }
-          label="Is Successful"
+          label={t("static.success")}
         />
         <FormControlLabel
           control={
@@ -63,7 +66,7 @@ const EditEvaluation = ({
               onChange={(e) => formik.setFieldValue("isCritical", e.target.checked)}
             />
           }
-          label="Is Critical"
+          label={t("static.critical")}
         />
         <FormControlLabel
           control={
@@ -72,7 +75,7 @@ const EditEvaluation = ({
               onChange={(e) => formik.setFieldValue("couldBeBetter", e.target.checked)}
             />
           }
-          label="Better Option"
+          label={t("static.couldBeBetter")}
         />
       </div>
       <div className="flex justify-end gap-3">

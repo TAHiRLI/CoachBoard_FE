@@ -43,19 +43,19 @@ const SeasonsList: React.FC = () => {
       if (!id) return;
 
       Swal.fire({
-        title: t("messages:areYouSure"),
-        text: t("messages:unableToRevert"),
+        title: t("static.areYouSure"),
+        text: t("static.cannotBeUndone"),
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: t("messages:yesDelete"),
+        confirmButtonText: t("static.yesDeleteIt"),
       }).then(async (result) => {
         if (result.isConfirmed && id) {
           dispatch(deleteSeason(id))
             .unwrap()
             .then(() => {
-              Swal.fire("Success", "", "success");
+              Swal.fire(t("static.success"), "", "success");
             });
         }
       });
@@ -66,24 +66,24 @@ const SeasonsList: React.FC = () => {
     () => [
       {
         field: "name",
-        headerName: "Name",
+        headerName: t("static.name"),
         flex: 1,
       },
       {
         field: "startDate",
-        headerName: "Start",
+        headerName: t("static.start"),
         flex: 1,
         valueGetter: (params) => (params ? dayjs(params).format("DD.MM.YYYY") : ""),
       },
       {
         field: "endDate",
-        headerName: "End",
+        headerName: t("static.end"),
         flex: 1,
         valueGetter: (params) => (params ? dayjs(params).format("DD.MM.YYYY") : ""),
       },
       {
         field: "actions",
-        headerName: "Actions",
+        headerName: t("static.actions"),
         sortable: false,
         width: 100,
         renderCell: (params) => (
@@ -91,13 +91,13 @@ const SeasonsList: React.FC = () => {
             actions={[
               {
                 icon: <Edit fontSize="small" />,
-                label: "Edit",
+                label: t("static.edit"),
                 onClick: () => handleEdit(params.row),
                 color: "warning",
               },
               {
                 icon: <Delete fontSize="small" />,
-                label: "Delete",
+                label: t("static.delete"),
                 onClick: () => handleDelete(params.row.id),
                 color: "error",
               },

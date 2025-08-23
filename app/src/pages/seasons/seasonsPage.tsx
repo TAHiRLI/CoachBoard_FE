@@ -4,8 +4,11 @@ import { Button } from "@mui/material";
 import CustomModal from "@/components/customModal/customModal";
 import SeasonsList from "@/components/seasons/seasonsList";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const SeasonsPage = () => {
+    
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   return (
     <div>
@@ -17,7 +20,7 @@ const SeasonsPage = () => {
           onClick={() => setIsOpen(true)}
           title="Create"
         >
-          Create
+          {t("static.create")}
         </Button>
       </div>
       <SeasonsList />

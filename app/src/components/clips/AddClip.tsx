@@ -32,7 +32,7 @@ const AddClip: React.FC<AddClipProps> = ({ onSuccess, onCancel, matchId, matchUr
 
   const validationSchema = useMemo(() => {
     return yup.object({
-      name: yup.string().required("Required"),
+      name: yup.string().required(t("static.required")),
       videoUrl: mode === "external" ? yup.string().url(t("static.invalidUrl")).required(t("static.required")) : yup.string(),
     });
   }, [mode]);
@@ -65,8 +65,6 @@ const AddClip: React.FC<AddClipProps> = ({ onSuccess, onCancel, matchId, matchUr
         });
     },
   });
-  console.log(formik.errors);
-
   return (
     <form onSubmit={formik.handleSubmit}>
       <h2 className="text-xl font-bold text-center mb-4">{t("static.createClip")}</h2>

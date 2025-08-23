@@ -10,6 +10,7 @@ import { fetchEpisodes } from "@/store/slices/episodes.slice";
 import { fetchPlayers } from "@/store/slices/players.slice";
 import { useEffect } from "react";
 import { useFormik } from "formik";
+import { useTranslation } from "react-i18next";
 
 interface props {
   clipId: string;
@@ -18,6 +19,7 @@ interface props {
 }
 
 const AddEvaluation = ({ clipId, onSuccess, onCancel }: props) => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
   const { loading } = useAppSelector((state) => state.evaluationData);
@@ -40,7 +42,7 @@ const AddEvaluation = ({ clipId, onSuccess, onCancel }: props) => {
       playerId: "",
       episodeId: "",
       notes: "",
-      occurrenceCount: 0, 
+      occurrenceCount: 1,
       coachId: user?.coachId ?? "",
       isCritical: false,
       isSuccessful: false,
@@ -56,7 +58,7 @@ const AddEvaluation = ({ clipId, onSuccess, onCancel }: props) => {
 
   return (
     <form onSubmit={formik.handleSubmit} className="flex flex-col gap-4">
-      <h1 className="text-xl font-bold text-center">Add Evaluation</h1>
+      <h1 className="text-xl font-bold text-center">{t("static.addEvaluation")}</h1>
 
       <Autocomplete
         options={players}
@@ -67,7 +69,7 @@ const AddEvaluation = ({ clipId, onSuccess, onCancel }: props) => {
         renderInput={(params) => (
           <TextField
             {...params}
-            label="Player"
+            label={t("static.player")}
             error={formik.touched.playerId && Boolean(formik.errors.playerId)}
             helperText={formik.touched.playerId && formik.errors.playerId}
           />
@@ -81,14 +83,19 @@ const AddEvaluation = ({ clipId, onSuccess, onCancel }: props) => {
         renderInput={(params) => (
           <TextField
             {...params}
-            label="Episode"
+            label={t("static.episode")}
             error={formik.touched.episodeId && Boolean(formik.errors.episodeId)}
             helperText={formik.touched.episodeId && formik.errors.episodeId}
           />
         )}
       />
-      <TextField fullWidth label="Occurance Count" type="number"  {...formik.getFieldProps("occurrenceCount")} />
-      <TextField fullWidth label="Notes" multiline rows={3} {...formik.getFieldProps("notes")} />
+      <TextField
+        fullWidth
+        label={t("static.occurrenceCount")}
+        type="number"
+        {...formik.getFieldProps("occurrenceCount")}
+      />
+      <TextField fullWidth label={t("static.note")} multiline rows={3} {...formik.getFieldProps("notes")} />
 
       <div className="grid grid-cols-3">
         <FormControlLabel
@@ -98,7 +105,7 @@ const AddEvaluation = ({ clipId, onSuccess, onCancel }: props) => {
               onChange={(e) => formik.setFieldValue("isSuccessful", e.target.checked)}
             />
           }
-          label="Is Successful"
+          label={t("static.success")}
         />
         <FormControlLabel
           control={
@@ -107,7 +114,7 @@ const AddEvaluation = ({ clipId, onSuccess, onCancel }: props) => {
               onChange={(e) => formik.setFieldValue("isCritical", e.target.checked)}
             />
           }
-          label="Is Critical"
+          label={t("static.critical")}
         />
         <FormControlLabel
           control={
@@ -116,7 +123,7 @@ const AddEvaluation = ({ clipId, onSuccess, onCancel }: props) => {
               onChange={(e) => formik.setFieldValue("couldBeBetter", e.target.checked)}
             />
           }
-          label="Better Option"
+          label={t("static.couldBeBetter")}
         />
       </div>
 

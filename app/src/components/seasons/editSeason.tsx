@@ -12,6 +12,7 @@ import dayjs from "dayjs";
 import { enUS } from "@mui/x-date-pickers/locales";
 import { updateSeason } from "@/store/slices/seasons.slice";
 import { useFormik } from "formik";
+import { useTranslation } from "react-i18next";
 
 interface EditEditSeasonProps {
   season: Season;
@@ -20,12 +21,13 @@ interface EditEditSeasonProps {
 }
 
 const EditSeason: React.FC<EditEditSeasonProps> = ({ season, onSuccess, onCancel }) => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { loading } = useAppSelector((state) => state.seasonData);
 
   const validationSchema = useMemo(() => {
     return yup.object({
-      name: yup.string().required("required"),
+      name: yup.string().required(t("static.required")),
     });
   }, []);
 
@@ -49,11 +51,11 @@ const EditSeason: React.FC<EditEditSeasonProps> = ({ season, onSuccess, onCancel
 
   return (
     <form onSubmit={handleSubmit}>
-      <h1 className="text-2xl my-2 text-center font-bold">Edit Season</h1>
+      <h1 className="text-2xl my-2 text-center font-bold">{t("static.editSeason")}</h1>
       <div className="flex flex-col gap-3">
         <TextField
           fullWidth
-          label="Name"
+          label={t("static.name")}
           variant="outlined"
           id="name"
           placeholder="Name"
@@ -77,7 +79,7 @@ const EditSeason: React.FC<EditEditSeasonProps> = ({ season, onSuccess, onCancel
                 setFieldValue("startDate", isoString);
               }
             }}
-            label="Start"
+            label={t("static.start")}
           />
         </LocalizationProvider>
 
@@ -97,7 +99,7 @@ const EditSeason: React.FC<EditEditSeasonProps> = ({ season, onSuccess, onCancel
                 setFieldValue("endDate", isoString);
               }
             }}
-            label="End"
+            label={t("static.end")}
           />
         </LocalizationProvider>
         <div className="flex justify-end gap-3">
@@ -107,7 +109,7 @@ const EditSeason: React.FC<EditEditSeasonProps> = ({ season, onSuccess, onCancel
             variant="contained"
             sx={{ whiteSpace: "nowrap", borderRadius: "8px" }}
           >
-            Cancel
+            {t("static.cancel")}
           </Button>
           <Button
             type="submit"
@@ -117,7 +119,7 @@ const EditSeason: React.FC<EditEditSeasonProps> = ({ season, onSuccess, onCancel
             disabled={loading}
             sx={{ whiteSpace: "nowrap", borderRadius: "8px" }}
           >
-            Save
+            {t("static.save")}
           </Button>
         </div>
       </div>

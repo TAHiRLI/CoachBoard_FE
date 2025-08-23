@@ -64,13 +64,24 @@
     "note": "Заметка",
     "link": "Ссылка",
     "addParticipation": "Добавить участие",
-
+    "createClip": "Создать клип",
+    "addEvaluation": "Добавить оценку",
+    "editEvaluation": "Редактировать оценку",
+    "start": "Начало",
+    "end": "Конец",
     "clip": "Клип",
     "duration": "Длительность",
+
+    "createSeason": "Создать сезон",
+    "editSeason": "Редактировать сезон",
+
     "match": "Матч",
     "coach": "Тренер",
     "notAvailable": "Нет данных",
-
+    "episode": "Эпизод",
+    "occurrenceCount": "Количество случаев",
+    "critical": "Критично",
+    "couldBeBetter": "Можно улучшить",
     "editClip": "Редактировать клип",
     "clipSource": "Источник клипа",
     "uploadVideo": "Загрузить видео",
