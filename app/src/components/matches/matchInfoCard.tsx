@@ -116,7 +116,7 @@ const MatchInfoCard: React.FC<Props> = ({ match }) => {
             <p className="text-sm text-gray-500">{t("static.location")}</p>
             <p className="text-base font-medium text-gray-800">{match.stadium}</p>
           </div>
-          <div>
+          <div className="overflow-hidden">
             <p className="text-sm text-gray-500">{t("static.note")}</p>
             <p className="text-base font-medium text-gray-800">{match.note}</p>
           </div>

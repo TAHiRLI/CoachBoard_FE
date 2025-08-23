@@ -4,10 +4,16 @@ FROM node:22-alpine AS builder
 WORKDIR /app
 
 # Copy package.json and package-lock.json
-COPY package*.json ./
+COPY package.json package-lock.json* ./
 
 # Install dependencies
-RUN npm ci
+# Install deps (use lockfile if present; otherwise, install while relaxing peers)
+RUN set -eux; \
+    if [ -f package-lock.json ]; then \
+    npm ci --omit=optional; \
+    else \
+    npm install --no-audit --legacy-peer-deps; \
+    fi
 
 # Copy all project files
 COPY . .
