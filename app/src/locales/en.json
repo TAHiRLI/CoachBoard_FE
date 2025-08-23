@@ -115,6 +115,8 @@
     "createSeason": "Create Season",
 
     "editSeason": "Edit Season",
+    "editClub": "Edit Club",
+    "logo": "Logo",
 
     "recieveAutoSmartReminder": "Recieve Auto Smart Reminders",
     "recieveAutoSmartReminderDesc": "Mustscan AI agent generates Reminders when file is uploaded by managers"

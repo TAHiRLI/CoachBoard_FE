@@ -8,6 +8,7 @@ import { useMemo, useRef } from "react";
 import { Edit } from "@mui/icons-material";
 import { updateClub } from "@/store/slices/clubs.slice";
 import { useFormik } from "formik";
+import { useTranslation } from "react-i18next";
 
 interface EditClubProps {
   club: Club;
@@ -16,11 +17,12 @@ interface EditClubProps {
 }
 
 const EditClub: React.FC<EditClubProps> = ({ club, onSuccess, onCancel }) => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { loading } = useAppSelector((s) => s.clubData);
   const fileRef = useRef<HTMLInputElement>(null);
 
-  const validationSchema = useMemo(() => yup.object({ name: yup.string().required("Required") }), []);
+  const validationSchema = useMemo(() => yup.object({ name: yup.string().required(t("static.required")) }), []);
 
   const formik = useFormik<ClubPutDto>({
     initialValues: {
@@ -41,11 +43,11 @@ const EditClub: React.FC<EditClubProps> = ({ club, onSuccess, onCancel }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <h1 className="text-2xl my-2 text-center font-bold">Edit Club</h1>
+      <h1 className="text-2xl my-2 text-center font-bold">{t("static.editClub")}</h1>
       <div className="flex flex-col gap-3">
         <TextField
           fullWidth
-          label="Name"
+          label={t("static.name")}
           {...getFieldProps("name")}
           error={touched.name && Boolean(errors.name)}
           helperText={touched.name && errors.name}
@@ -64,15 +66,15 @@ const EditClub: React.FC<EditClubProps> = ({ club, onSuccess, onCancel }) => {
         />
 
         <Button onClick={() => fileRef.current?.click()} variant="outlined" sx={{ textTransform: "none" }}>
-          {values.logo?.name || "Change Logo"}
+          {values.logo?.name || t("static.uploadLogo")}
         </Button>
 
         <div className="flex justify-end gap-3">
           <Button onClick={onCancel} color="warning" variant="contained">
-            Cancel
+            {t("static.cancel")}
           </Button>
           <Button type="submit" variant="contained" startIcon={<Edit />} disabled={loading || isSubmitting}>
-            Save
+            {t("static.save")}
           </Button>
         </div>
       </div>

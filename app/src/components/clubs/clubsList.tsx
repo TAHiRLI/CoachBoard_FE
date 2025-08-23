@@ -12,8 +12,10 @@ import RowActions from "@/components/rowActions/rowActions";
 import StyledDataGrid from "@/components/styledDatagrid/styledDatagrid";
 import Swal from "sweetalert2";
 import { apiUrl } from "@/lib/constants/constants";
+import { useTranslation } from "react-i18next";
 
 const ClubsList: React.FC = () => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { clubs, selectedClub, loading, error } = useAppSelector((state) => state.clubData);
 
@@ -39,19 +41,19 @@ const ClubsList: React.FC = () => {
       if (!id) return;
 
       Swal.fire({
-        title: "Are you sure?",
-        text: "This action cannot be undone.",
+        title: t("static.areYouSure"),
+        text: t("static.cannotBeUndone"),
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!",
+        confirmButtonText: t("static.yesDeleteIt"),
       }).then((result) => {
         if (result.isConfirmed && id) {
           dispatch(deleteClub(id))
             .unwrap()
             .then(() => {
-              Swal.fire("Deleted!", "The club has been removed.", "success");
+              Swal.fire(t("static.success"), "", "success");
             })
             .catch(() => {
               setSnackbarOpen(true);
@@ -66,37 +68,40 @@ const ClubsList: React.FC = () => {
     () => [
       {
         field: "name",
-        headerName: "Name",
+        headerName: t("static.name"),
         flex: 1,
       },
       {
         field: "logo",
-        headerName: "Logo",
+        headerName: t("static.logo"),
         flex: 1,
         renderCell: (params) =>
           params.value ? (
-          <div className="flex items-center h-full">  <img src={apiUrl + "/" + params.value} alt="logo" style={{ height: 42, objectFit: "contain" }} /></div>
+            <div className="flex items-center h-full">
+              {" "}
+              <img src={apiUrl + "/" + params.value} alt="logo" style={{ height: 42, objectFit: "contain" }} />
+            </div>
           ) : (
             "—"
           ),
       },
       {
         field: "actions",
-        headerName: "Actions",
+        headerName: t("static.actions"),
         sortable: false,
         width: 100,
         renderCell: (params) => (
           <RowActions
             actions={[
               {
-                icon: <Edit fontSize="small" />,
-                label: "Edit",
+                icon: <Edit color="info" fontSize="small" />,
+                label: t("static.edit"),
                 onClick: () => handleEdit(params.row),
                 color: "warning",
               },
               {
-                icon: <Delete fontSize="small" />,
-                label: "Delete",
+                icon: <Delete color="error" fontSize="small" />,
+                label: t("static.delete"),
                 onClick: () => handleDelete(params.row.id),
                 color: "error",
               },

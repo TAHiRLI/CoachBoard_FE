@@ -62,7 +62,7 @@ export const router = createBrowserRouter([
     element: (
       <>
         <PrivateRoute>
-          <Layout pageTitle="Clubs">
+          <Layout pageTitle="static.clubs">
             <ClubsPage />
           </Layout>
         </PrivateRoute>
