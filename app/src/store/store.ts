@@ -2,6 +2,7 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { persistReducer, persistStore } from "redux-persist";
 
+import appUsersSlice from "./slices/appUsers.slice";
 import authSlice from "./slices/auth.slice";
 import clipsSlice from "./slices/clips.slice";
 import clubsSlice from "./slices/clubs.slice";
@@ -36,6 +37,7 @@ const rootReducer = combineReducers({
   episodeData: episodesSlice.reducer,
   participationData: participationslice.reducer,
   coachData: coachesSlice.reducer,
+  appUserData: appUsersSlice.reducer,
 });
 
 // Wrap rootReducer with persistReducer

@@ -17,6 +17,7 @@ import ResetPasswordPage from "@/pages/login/resetPassword";
 import { Routes } from "./routes";
 import SeasonsPage from "@/pages/seasons/seasonsPage";
 import TeamsPage from "@/pages/teams/teamsPage";
+import UsersPage from "@/pages/Users/UsersPage";
 // router.tsx
 import { createBrowserRouter } from "react-router-dom";
 
@@ -135,8 +136,20 @@ export const router = createBrowserRouter([
     element: (
       <>
         <PrivateRoute>
-          <Layout pageTitle="Episodes">
+          <Layout pageTitle="static.episodes">
             <EpisodesPage />
+          </Layout>
+        </PrivateRoute>
+      </>
+    ),
+  },
+  {
+    path: Routes.Users.Base,
+    element: (
+      <>
+        <PrivateRoute>
+          <Layout pageTitle="static.users">
+            <UsersPage />
           </Layout>
         </PrivateRoute>
       </>

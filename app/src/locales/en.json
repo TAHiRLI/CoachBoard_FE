@@ -156,6 +156,16 @@
     "leftWinger": "Left Winger",
     "rightWinger": "Right Winger",
 
+    "addEpisode": "Add Episode",
+    "description": "Description",
+    "evaluationsCount": "Evaluations Count",
+
+    "createUser": "Create User",
+    "username": "Username",
+    "password": "Password",
+    "minPassword": "Minimum 6 characters",
+    "role": "Role",
+
     "recieveAutoSmartReminder": "Recieve Auto Smart Reminders",
     "recieveAutoSmartReminderDesc": "Mustscan AI agent generates Reminders when file is uploaded by managers"
   },

@@ -142,8 +142,9 @@
     "leftWinger": "Sol cinah hücumçu",
     "rightWinger": "Sağ cinah hücumçu",
 
-    "addUser": "Add User",
-    "editUser": "Edit User",
+    "addEpisode": "Epizod əlavə et",
+    "description": "Ətraflı",
+    "evaluationsCount": "Rəy sayı",
     "resetPassword": "Reset Password",
     "resetPasswordMessage": "Your Password is set by admin. You need to reset your password for the first time",
     "autoSmartReminder": "Auto Smart Reminder",
@@ -153,6 +154,14 @@
     "critical": "Kritik",
     "couldBeBetter": "Daha yaxşı",
     "recieveAutoSmartReminder": "Recieve Auto Smart Reminders",
+
+    "createUser": "İstifadəçi yarat",
+    "username": "İstifadəçi adı",
+    "password": "Şifrə",
+    "role": "Rol",
+    "min6Characters": "Minimum 6 simvol",
+    "editUser": "İstifadəçini redaktə et",
+
     "recieveAutoSmartReminderDesc": "Mustscan AI agent generates Reminders when file is uploaded by managers"
   },
   "user": {

@@ -1,37 +1,44 @@
 import { Alert, Box, LinearProgress, Snackbar } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
-import { clearEpisodeError, deleteEpisode, fetchEpisodes, selectEpisode } from "@/store/slices/episodes.slice";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { clearAppUserError, deleteUser, fetchAppUsers, selectAppUser } from "@/store/slices/appUsers.slice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
-import { useCallback, useEffect, useMemo, useState } from "react";
 
+import { AppUserDto } from "@/lib/types/appUser.types";
+import { Coach } from "@/lib/types/coach.types";
 import CustomModal from "../customModal/customModal";
-import EditEpisode from "./EditEpisode";
-import { Episode } from "@/lib/types/episodes.types";
+import EditUser from "./EditUser";
 import { GridColDef } from "@mui/x-data-grid";
 import RowActions from "../rowActions/rowActions";
 import StyledDataGrid from "../styledDatagrid/styledDatagrid";
 import Swal from "sweetalert2";
 import { useTranslation } from "react-i18next";
 
-const EpisodesList = () => {
+const UsersList: React.FC = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  const { episodes, loading, selectedEpisode, error } = useAppSelector((state) => state.episodeData);
+  const { appUsers, selectedAppUser, loading, error } = useAppSelector((s) => s.appUserData);
 
   const [editOpen, setEditOpen] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   useEffect(() => {
-    dispatch(fetchEpisodes());
-  }, [dispatch]);
+    dispatch(fetchAppUsers());
+  }, []);
 
-  const handleEdit = (episode: Episode) => {
-    dispatch(selectEpisode(episode));
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
+    if (error) dispatch(clearAppUserError());
+  };
+
+  const handleEdit = (user: AppUserDto) => {
+    dispatch(selectAppUser(user));
     setEditOpen(true);
   };
 
   const handleDelete = useCallback(
     (id: string) => {
+      if (!id) return;
       Swal.fire({
         title: t("static.areYouSure"),
         text: t("static.cannotBeUndone"),
@@ -42,45 +49,56 @@ const EpisodesList = () => {
         confirmButtonText: t("static.yesDeleteIt"),
       }).then((result) => {
         if (result.isConfirmed) {
-          dispatch(deleteEpisode(id))
+          dispatch(deleteUser(id))
             .unwrap()
-            .then(() => Swal.fire(t("static.success"), "", "success"))
-            .catch(() => setSnackbarOpen(true));
+            .then(() => Swal.fire(t("static.success"), "", "success"));
         }
       });
     },
     [dispatch]
   );
 
-  const handleCloseSnackbar = () => {
-    setSnackbarOpen(false);
-    dispatch(clearEpisodeError());
-  };
-
   const columns = useMemo<GridColDef[]>(
     () => [
-      { field: "name", headerName: t("static.name"), flex: 1 },
-      { field: "description", headerName: t("static.description"), flex: 2 },
       {
-        field: "evaluationCount",
-        headerName: t("static.evaluationsCount"),
-        width: 140,
+        field: "userName",
+        headerName: t("static.username"),
+        flex: 1,
+      },
+      {
+        field: "email",
+        headerName: t("static.email"),
+        flex: 1,
+      },
+      {
+        field: "roles",
+        headerName: t("static.role"),
+        flex: 1,
+      },
+      {
+        field: "coach",
+        headerName: t("static.coach"),
+        flex: 1,
+        valueGetter: (v: Coach) => {
+          return v?.fullName;
+        },
       },
       {
         field: "actions",
         headerName: t("static.actions"),
+        sortable: false,
         width: 100,
         renderCell: (params) => (
           <RowActions
             actions={[
               {
-                icon: <Edit fontSize="small" />,
+                icon: <Edit color="info" fontSize="small" />,
                 label: t("static.edit"),
                 onClick: () => handleEdit(params.row),
                 color: "warning",
               },
               {
-                icon: <Delete fontSize="small" />,
+                icon: <Delete color="error" fontSize="small" />,
                 label: t("static.delete"),
                 onClick: () => handleDelete(params.row.id),
                 color: "error",
@@ -98,21 +116,21 @@ const EpisodesList = () => {
       {loading && <LinearProgress />}
       <Box sx={{ display: "grid", gridTemplateColumns: "1fr" }}>
         <StyledDataGrid
-          rowHeight={30}
-          rows={episodes}
+          rows={appUsers}
           columns={columns}
+          rowHeight={30}
           disableRowSelectionOnClick
           loading={loading}
           hideFooter
         />
       </Box>
 
-      {selectedEpisode && (
+      {selectedAppUser && (
         <CustomModal open={editOpen} setOpen={setEditOpen}>
-          <EditEpisode
-            episode={selectedEpisode}
+          <EditUser
+            user={selectedAppUser}
             onSuccess={() => {
-              dispatch(fetchEpisodes());
+              dispatch(fetchAppUsers());
               setEditOpen(false);
             }}
           />
@@ -120,7 +138,7 @@ const EpisodesList = () => {
       )}
 
       <Snackbar
-        open={snackbarOpen}
+        open={snackbarOpen || !!error}
         autoHideDuration={6000}
         onClose={handleCloseSnackbar}
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
@@ -133,4 +151,4 @@ const EpisodesList = () => {
   );
 };
 
-export default EpisodesList;
+export default UsersList;
