@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from "@/store/store";
 import { useMemo, useState } from "react";
 
 import { Edit } from "@mui/icons-material";
+import Swal from "sweetalert2";
 import { parseTimeToSeconds } from "./AddClip";
 import { updateClip } from "@/store/slices/clips.slice";
 import { useFormik } from "formik";
@@ -16,13 +17,14 @@ interface EditClipProps {
   onSuccess?: () => void;
   onCancel?: () => void;
 }
+
 export const formatSeconds = (seconds: number): string => {
   const m = Math.floor(seconds / 60);
   const s = seconds % 60;
   return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
 };
-const EditClip: React.FC<EditClipProps> = ({ clip, onSuccess, onCancel }) => {
-    
+
+const EditClip: React.FC<EditClipProps> = ({ clip, onCancel }) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { loading } = useAppSelector((s) => s.clipData);
@@ -31,9 +33,25 @@ const EditClip: React.FC<EditClipProps> = ({ clip, onSuccess, onCancel }) => {
   const validationSchema = useMemo(() => {
     return yup.object({
       name: yup.string().required("Required"),
-      videoUrl: mode === "external" ? yup.string().url(t("static.invalidUrl")).required(t("static.required")) : yup.string(),
+      videoUrl:
+        mode === "external"
+          ? yup
+              .string()
+              .url(t("static.invalidEmail") || "Invalid URL")
+              .required(t("static.required"))
+          : yup.string(),
+      startTime: yup.string().when([], {
+        is: () => mode === "external",
+        then: (schema) => schema.matches(/^\d{1,2}(:[0-5]\d)?$/, t("static.required")).optional(),
+        otherwise: (schema) => schema.optional(),
+      }),
+      endTime: yup.string().when([], {
+        is: () => mode === "external",
+        then: (schema) => schema.matches(/^\d{1,2}(:[0-5]\d)?$/, t("static.required")).optional(),
+        otherwise: (schema) => schema.optional(),
+      }),
     });
-  }, [mode]);
+  }, [mode, t]);
 
   const formik = useFormik<ClipPutDto>({
     initialValues: {
@@ -59,7 +77,10 @@ const EditClip: React.FC<EditClipProps> = ({ clip, onSuccess, onCancel }) => {
         })
       )
         .unwrap()
-        .then(() => onSuccess?.());
+        .then(() => {
+          Swal.fire(t("static.success"), "", "success");
+        });
+      // .then(() => onSuccess?.());
     },
   });
 
@@ -90,19 +111,21 @@ const EditClip: React.FC<EditClipProps> = ({ clip, onSuccess, onCancel }) => {
         <div className="flex gap-3">
           <TextField
             label={t("static.startTimeSeconds")}
-            type="time"
+            placeholder="mm:ss or m"
             fullWidth
+            inputProps={{ inputMode: "numeric", pattern: "^\\d{1,2}(:[0-5]\\d)?$" }}
             {...formik.getFieldProps("startTime")}
             error={formik.touched.startTime && Boolean(formik.errors.startTime)}
-            helperText={formik.touched.startTime && formik.errors.startTime}
+            helperText={(formik.touched.startTime && (formik.errors.startTime as string)) || "e.g. 34:00 or 34"}
           />
           <TextField
             label={t("static.endTimeSeconds")}
-            type="time"
+            placeholder="mm:ss or m"
             fullWidth
+            inputProps={{ inputMode: "numeric", pattern: "^\\d{1,2}(:[0-5]\\d)?$" }}
             {...formik.getFieldProps("endTime")}
             error={formik.touched.endTime && Boolean(formik.errors.endTime)}
-            helperText={formik.touched.endTime && formik.errors.endTime}
+            helperText={(formik.touched.endTime && (formik.errors.endTime as string)) || "e.g. 36:15"}
           />
         </div>
 

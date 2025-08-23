@@ -17,10 +17,30 @@ interface AddClipProps {
   matchUrl?: string;
 }
 export const parseTimeToSeconds = (value: string): number => {
-  const [minStr, secStr] = value.split(":");
-  const minutes = parseInt(minStr);
-  const seconds = parseInt(secStr);
-  return (minutes || 0) * 60 + (seconds || 0);
+  if (!value) return 0;
+  const cleaned = value.trim().replace(/\s+/g, "").replace(".", ":");
+  if (!cleaned) return 0;
+
+  const parts = cleaned.split(":");
+
+  // m, mm or ss only => treat as minutes
+  if (parts.length === 1) {
+    const m = parseInt(parts[0] || "0", 10) || 0;
+    return m * 60;
+  }
+
+  // mm:ss
+  if (parts.length === 2) {
+    const m = parseInt(parts[0] || "0", 10) || 0;
+    const s = parseInt(parts[1] || "0", 10) || 0;
+    return m * 60 + s;
+  }
+
+  // hh:mm:ss (just in case)
+  const h = parseInt(parts[0] || "0", 10) || 0;
+  const m = parseInt(parts[1] || "0", 10) || 0;
+  const s = parseInt(parts[2] || "0", 10) || 0;
+  return h * 3600 + m * 60 + s;
 };
 const AddClip: React.FC<AddClipProps> = ({ onSuccess, onCancel, matchId, matchUrl }) => {
     
@@ -33,7 +53,24 @@ const AddClip: React.FC<AddClipProps> = ({ onSuccess, onCancel, matchId, matchUr
   const validationSchema = useMemo(() => {
     return yup.object({
       name: yup.string().required(t("static.required")),
-      videoUrl: mode === "external" ? yup.string().url(t("static.invalidUrl")).required(t("static.required")) : yup.string(),
+      videoUrl:
+        mode === "external"
+          ? yup.string().url(t("static.invalidUrl")).required(t("static.required"))
+          : yup.string(),
+      startTime: yup
+        .string()
+        .when([], {
+          is: () => mode === "external",
+          then: (schema) => schema.matches(/^\d{1,2}(:[0-5]\d)?$/, t("static.required")).optional(),
+          otherwise: (schema) => schema.optional(),
+        }),
+      endTime: yup
+        .string()
+        .when([], {
+          is: () => mode === "external",
+          then: (schema) => schema.matches(/^\d{1,2}(:[0-5]\d)?$/, t("static.required")).optional(),
+          otherwise: (schema) => schema.optional(),
+        }),
     });
   }, [mode]);
 
@@ -91,19 +128,27 @@ const AddClip: React.FC<AddClipProps> = ({ onSuccess, onCancel, matchId, matchUr
           <div className="flex gap-3">
             <TextField
               label={t("static.startTimeSeconds")}
-              type="time"
+              placeholder="mm:ss or m"
               fullWidth
+              inputProps={{ inputMode: "numeric", pattern: "^\\d{1,2}(:[0-5]\\d)?$" }}
               {...formik.getFieldProps("startTime")}
               error={formik.touched.startTime && Boolean(formik.errors.startTime)}
-              helperText={formik.touched.startTime && formik.errors.startTime}
+              helperText={
+                (formik.touched.startTime && (formik.errors.startTime as string)) ||
+                "e.g. 34:00 or 34"
+              }
             />
             <TextField
               label={t("static.endTimeSeconds")}
-              type="time"
+              placeholder="mm:ss or m"
               fullWidth
+              inputProps={{ inputMode: "numeric", pattern: "^\\d{1,2}(:[0-5]\\d)?$" }}
               {...formik.getFieldProps("endTime")}
               error={formik.touched.endTime && Boolean(formik.errors.endTime)}
-              helperText={formik.touched.endTime && formik.errors.endTime}
+              helperText={
+                (formik.touched.endTime && (formik.errors.endTime as string)) ||
+                "e.g. 36:15"
+              }
             />
           </div>
         )}

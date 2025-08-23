@@ -228,8 +228,6 @@
   transition: background-color 0.2s ease;
 }
 
-
-
 .coach-avatar {
   width: 36px;
   height: 36px;
@@ -262,7 +260,9 @@
   width: 100%;
 }
 
-
+.swal2-container {
+  z-index: 1599 !important;
+}
 
 .header-content {
   display: flex;
