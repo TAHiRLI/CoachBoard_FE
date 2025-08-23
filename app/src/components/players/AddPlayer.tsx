@@ -113,7 +113,7 @@ const AddPlayer: React.FC<AddPlayerProps> = ({ onSuccess, onCancel }) => {
           <MenuItem value="">None</MenuItem>
           {teams.map((team) => (
             <MenuItem key={team.id} value={team.id}>
-              {team.name}
+              {team.clubName} - {team.name}
             </MenuItem>
           ))}
         </TextField>

@@ -122,6 +122,13 @@
 
     "createTeam": "Create Team",
     "editTeam": "Edit Team",
+    "invalidEmail": "Invalid email format",
+
+
+    "createCoach": "Create Coach",
+    "editCoach": "Edit Coach",
+    "fullName": "Full Name",
+    "clubTeam": "Club-Team",
 
     "recieveAutoSmartReminder": "Recieve Auto Smart Reminders",
     "recieveAutoSmartReminderDesc": "Mustscan AI agent generates Reminders when file is uploaded by managers"

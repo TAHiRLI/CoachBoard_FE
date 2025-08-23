@@ -1,6 +1,7 @@
 import { AdminPage } from "@/pages/testPages/testPages";
 import ClipDetailsPage from "@/pages/clips/clipDetailsPage";
 import ClubsPage from "@/pages/clubs/clubsPage";
+import CoachesPage from "@/pages/coaches/CoachesPage";
 import EpisodesPage from "@/pages/episodes/episodesPage";
 import ForgotPasswordPage from "@/pages/login/forgotPassword";
 import HomePage from "@/pages/home/homePage";
@@ -76,6 +77,18 @@ export const router = createBrowserRouter([
         <PrivateRoute>
           <Layout pageTitle="static.teams">
             <TeamsPage />
+          </Layout>
+        </PrivateRoute>
+      </>
+    ),
+  },
+  {
+    path: Routes.Coaches.Base,
+    element: (
+      <>
+        <PrivateRoute>
+          <Layout pageTitle="static.coaches">
+            <CoachesPage />
           </Layout>
         </PrivateRoute>
       </>

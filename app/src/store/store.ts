@@ -5,6 +5,7 @@ import { persistReducer, persistStore } from "redux-persist";
 import authSlice from "./slices/auth.slice";
 import clipsSlice from "./slices/clips.slice";
 import clubsSlice from "./slices/clubs.slice";
+import coachesSlice from "./slices/coaches.slice";
 import episodesSlice from "./slices/episodes.slice";
 import evaluationsSlice from "./slices/evaluations.slice";
 import matchesSlice from "./slices/matches.slice";
@@ -34,6 +35,7 @@ const rootReducer = combineReducers({
   evaluationData: evaluationsSlice.reducer,
   episodeData: episodesSlice.reducer,
   participationData: participationslice.reducer,
+  coachData: coachesSlice.reducer,
 });
 
 // Wrap rootReducer with persistReducer

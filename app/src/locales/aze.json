@@ -106,6 +106,11 @@
     "createTeam": "Komanda yarat",
     "editTeam": "Komandanı redaktə et",
 
+    "createCoach": "Məşqçi yarat",
+    "editCoach": "Məşqçini redaktə et",
+    "fullName": "Ad Soyad",
+    "clubTeam": "Klub-Komanda",
+    "invalidEmail": "Email formatı düzgün deyil",
     "addCompany": "Add Company",
     "editCompany": "Edit Company",
     "addUser": "Add User",
