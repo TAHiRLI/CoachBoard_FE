@@ -11,8 +11,10 @@ import RowActions from "../rowActions/rowActions";
 import StyledDataGrid from "../styledDatagrid/styledDatagrid";
 import Swal from "sweetalert2";
 import { Team } from "@/lib/types/teams.types";
+import { useTranslation } from "react-i18next";
 
 const TeamsList = () => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { teams, selectedTeam, loading, error } = useAppSelector((s) => s.teamData);
   const [editOpen, setEditOpen] = useState(false);
@@ -29,11 +31,13 @@ const TeamsList = () => {
   const handleDelete = useCallback(
     (id: string) => {
       Swal.fire({
-        title: "Are you sure?",
-        text: "This cannot be undone!",
+        title: t("static.areYouSure"),
+        text: t("static.cannotBeUndone"),
         icon: "warning",
         showCancelButton: true,
-        confirmButtonText: "Yes, delete it!",
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: t("static.yesDeleteIt"),
       }).then((result) => {
         if (result.isConfirmed) {
           dispatch(deleteTeam(id));
@@ -49,19 +53,24 @@ const TeamsList = () => {
 
   const columns = useMemo<GridColDef[]>(
     () => [
-      { field: "name", headerName: "Name", flex: 1 },
-      { field: "league", headerName: "League", flex: 1 },
-      { field: "clubName", headerName: "Club", flex: 1 },
+      { field: "name", headerName: t("static.name"), flex: 1 },
+      { field: "league", headerName: t("static.league"), flex: 1 },
+      { field: "clubName", headerName: t("static.club"), flex: 1 },
       {
         field: "actions",
-        headerName: "Actions",
+        headerName: t("static.actions"),
         sortable: false,
         width: 100,
         renderCell: (params) => (
           <RowActions
             actions={[
-              { icon: <Edit />, label: "Edit", onClick: () => handleEdit(params.row) },
-              { icon: <Delete />, label: "Delete", onClick: () => handleDelete(params.row.id), color: "error" },
+              { icon: <Edit color="info" />, label: t("static.edit"), onClick: () => handleEdit(params.row) },
+              {
+                icon: <Delete color="error" />,
+                label: t("static.delete"),
+                onClick: () => handleDelete(params.row.id),
+                color: "error",
+              },
             ]}
           />
         ),

@@ -8,6 +8,7 @@ import { Save } from "@mui/icons-material";
 import { createTeam } from "@/store/slices/teams.slice";
 import { fetchClubs } from "@/store/slices/clubs.slice";
 import { useFormik } from "formik";
+import { useTranslation } from "react-i18next";
 
 interface AddTeamProps {
   onSuccess?: () => void;
@@ -15,6 +16,7 @@ interface AddTeamProps {
 }
 
 const AddTeam: React.FC<AddTeamProps> = ({ onSuccess, onCancel }) => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { clubs } = useAppSelector((s) => s.clubData);
   const { loading } = useAppSelector((s) => s.teamData);
@@ -25,9 +27,9 @@ const AddTeam: React.FC<AddTeamProps> = ({ onSuccess, onCancel }) => {
 
   const validationSchema = useMemo(() => {
     return yup.object({
-      name: yup.string().required("Required"),
-      league: yup.string().required("Required"),
-      clubId: yup.number().required("Required"),
+      name: yup.string().required(t("static.required")),
+      league: yup.string().required(t("static.required")),
+      clubId: yup.number().required(t("static.required")),
     });
   }, []);
 
@@ -46,17 +48,17 @@ const AddTeam: React.FC<AddTeamProps> = ({ onSuccess, onCancel }) => {
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <h1 className="text-2xl my-2 text-center font-bold">Create Team</h1>
+      <h1 className="text-2xl my-2 text-center font-bold">{t("static.createTeam")}</h1>
       <div className="flex flex-col gap-3">
         <TextField
-          label="Name"
+          label={t("static.name")}
           fullWidth
           {...formik.getFieldProps("name")}
           error={formik.touched.name && Boolean(formik.errors.name)}
           helperText={formik.touched.name && formik.errors.name}
         />
         <TextField
-          label="League"
+          label={t("static.league")}
           fullWidth
           {...formik.getFieldProps("league")}
           error={formik.touched.league && Boolean(formik.errors.league)}
@@ -64,7 +66,7 @@ const AddTeam: React.FC<AddTeamProps> = ({ onSuccess, onCancel }) => {
         />
         <TextField
           select
-          label="Club"
+          label={t("static.club")}
           fullWidth
           {...formik.getFieldProps("clubId")}
           error={formik.touched.clubId && Boolean(formik.errors.clubId)}
@@ -78,10 +80,10 @@ const AddTeam: React.FC<AddTeamProps> = ({ onSuccess, onCancel }) => {
         </TextField>
         <div className="flex justify-end gap-3">
           <Button onClick={onCancel} color="warning" variant="contained">
-            Cancel
+            {t("static.cancel")}
           </Button>
           <Button type="submit" variant="contained" startIcon={<Save />} disabled={loading}>
-            Save
+            {t("static.save")}
           </Button>
         </div>
       </div>

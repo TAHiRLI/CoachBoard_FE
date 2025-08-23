@@ -74,7 +74,7 @@ export const router = createBrowserRouter([
     element: (
       <>
         <PrivateRoute>
-          <Layout pageTitle="Teams">
+          <Layout pageTitle="static.teams">
             <TeamsPage />
           </Layout>
         </PrivateRoute>

@@ -100,8 +100,12 @@
     "editSeason": "Mövsümü redaktə et",
     "editClub": "Klubu redaktə et",
     "logo": "Loqo",
-
+    "league": "Liqa",
+    "club": "Klub",
     "incorrectUsername": "Incorrect Username",
+    "createTeam": "Komanda yarat",
+    "editTeam": "Komandanı redaktə et",
+
     "addCompany": "Add Company",
     "editCompany": "Edit Company",
     "addUser": "Add User",

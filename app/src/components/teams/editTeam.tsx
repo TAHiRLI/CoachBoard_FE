@@ -9,6 +9,7 @@ import { Team } from "@/lib/types/teams.types";
 import { fetchClubs } from "@/store/slices/clubs.slice";
 import { updateTeam } from "@/store/slices/teams.slice";
 import { useFormik } from "formik";
+import { useTranslation } from "react-i18next";
 
 interface EditTeamProps {
   team: Team;
@@ -17,6 +18,7 @@ interface EditTeamProps {
 }
 
 const EditTeam: React.FC<EditTeamProps> = ({ team, onSuccess, onCancel }) => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { clubs } = useAppSelector((s) => s.clubData);
   const { loading } = useAppSelector((s) => s.teamData);
@@ -27,9 +29,9 @@ const EditTeam: React.FC<EditTeamProps> = ({ team, onSuccess, onCancel }) => {
 
   const validationSchema = useMemo(() => {
     return yup.object({
-      name: yup.string().required("Required"),
-      league: yup.string().required("Required"),
-      clubId: yup.number().required("Required"),
+      name: yup.string().required(t("static.required")),
+      league: yup.string().required(t("static.required")),
+      clubId: yup.number().required(t("static.required")),
     });
   }, []);
 
@@ -52,17 +54,17 @@ const EditTeam: React.FC<EditTeamProps> = ({ team, onSuccess, onCancel }) => {
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <h1 className="text-2xl my-2 text-center font-bold">Edit Team</h1>
+      <h1 className="text-2xl my-2 text-center font-bold">{t("static.editTeam")}</h1>
       <div className="flex flex-col gap-3">
         <TextField
-          label="Name"
+          label={t("static.name")}
           fullWidth
           {...formik.getFieldProps("name")}
           error={formik.touched.name && Boolean(formik.errors.name)}
           helperText={formik.touched.name && formik.errors.name}
         />
         <TextField
-          label="League"
+          label={t("static.league")}
           fullWidth
           {...formik.getFieldProps("league")}
           error={formik.touched.league && Boolean(formik.errors.league)}
@@ -70,7 +72,7 @@ const EditTeam: React.FC<EditTeamProps> = ({ team, onSuccess, onCancel }) => {
         />
         <TextField
           select
-          label="Club"
+          label={t("static.club")}
           fullWidth
           {...formik.getFieldProps("clubId")}
           error={formik.touched.clubId && Boolean(formik.errors.clubId)}
@@ -83,8 +85,12 @@ const EditTeam: React.FC<EditTeamProps> = ({ team, onSuccess, onCancel }) => {
           ))}
         </TextField>
         <div className="flex justify-end gap-3">
-          <Button onClick={onCancel} color="warning" variant="contained">Cancel</Button>
-          <Button type="submit" variant="contained" startIcon={<Edit />} disabled={loading}>Save</Button>
+          <Button onClick={onCancel} color="warning" variant="contained">
+            {t("static.cancel")}
+          </Button>
+          <Button type="submit" variant="contained" startIcon={<Edit />} disabled={loading}>
+            {t("static.save")}
+          </Button>
         </div>
       </div>
     </form>

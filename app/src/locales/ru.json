@@ -76,10 +76,15 @@
     "editSeason": "Редактировать сезон",
     "editClub": "Редактировать клуб",
     "logo": "Логотип",
-
+    "league": "Лига",
+    "club": "Клуб",
     "match": "Матч",
     "coach": "Тренер",
     "notAvailable": "Нет данных",
+
+    "createTeam": "Создать команду",
+"editTeam": "Редактировать команду",
+
     "episode": "Эпизод",
     "occurrenceCount": "Количество случаев",
     "critical": "Критично",
