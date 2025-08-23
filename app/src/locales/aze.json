@@ -80,10 +80,17 @@
     "link": "Keçid",
     "finalScore": "Yekun Hesab",
     "addParticipation": "İştirak əlavə et",
-
-
-
-
+    "clip": "Klip",
+    "duration": "Müddət",
+    "match": "Oyun",
+    "coach": "Məşqçi",
+    "notAvailable": "Məlum deyil",
+    "editClip": "Klipi redaktə et",
+    "clipSource": "Klip mənbəyi",
+    "uploadVideo": "Video yüklə",
+    "youtubeExternalUrl": "YouTube / Xarici URL",
+    "startTimeSeconds": "Başlama vaxtı (s)",
+    "endTimeSeconds": "Bitmə vaxtı (s)",
 
     "incorrectUsername": "Incorrect Username",
     "addCompany": "Add Company",

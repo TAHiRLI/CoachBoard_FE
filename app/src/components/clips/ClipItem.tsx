@@ -46,18 +46,18 @@ const ClipItem: React.FC<ClipItemProps> = ({ clip }) => {
     (id: string) => {
       if (!id) return;
       Swal.fire({
-        title: t("messages:areYouSure"),
-        text: t("messages:unableToRevert"),
+        title: t("static.areYouSure"),
+        text: t("static.cannotBeUndone"),
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: t("messages:yesDelete"),
+        confirmButtonText: t("static.yesDeleteIt"),
       }).then(async (result) => {
         if (result.isConfirmed) {
           dispatch(deleteClip(id))
             .unwrap()
-            .then(() => Swal.fire("Success", "", "success"));
+            .then(() => Swal.fire(t("static.success"), "", "success"));
         }
       });
     },
@@ -68,7 +68,7 @@ const ClipItem: React.FC<ClipItemProps> = ({ clip }) => {
     <Card elevation={0} sx={{ display: "flex", flexDirection: "column", p: 2, gap: 2, position: "relative" }}>
       <Link to={`/clips/${clip.id}`}>
         <p className="whitespace-nowrap overflow-hidden text-md" color="primary">
-          🎬 Clip #{clip.id}: {clip.name}
+          🎬 {t("static.clip")} #{clip.id}: {clip.name}
         </p>
       </Link>
       {clip.isExternal ? (
@@ -98,10 +98,10 @@ const ClipItem: React.FC<ClipItemProps> = ({ clip }) => {
 
       <CardContent sx={{ paddingBottom: "0.5rem !important" }}>
         <Typography variant="body2" color="text.secondary">
-          {formatSeconds(Number(clip.startTime))} - {formatSeconds(Number(clip.endTime))} • Duration: {getDuration()}
+          {formatSeconds(Number(clip.startTime))} - {formatSeconds(Number(clip.endTime))} • {t("static.duration")}: {getDuration()}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          Match: {clip.matchName || "N/A"} • Coach: {clip.coachName}
+          {t("static.match")}: {clip.matchName || "N/A"} • {t("static.coach")}: {clip.coachName}
         </Typography>
       </CardContent>
 
@@ -110,13 +110,13 @@ const ClipItem: React.FC<ClipItemProps> = ({ clip }) => {
           actions={[
             {
               icon: <Edit fontSize="small" />,
-              label: "Edit",
+              label: t("static.edit"),
               onClick: handleEdit,
               color: "warning",
             },
             {
               icon: <Delete fontSize="small" />,
-              label: "Delete",
+              label: t("static.delete"),
               onClick: () => handleDelete(clip.id),
               color: "error",
             },

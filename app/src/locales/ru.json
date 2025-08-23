@@ -65,11 +65,19 @@
     "link": "Ссылка",
     "addParticipation": "Добавить участие",
 
+    "clip": "Клип",
+    "duration": "Длительность",
+    "match": "Матч",
+    "coach": "Тренер",
+    "notAvailable": "Нет данных",
 
+    "editClip": "Редактировать клип",
+    "clipSource": "Источник клипа",
+    "uploadVideo": "Загрузить видео",
+    "youtubeExternalUrl": "YouTube / Внешняя ссылка",
+    "startTimeSeconds": "Начало (с)",
+    "endTimeSeconds": "Конец (с)",
 
-
-
-    
     "finalScore": "Окончательный счёт"
   }
 }

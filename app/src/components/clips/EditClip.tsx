@@ -9,6 +9,7 @@ import { Edit } from "@mui/icons-material";
 import { parseTimeToSeconds } from "./AddClip";
 import { updateClip } from "@/store/slices/clips.slice";
 import { useFormik } from "formik";
+import { useTranslation } from "react-i18next";
 
 interface EditClipProps {
   clip: Clip;
@@ -21,6 +22,8 @@ export const formatSeconds = (seconds: number): string => {
   return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
 };
 const EditClip: React.FC<EditClipProps> = ({ clip, onSuccess, onCancel }) => {
+    
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { loading } = useAppSelector((s) => s.clipData);
   const [mode, setMode] = useState<"external" | "upload">(clip.isExternal ? "external" : "upload");
@@ -28,7 +31,7 @@ const EditClip: React.FC<EditClipProps> = ({ clip, onSuccess, onCancel }) => {
   const validationSchema = useMemo(() => {
     return yup.object({
       name: yup.string().required("Required"),
-      videoUrl: mode === "external" ? yup.string().url("Invalid URL").required("Required") : yup.string(),
+      videoUrl: mode === "external" ? yup.string().url(t("static.invalidUrl")).required(t("static.required")) : yup.string(),
     });
   }, [mode]);
 
@@ -62,11 +65,11 @@ const EditClip: React.FC<EditClipProps> = ({ clip, onSuccess, onCancel }) => {
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <h2 className="text-xl font-bold text-center mb-4">Edit Clip</h2>
+      <h2 className="text-xl font-bold text-center mb-4">{t("static.editClip")}</h2>
 
       <div className="flex flex-col gap-3">
         <TextField
-          label="Name"
+          label={t("static.name")}
           fullWidth
           {...formik.getFieldProps("name")}
           error={formik.touched.name && Boolean(formik.errors.name)}
@@ -75,18 +78,18 @@ const EditClip: React.FC<EditClipProps> = ({ clip, onSuccess, onCancel }) => {
 
         <TextField
           select
-          label="Clip Source"
+          label={t("static.clipSource")}
           fullWidth
           value={mode}
           onChange={(e) => setMode(e.target.value as "external" | "upload")}
         >
-          <MenuItem value="upload">Upload Video</MenuItem>
-          <MenuItem value="external">YouTube / External URL</MenuItem>
+          <MenuItem value="upload">{t("static.uploadVideo")}</MenuItem>
+          <MenuItem value="external">{t("static.youtubeExternalUrl")}</MenuItem>
         </TextField>
 
         <div className="flex gap-3">
           <TextField
-            label="Start Time (s)"
+            label={t("static.startTimeSeconds")}
             type="time"
             fullWidth
             {...formik.getFieldProps("startTime")}
@@ -94,7 +97,7 @@ const EditClip: React.FC<EditClipProps> = ({ clip, onSuccess, onCancel }) => {
             helperText={formik.touched.startTime && formik.errors.startTime}
           />
           <TextField
-            label="End Time (s)"
+            label={t("static.endTimeSeconds")}
             type="time"
             fullWidth
             {...formik.getFieldProps("endTime")}
@@ -105,7 +108,7 @@ const EditClip: React.FC<EditClipProps> = ({ clip, onSuccess, onCancel }) => {
 
         {mode === "external" ? (
           <TextField
-            label="YouTube / External URL"
+            label={t("static.youtubeExternalUrl")}
             fullWidth
             {...formik.getFieldProps("videoUrl")}
             error={formik.touched.videoUrl && Boolean(formik.errors.videoUrl)}
@@ -121,10 +124,10 @@ const EditClip: React.FC<EditClipProps> = ({ clip, onSuccess, onCancel }) => {
 
         <div className="flex justify-end gap-3 mt-3">
           <Button onClick={onCancel} color="warning" variant="contained">
-            Cancel
+            {t("static.cancel")}
           </Button>
           <Button type="submit" variant="contained" startIcon={<Edit />} disabled={loading}>
-            Save
+            {t("static.save")}
           </Button>
         </div>
       </div>

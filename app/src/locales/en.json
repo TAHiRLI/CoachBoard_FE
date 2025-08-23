@@ -63,17 +63,20 @@
     "note": "Note",
     "link": "Link",
     "finalScore": "Final Score",
-"addParticipation": "Add Participation",
+    "addParticipation": "Add Participation",
 
+    "clip": "Clip",
+    "duration": "Duration",
+    "match": "Match",
+    "coach": "Coach",
+    "notAvailable": "N/A",
 
-
-
-
-
-
-
-
-
+    "editClip": "Edit Clip",
+    "clipSource": "Clip Source",
+    "uploadVideo": "Upload Video",
+    "youtubeExternalUrl": "YouTube / External URL",
+    "startTimeSeconds": "Start Time (s)",
+    "endTimeSeconds": "End Time (s)",
 
     "autoEmails": "Auto Emails",
     "autoEmailsDescription": "When enabled, Auto Emails automatically send a push notification each time a reminder is triggered.",

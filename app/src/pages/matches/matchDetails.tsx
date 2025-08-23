@@ -28,19 +28,24 @@ const MatchDetailsPage = () => {
 
   return (
     <div>
-      <div className="my-3 justify-end flex">
-        <Button onClick={() => setIsOpen(true)} variant="contained" startIcon={<Add />}>
-          {t("static.addClip")}
-        </Button>
-      </div>
-
       <h1 className="page-title">
         {selectedMatch?.homeTeam.teamName} vs {selectedMatch?.awayTeam.teamName}
       </h1>
       <p className="page-subtitle">{t("static.matchAnalysisSubtitle")}</p>
 
       <div className="my-4">{selectedMatch && <MatchInfoCard match={selectedMatch} />}</div>
-      <div className="my-4">{selectedMatch && <MatchClips match={selectedMatch} />}</div>
+      <div className="my-4">
+        {selectedMatch && (
+          <div className="">
+            <div className="my-3 justify-end flex">
+              <Button onClick={() => setIsOpen(true)} variant="contained" startIcon={<Add />}>
+                {t("static.addClip")}
+              </Button>
+            </div>
+            <MatchClips match={selectedMatch} />{" "}
+          </div>
+        )}
+      </div>
       <div className="my-4">{selectedMatch && <MatchParticipations match={selectedMatch} />}</div>
 
       <CustomModal open={isOpen} setOpen={setIsOpen}>
