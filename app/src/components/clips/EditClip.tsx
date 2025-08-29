@@ -19,8 +19,12 @@ interface EditClipProps {
 }
 
 export const formatSeconds = (seconds: number): string => {
-  const m = Math.floor(seconds / 60);
+  const h = Math.floor(seconds / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
   const s = seconds % 60;
+  if (h > 0) {
+    return `${h}:${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
+  }
   return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
 };
 
@@ -29,6 +33,12 @@ const EditClip: React.FC<EditClipProps> = ({ clip, onCancel }) => {
   const dispatch = useAppDispatch();
   const { loading } = useAppSelector((s) => s.clipData);
   const [mode, setMode] = useState<"external" | "upload">(clip.isExternal ? "external" : "upload");
+
+  // Accepts:
+  // - "34" (minutes only)
+  // - "12:34" (mm:ss)
+  // - "1:12:34" (hh:mm:ss)
+  const timeRegex = /^(\d{1,2}:)?[0-5]?\d:[0-5]\d$|^\d+$/;
 
   const validationSchema = useMemo(() => {
     return yup.object({
@@ -42,15 +52,16 @@ const EditClip: React.FC<EditClipProps> = ({ clip, onCancel }) => {
           : yup.string(),
       startTime: yup.string().when([], {
         is: () => mode === "external",
-        then: (schema) => schema.matches(/^\d{1,2}(:[0-5]\d)?$/, t("static.required")).optional(),
+        then: (schema) => schema.matches(timeRegex, t("static.required")).optional(),
         otherwise: (schema) => schema.optional(),
       }),
       endTime: yup.string().when([], {
         is: () => mode === "external",
-        then: (schema) => schema.matches(/^\d{1,2}(:[0-5]\d)?$/, t("static.required")).optional(),
+        then: (schema) => schema.matches(timeRegex, t("static.required")).optional(),
         otherwise: (schema) => schema.optional(),
       }),
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mode, t]);
 
   const formik = useFormik<ClipPutDto>({
@@ -71,6 +82,7 @@ const EditClip: React.FC<EditClipProps> = ({ clip, onCancel }) => {
           id: clip.id,
           dto: {
             ...values,
+            isExternal: mode === "external",
             startTime: parseTimeToSeconds(values.startTime?.toString()).toString(),
             endTime: parseTimeToSeconds(values.endTime?.toString()).toString(),
           },
@@ -80,7 +92,6 @@ const EditClip: React.FC<EditClipProps> = ({ clip, onCancel }) => {
         .then(() => {
           Swal.fire(t("static.success"), "", "success");
         });
-      // .then(() => onSuccess?.());
     },
   });
 
@@ -111,21 +122,26 @@ const EditClip: React.FC<EditClipProps> = ({ clip, onCancel }) => {
         <div className="flex gap-3">
           <TextField
             label={t("static.startTimeSeconds")}
-            placeholder="mm:ss or m"
+            placeholder="hh:mm:ss or mm:ss or m"
             fullWidth
-            inputProps={{ inputMode: "numeric", pattern: "^\\d{1,2}(:[0-5]\\d)?$" }}
+            inputProps={{ inputMode: "numeric", pattern: "(^([0-9]{1,2}:)?[0-5]?\\d:[0-5]\\d$)|(^\\d+$)" }}
             {...formik.getFieldProps("startTime")}
             error={formik.touched.startTime && Boolean(formik.errors.startTime)}
-            helperText={(formik.touched.startTime && (formik.errors.startTime as string)) || "e.g. 34:00 or 34"}
+            helperText={
+              (formik.touched.startTime && (formik.errors.startTime as string)) ||
+              "e.g. 01:12:34, 34:00 or 34"
+            }
           />
           <TextField
             label={t("static.endTimeSeconds")}
-            placeholder="mm:ss or m"
+            placeholder="hh:mm:ss or mm:ss or m"
             fullWidth
-            inputProps={{ inputMode: "numeric", pattern: "^\\d{1,2}(:[0-5]\\d)?$" }}
+            inputProps={{ inputMode: "numeric", pattern: "(^([0-9]{1,2}:)?[0-5]?\\d:[0-5]\\d$)|(^\\d+$)" }}
             {...formik.getFieldProps("endTime")}
             error={formik.touched.endTime && Boolean(formik.errors.endTime)}
-            helperText={(formik.touched.endTime && (formik.errors.endTime as string)) || "e.g. 36:15"}
+            helperText={
+              (formik.touched.endTime && (formik.errors.endTime as string)) || "e.g. 01:15:00 or 36:15"
+            }
           />
         </div>
 
@@ -154,7 +170,7 @@ const EditClip: React.FC<EditClipProps> = ({ clip, onCancel }) => {
           </Button>
         </div>
       </div>
-    </form>
+  </form>
   );
 };
 

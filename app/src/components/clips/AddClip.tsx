@@ -16,6 +16,7 @@ interface AddClipProps {
   matchId?: string;
   matchUrl?: string;
 }
+
 export const parseTimeToSeconds = (value: string): number => {
   if (!value) return 0;
   const cleaned = value.trim().replace(/\s+/g, "").replace(".", ":");
@@ -36,19 +37,26 @@ export const parseTimeToSeconds = (value: string): number => {
     return m * 60 + s;
   }
 
-  // hh:mm:ss (just in case)
+  // hh:mm:ss
   const h = parseInt(parts[0] || "0", 10) || 0;
   const m = parseInt(parts[1] || "0", 10) || 0;
   const s = parseInt(parts[2] || "0", 10) || 0;
   return h * 3600 + m * 60 + s;
 };
+
 const AddClip: React.FC<AddClipProps> = ({ onSuccess, onCancel, matchId, matchUrl }) => {
-    
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { loading } = useAppSelector((s) => s.clipData);
   const { user } = useAppSelector((s) => s.auth);
   const [mode, setMode] = useState<"external" | "upload">("external");
+
+  // Accepts:
+  // - "34" (minutes only)
+  // - "12:34" (mm:ss)
+  // - "1:12:34" (hh:mm:ss)
+  const timeRegex = /^(\d{1,2}:)?[0-5]?\d:[0-5]\d$|^\d+$/;
+  const timePatternAttr = "(^([0-9]{1,2}:)?[0-5]?\\d:[0-5]\\d$)|(^\\d+$)";
 
   const validationSchema = useMemo(() => {
     return yup.object({
@@ -61,18 +69,18 @@ const AddClip: React.FC<AddClipProps> = ({ onSuccess, onCancel, matchId, matchUr
         .string()
         .when([], {
           is: () => mode === "external",
-          then: (schema) => schema.matches(/^\d{1,2}(:[0-5]\d)?$/, t("static.required")).optional(),
+          then: (schema) => schema.matches(timeRegex, t("static.required")).optional(),
           otherwise: (schema) => schema.optional(),
         }),
       endTime: yup
         .string()
         .when([], {
           is: () => mode === "external",
-          then: (schema) => schema.matches(/^\d{1,2}(:[0-5]\d)?$/, t("static.required")).optional(),
+          then: (schema) => schema.matches(timeRegex, t("static.required")).optional(),
           otherwise: (schema) => schema.optional(),
         }),
     });
-  }, [mode]);
+  }, [mode, t]);
 
   const formik = useFormik<ClipPostDto>({
     initialValues: {
@@ -83,7 +91,7 @@ const AddClip: React.FC<AddClipProps> = ({ onSuccess, onCancel, matchId, matchUr
       endTime: "0",
       videoUrl: matchUrl ?? "",
       videoFile: undefined,
-      isExternal: mode == "external",
+      isExternal: mode === "external",
       isExample: false,
     },
     validationSchema,
@@ -91,6 +99,7 @@ const AddClip: React.FC<AddClipProps> = ({ onSuccess, onCancel, matchId, matchUr
       dispatch(
         createClip({
           ...values,
+          isExternal: mode === "external",
           startTime: parseTimeToSeconds(values.startTime?.toString()).toString(),
           endTime: parseTimeToSeconds(values.endTime?.toString()).toString(),
         })
@@ -102,6 +111,7 @@ const AddClip: React.FC<AddClipProps> = ({ onSuccess, onCancel, matchId, matchUr
         });
     },
   });
+
   return (
     <form onSubmit={formik.handleSubmit}>
       <h2 className="text-xl font-bold text-center mb-4">{t("static.createClip")}</h2>
@@ -114,6 +124,7 @@ const AddClip: React.FC<AddClipProps> = ({ onSuccess, onCancel, matchId, matchUr
           error={formik.touched.name && Boolean(formik.errors.name)}
           helperText={formik.touched.name && formik.errors.name}
         />
+
         <TextField
           select
           label={t("static.clipSource")}
@@ -124,30 +135,31 @@ const AddClip: React.FC<AddClipProps> = ({ onSuccess, onCancel, matchId, matchUr
           <MenuItem value="upload">{t("static.uploadVideo")}</MenuItem>
           <MenuItem value="external">{t("static.youtubeExternalUrl")}</MenuItem>
         </TextField>
+
         {mode === "external" && (
           <div className="flex gap-3">
             <TextField
               label={t("static.startTimeSeconds")}
-              placeholder="mm:ss or m"
+              placeholder="hh:mm:ss or mm:ss or m"
               fullWidth
-              inputProps={{ inputMode: "numeric", pattern: "^\\d{1,2}(:[0-5]\\d)?$" }}
+              inputProps={{ inputMode: "numeric", pattern: timePatternAttr }}
               {...formik.getFieldProps("startTime")}
               error={formik.touched.startTime && Boolean(formik.errors.startTime)}
               helperText={
                 (formik.touched.startTime && (formik.errors.startTime as string)) ||
-                "e.g. 34:00 or 34"
+                "e.g. 01:12:34, 34:00 or 34"
               }
             />
             <TextField
               label={t("static.endTimeSeconds")}
-              placeholder="mm:ss or m"
+              placeholder="hh:mm:ss or mm:ss or m"
               fullWidth
-              inputProps={{ inputMode: "numeric", pattern: "^\\d{1,2}(:[0-5]\\d)?$" }}
+              inputProps={{ inputMode: "numeric", pattern: timePatternAttr }}
               {...formik.getFieldProps("endTime")}
               error={formik.touched.endTime && Boolean(formik.errors.endTime)}
               helperText={
                 (formik.touched.endTime && (formik.errors.endTime as string)) ||
-                "e.g. 36:15"
+                "e.g. 01:15:00 or 36:15"
               }
             />
           </div>
