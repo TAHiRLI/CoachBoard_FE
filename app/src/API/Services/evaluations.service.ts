@@ -3,7 +3,7 @@ import { Evaluation, EvaluationPostDto, EvaluationPutDto } from "@/lib/types/eva
 import { apiClient } from "../apiClient";
 
 class EvaluationsService {
-  async getAll(params?: { playerId?: string; matchId?: string; episodeId?: string; clipId?: string  }) {
+  async getAll(params?: { playerId?: string; matchId?: string; episodeId?: string; clipId?: string }) {
     return apiClient.get<Evaluation[]>("api/Evaluations", { params });
   }
 
@@ -25,6 +25,9 @@ class EvaluationsService {
 
   async deleteHard(id: string) {
     return apiClient.delete(`api/Evaluations/${id}/hard`);
+  }
+  async getPlayerStats(playerId: string, params?: { episodeId?: string; matchId?: string }) {
+    return apiClient.get(`api/Evaluations/player/${playerId}/stats`, { params });
   }
 }
 

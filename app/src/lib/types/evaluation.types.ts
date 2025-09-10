@@ -37,3 +37,12 @@ export interface EvaluationPutDto {
   couldBeBetter: boolean;
   notes: string;
 }
+
+export interface PlayerStats {
+  playerId: string;
+  total: number;
+  successful: number;
+  episodeName: string;
+  matchName: string;
+  successRate: string;
+}

@@ -8,20 +8,18 @@ import { useMemo, useState } from "react";
 import CustomModal from "@/components/customModal/customModal";
 import EditEvaluation from "./EditEvaluation";
 import { GridColDef } from "@mui/x-data-grid";
+import { Link } from "react-router-dom";
 import RowActions from "@/components/rowActions/rowActions";
 import StyledDataGrid from "@/components/styledDatagrid/styledDatagrid";
 import Swal from "sweetalert2";
 import { useTranslation } from "react-i18next";
 
 const EvaluationsList = () => {
-    
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { evaluations, loading, selectedEvaluation } = useAppSelector((state) => state.evaluationData);
 
   const [editOpen, setEditOpen] = useState(false);
-
-
 
   const handleEdit = (row: any) => {
     dispatch(selectEvaluation(row));
@@ -46,7 +44,7 @@ const EvaluationsList = () => {
 
   const columns: GridColDef[] = useMemo(
     () => [
-      { field: "playerName", headerName:t("static.player"), flex: 1 },
+      { field: "playerName", headerName: t("static.player"), flex: 1 },
       { field: "episodeName", headerName: t("static.episode"), flex: 1 },
       { field: "occurrenceCount", headerName: t("static.occurrenceCount"), flex: 1 },
       {
@@ -90,6 +88,12 @@ const EvaluationsList = () => {
           </Tooltip>
         ),
       },
+      {
+        field: "clip",
+        headerName: t("static.clip"),
+        flex: 1.5,
+        renderCell: (params) => <Link to={`/clips/${params.row.clipId}`}>{t("static.clip")}</Link>,
+      },
       { field: "coachName", headerName: t("static.coach"), flex: 1 },
       {
         field: "actions",
@@ -118,7 +122,6 @@ const EvaluationsList = () => {
     ],
     []
   );
-
   return (
     <>
       {loading && <LinearProgress />}

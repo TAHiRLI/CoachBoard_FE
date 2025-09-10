@@ -108,6 +108,7 @@
     "autoSmartReminder": "Auto Smart Reminder",
     "autoSmartReminderDesc": "Mustscan AI agent generates Reminders when file is uploaded by you",
     "addEvaluation": "Add Evaluation",
+    "evaluations": "Evaluations",
     "editEvaluation": "Edit Evaluation",
     "start": "Start",
     "end": "End",
@@ -123,6 +124,9 @@
     "createTeam": "Create Team",
     "editTeam": "Edit Team",
     "invalidEmail": "Invalid email format",
+
+    "total": "Total",
+    "successRate": "Success Rate",
 
     "createCoach": "Create Coach",
     "editCoach": "Edit Coach",
