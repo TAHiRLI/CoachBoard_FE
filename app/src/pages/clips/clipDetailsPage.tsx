@@ -15,12 +15,15 @@ import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 const ClipDetailsPage = () => {
-    
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { selectedClip } = useAppSelector((x) => x.clipData);
   const { selectedMatch } = useAppSelector((state) => state.matchData);
   const { id } = useParams();
+
+  useEffect(() => {
+    if (selectedClip) dispatch(fetchEvaluations({ clipId: selectedClip?.id }));
+  }, [selectedClip]);
 
   useEffect(() => {
     if (!id) return;

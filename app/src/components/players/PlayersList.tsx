@@ -7,12 +7,14 @@ import { useAppDispatch, useAppSelector } from "@/store/store";
 import CustomModal from "../customModal/customModal";
 import EditPlayer from "./EditPlayer";
 import { GridColDef } from "@mui/x-data-grid";
+import { Link } from "react-router-dom";
 import { Player } from "@/lib/types/players.types";
 import RowActions from "../rowActions/rowActions";
 import StyledDataGrid from "../styledDatagrid/styledDatagrid";
 import Swal from "sweetalert2";
 import { apiUrl } from "@/lib/constants/constants";
 import dayjs from "dayjs";
+import { usePlayerPositions } from "@/hooks/usePlayerPositions";
 import { useTranslation } from "react-i18next";
 
 const PlayersList: React.FC = () => {
@@ -21,6 +23,7 @@ const PlayersList: React.FC = () => {
   const { players, selectedPlayer, loading, error } = useAppSelector((state) => state.playerData);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
+  const playerPositions = usePlayerPositions();
 
   useEffect(() => {
     dispatch(fetchPlayers());
@@ -79,8 +82,28 @@ const PlayersList: React.FC = () => {
           );
         },
       },
-      { field: "fullName", headerName: t("static.fullname"), flex: 1 },
-      { field: "position", headerName: t("static.position"), flex: 1 },
+      {
+        field: "fullName",
+        headerName: t("static.fullname"),
+        flex: 1,
+        minWidth: 240,
+        renderCell: ({ row }) => {
+          return (
+            <Link className="underline" to={`/players/${row.id}`}>
+              {row.fullName}
+            </Link>
+          );
+        },
+      },
+      {
+        field: "position",
+        headerName: t("static.position"),
+        flex: 1,
+        valueGetter: (value) => {
+          console.log("🚀 ~ value:", value);
+          return playerPositions.find((x) => x.value == value)?.label;
+        },
+      },
       {
         field: "birthDate",
         headerName: t("static.birthDate"),

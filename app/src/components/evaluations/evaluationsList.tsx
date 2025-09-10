@@ -1,9 +1,9 @@
 import { Box, LinearProgress, Tooltip, Typography } from "@mui/material";
 import { Cancel, CheckCircle, Delete, Edit } from "@mui/icons-material";
-import { deleteEvaluation, fetchEvaluations, selectEvaluation } from "@/store/slices/evaluations.slice";
+import { deleteEvaluation, selectEvaluation } from "@/store/slices/evaluations.slice";
 import { green, red } from "@mui/material/colors";
 import { useAppDispatch, useAppSelector } from "@/store/store";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 import CustomModal from "@/components/customModal/customModal";
 import EditEvaluation from "./EditEvaluation";
@@ -18,13 +18,10 @@ const EvaluationsList = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { evaluations, loading, selectedEvaluation } = useAppSelector((state) => state.evaluationData);
-  const { selectedClip } = useAppSelector((state) => state.clipData);
 
   const [editOpen, setEditOpen] = useState(false);
 
-  useEffect(() => {
-    dispatch(fetchEvaluations({ clipId: selectedClip?.id }));
-  }, [selectedClip]);
+
 
   const handleEdit = (row: any) => {
     dispatch(selectEvaluation(row));

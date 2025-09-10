@@ -21,6 +21,7 @@ export const Routes = {
   },
   Players: {
     Base: "/Players",
+    Details: "/Players/:playerId",
   },
   Coaches: {
     Base: "/Coaches",
