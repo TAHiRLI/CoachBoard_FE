@@ -92,7 +92,11 @@ const PlayerInfoCard: React.FC<Props> = ({ playerId }) => {
       </CardContent>
       {player.photo && (
         <Box className="flex items-center justify-center p-4">
-          <Avatar src={`${apiUrl}/${player.photo}`} alt={player.fullName} sx={{ width: 180, height: 180 }} />
+          <img
+            src={`${apiUrl}/${player.photo}`}
+            alt={player.fullName}
+            className="w-[180px] h-[180px] object-cover rounded-lg"
+          />{" "}
         </Box>
       )}
     </Card>

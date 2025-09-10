@@ -62,23 +62,17 @@ const AddClip: React.FC<AddClipProps> = ({ onSuccess, onCancel, matchId, matchUr
     return yup.object({
       name: yup.string().required(t("static.required")),
       videoUrl:
-        mode === "external"
-          ? yup.string().url(t("static.invalidUrl")).required(t("static.required"))
-          : yup.string(),
-      startTime: yup
-        .string()
-        .when([], {
-          is: () => mode === "external",
-          then: (schema) => schema.matches(timeRegex, t("static.required")).optional(),
-          otherwise: (schema) => schema.optional(),
-        }),
-      endTime: yup
-        .string()
-        .when([], {
-          is: () => mode === "external",
-          then: (schema) => schema.matches(timeRegex, t("static.required")).optional(),
-          otherwise: (schema) => schema.optional(),
-        }),
+        mode === "external" ? yup.string().url(t("static.invalidUrl")).required(t("static.required")) : yup.string(),
+      startTime: yup.string().when([], {
+        is: () => mode === "external",
+        then: (schema) => schema.matches(timeRegex, t("static.required")).optional(),
+        otherwise: (schema) => schema.optional(),
+      }),
+      endTime: yup.string().when([], {
+        is: () => mode === "external",
+        then: (schema) => schema.matches(timeRegex, t("static.required")).optional(),
+        otherwise: (schema) => schema.optional(),
+      }),
     });
   }, [mode, t]);
 
@@ -146,8 +140,7 @@ const AddClip: React.FC<AddClipProps> = ({ onSuccess, onCancel, matchId, matchUr
               {...formik.getFieldProps("startTime")}
               error={formik.touched.startTime && Boolean(formik.errors.startTime)}
               helperText={
-                (formik.touched.startTime && (formik.errors.startTime as string)) ||
-                "e.g. 01:12:34, 34:00 or 34"
+                (formik.touched.startTime && (formik.errors.startTime as string)) || "e.g. 01:12:34, 34:00 or 34"
               }
             />
             <TextField
@@ -157,10 +150,7 @@ const AddClip: React.FC<AddClipProps> = ({ onSuccess, onCancel, matchId, matchUr
               inputProps={{ inputMode: "numeric", pattern: timePatternAttr }}
               {...formik.getFieldProps("endTime")}
               error={formik.touched.endTime && Boolean(formik.errors.endTime)}
-              helperText={
-                (formik.touched.endTime && (formik.errors.endTime as string)) ||
-                "e.g. 01:15:00 or 36:15"
-              }
+              helperText={(formik.touched.endTime && (formik.errors.endTime as string)) || "e.g. 01:15:00 or 36:15"}
             />
           </div>
         )}
@@ -182,7 +172,7 @@ const AddClip: React.FC<AddClipProps> = ({ onSuccess, onCancel, matchId, matchUr
         )}
 
         <div className="flex justify-end gap-3 mt-3">
-          <Button onClick={onCancel} color="warning" variant="contained">
+          <Button disabled={formik.isSubmitting} onClick={onCancel} color="warning" variant="contained">
             {t("static.cancel")}
           </Button>
           <Button type="submit" variant="contained" startIcon={<Save />} disabled={loading}>

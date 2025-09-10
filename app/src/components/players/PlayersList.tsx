@@ -100,7 +100,6 @@ const PlayersList: React.FC = () => {
         headerName: t("static.position"),
         flex: 1,
         valueGetter: (value) => {
-          console.log("🚀 ~ value:", value);
           return playerPositions.find((x) => x.value == value)?.label;
         },
       },
@@ -149,7 +148,7 @@ const PlayersList: React.FC = () => {
         ),
       },
     ],
-    []
+    [t]
   );
 
   return (
