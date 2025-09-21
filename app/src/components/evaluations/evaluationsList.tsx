@@ -92,7 +92,7 @@ const EvaluationsList = () => {
         field: "clip",
         headerName: t("static.clip"),
         flex: 1.5,
-        renderCell: (params) => <Link to={`/clips/${params.row.clipId}`}>{t("static.clip")}</Link>,
+        renderCell: (params) => <Link target="_blank" to={`/clips/${params.row.clipId}`}>{t("static.clip")}</Link>,
       },
       { field: "coachName", headerName: t("static.coach"), flex: 1 },
       {
