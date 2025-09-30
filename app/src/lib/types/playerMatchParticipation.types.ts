@@ -7,6 +7,7 @@ export type PlayerMatchParticipation = {
   minutesPlayed: number;
   isSuccessful: boolean;
   note: string;
+  score: number;
 };
 
 export type PlayerMatchParticipationPostDto = {
@@ -15,12 +16,14 @@ export type PlayerMatchParticipationPostDto = {
   minutesPlayed: number;
   isSuccessful: boolean;
   note: string;
+  score: number;
 };
 
 export type PlayerMatchParticipationPutDto = {
   minutesPlayed: number;
   isSuccessful: boolean;
   note: string;
+  score: number;
 };
 
 export type PlayerMatchParticipationState = {

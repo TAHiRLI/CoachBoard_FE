@@ -3,12 +3,11 @@ import { Cancel, CheckCircle, Delete, Edit } from "@mui/icons-material";
 import {
   clearParticipationError,
   deleteParticipation,
-  fetchParticipations,
-  selectParticipation,
+  selectParticipation
 } from "@/store/slices/playerMatchParticipation.slice";
 import { green, red } from "@mui/material/colors";
 import { useAppDispatch, useAppSelector } from "@/store/store";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 import CustomModal from "@/components/customModal/customModal";
 import EditPlayerMatchParticipation from "./EditPlayerMatchParticipation";
@@ -27,9 +26,7 @@ const PlayerMatchParticipationsList = () => {
   const { participations, loading, error, selectedParticipation } = useAppSelector((state) => state.participationData);
   const [editOpen, setEditOpen] = useState(false);
 
-  useEffect(() => {
-    dispatch(fetchParticipations({}));
-  }, []);
+
 
   const handleEdit = (pmp: PlayerMatchParticipation) => {
     dispatch(selectParticipation(pmp));
@@ -66,6 +63,7 @@ const PlayerMatchParticipationsList = () => {
         valueGetter: (params) => (params ? dayjs(params).format("DD.MM.YYYY") : ""),
       },
       { field: "minutesPlayed", headerName: t("static.minutes"), flex: 1 },
+      { field: "score", headerName: t("static.score0to100"), flex: 1 , hide: true},
       {
         field: "isSuccessful",
         headerName:t("static.successful"),
@@ -117,6 +115,7 @@ const PlayerMatchParticipationsList = () => {
               columnVisibilityModel: {
                 isSuccessful: false,
                 note: false,
+                score: false, 
               },
             },
           }}

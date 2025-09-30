@@ -29,6 +29,7 @@ const AddPlayerMatchParticipation: React.FC<Props> = ({ matchId, onSuccess, onCa
     playerId: yup.string().required(t("static.required")),
     matchId: yup.string().required(t("static.required")),
     minutesPlayed: yup.number().min(0).required(t("static.required")),
+    score: yup.number().min(0).max(100).required(t("static.required")),
   });
 
   const formik = useFormik({
@@ -36,6 +37,7 @@ const AddPlayerMatchParticipation: React.FC<Props> = ({ matchId, onSuccess, onCa
       playerId: "",
       matchId: matchId,
       minutesPlayed: 0,
+      score: 0,
       isSuccessful: false,
       note: "",
     },
@@ -71,6 +73,14 @@ const AddPlayerMatchParticipation: React.FC<Props> = ({ matchId, onSuccess, onCa
         {...formik.getFieldProps("minutesPlayed")}
         error={!!formik.touched.minutesPlayed && !!formik.errors.minutesPlayed}
         helperText={formik.touched.minutesPlayed && formik.errors.minutesPlayed}
+      />
+        <TextField
+        type="number"
+        label={t("static.score0to100")}
+        fullWidth
+        {...formik.getFieldProps("score")}
+        error={!!formik.touched.score && !!formik.errors.score}
+        helperText={formik.touched.score && formik.errors.score}
       />
       <FormControlLabel
         control={<Checkbox {...formik.getFieldProps("isSuccessful")} checked={formik.values.isSuccessful} />}

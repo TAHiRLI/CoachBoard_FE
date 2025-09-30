@@ -17,19 +17,20 @@ interface Props {
 }
 
 const EditPlayerMatchParticipation: React.FC<Props> = ({ participation, onSuccess, onCancel }) => {
-    
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { loading } = useAppSelector((state) => state.participationData);
 
   const schema = yup.object({
     minutesPlayed: yup.number().min(0).required(t("static.required")),
+    score: yup.number().min(0).max(100).required(t("static.required")),
   });
 
   const formik = useFormik({
     initialValues: {
       minutesPlayed: participation.minutesPlayed,
       isSuccessful: participation.isSuccessful,
+      score: participation.score,
       note: participation.note,
     },
     validationSchema: schema,
@@ -51,20 +52,26 @@ const EditPlayerMatchParticipation: React.FC<Props> = ({ participation, onSucces
         error={!!formik.touched.minutesPlayed && !!formik.errors.minutesPlayed}
         helperText={formik.touched.minutesPlayed && formik.errors.minutesPlayed}
       />
+      <TextField
+        type="number"
+        label={t("static.score0to100")}
+        fullWidth
+        {...formik.getFieldProps("score")}
+        error={!!formik.touched.score && !!formik.errors.score}
+        helperText={formik.touched.score && formik.errors.score}
+      />
       <FormControlLabel
         control={<Checkbox {...formik.getFieldProps("isSuccessful")} checked={formik.values.isSuccessful} />}
         label={t("static.successful")}
       />
-      <TextField
-        multiline
-        rows={3}
-        label={t("static.note")}
-        fullWidth
-        {...formik.getFieldProps("note")}
-      />
+      <TextField multiline rows={3} label={t("static.note")} fullWidth {...formik.getFieldProps("note")} />
       <div className="flex justify-end gap-3">
-        <Button onClick={onCancel} variant="outlined" color="warning">{t("static.cancel")}</Button>
-        <Button type="submit" variant="contained" startIcon={<Edit />} disabled={loading}>{t("static.save")}</Button>
+        <Button onClick={onCancel} variant="outlined" color="warning">
+          {t("static.cancel")}
+        </Button>
+        <Button type="submit" variant="contained" startIcon={<Edit />} disabled={loading}>
+          {t("static.save")}
+        </Button>
       </div>
     </form>
   );

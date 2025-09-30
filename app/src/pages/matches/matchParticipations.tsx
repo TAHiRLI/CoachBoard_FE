@@ -15,13 +15,12 @@ type Props = {
 };
 
 const MatchParticipations: FC<Props> = ({ match }) => {
-    
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    dispatch(fetchParticipations({ matchId: match.id }));
+    if (match) dispatch(fetchParticipations({ matchId: match.id }));
   }, [dispatch, match]);
 
   return (
