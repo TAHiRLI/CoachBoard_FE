@@ -13,6 +13,22 @@ export interface Clip {
   seasonName?: string;
   createdByCoachId: string;
   coachName: string;
+  trimmedVideoUrl?: string;
+  videoTrimRequest: VideoTrimRequest | null;
+}
+
+export interface VideoTrimRequest {
+  id: number;
+  clipId?: number | null;
+  youtubeUrl: string;
+  startSecond: number;
+  endSecond: number;
+  jobId?: number | null;
+  resultVideoUrl?: string | null;
+  errorMessage?: string | null;
+  completedAt?: string | null; 
+  status: string; 
+  createdAt: string;
 }
 
 export interface ClipPostDto {

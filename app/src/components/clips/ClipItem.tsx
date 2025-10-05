@@ -1,7 +1,7 @@
-import { Card, CardContent, CardMedia, Typography } from "@mui/material";
+import { Button, Card, CardContent, CardMedia, CircularProgress, Typography } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
 import EditClip, { formatSeconds } from "./EditClip";
-import { deleteClip, fetchClips, selectClip } from "@/store/slices/clips.slice";
+import { createTrimRequest, deleteClip, fetchClips, selectClip } from "@/store/slices/clips.slice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { useCallback, useEffect, useState } from "react";
 
@@ -29,7 +29,7 @@ const ClipItem: React.FC<ClipItemProps> = ({ clip }) => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
-  const { selectedClip } = useAppSelector((x) => x.clipData);
+  const { selectedClip, loading } = useAppSelector((x) => x.clipData);
 
   const getVideoSrc = () => (clip.isExternal ? clip.videoUrl : `${apiUrl}/${clip.videoUrl}`);
   const getDuration = () => {
@@ -72,6 +72,17 @@ const ClipItem: React.FC<ClipItemProps> = ({ clip }) => {
     [dispatch, t]
   );
 
+  // 🆕 Trim Job Handler
+  const handleCreateTrimRequest = async () => {
+    try {
+      await dispatch(createTrimRequest(clip.id)).unwrap();
+      Swal.fire("🎬 Trim job created!", "", "success");
+      dispatch(fetchClips({ matchId: clip.matchId }));
+    } catch (err: any) {
+      Swal.fire("❌ Failed", err || "Error creating trim request", "error");
+    }
+  };
+
   // Reload logic start
   const [player, setPlayer] = useState<any>(null);
 
@@ -85,11 +96,10 @@ const ClipItem: React.FC<ClipItemProps> = ({ clip }) => {
       new window.YT.Player(`yt-${clip.id}`, {
         events: {
           onReady: (event: any) => {
-            setPlayer(event.target); // ✅ Store the player instance
+            setPlayer(event.target);
           },
           onStateChange: (event: any) => {
             if (event.data === window.YT.PlayerState.ENDED) {
-              // Optional: Auto-restart when it ends
               event.target.seekTo(startTime);
               event.target.playVideo();
             }
@@ -106,6 +116,55 @@ const ClipItem: React.FC<ClipItemProps> = ({ clip }) => {
   }, [clip.id, videoId, startTime, clip.isExternal]);
 
   // reload logic end
+  const jobStatus = clip.videoTrimRequest?.status ?? null;
+
+  const renderTrimSection = () => {
+    if (!clip.isExternal) return <></>;
+    if (loading) {
+      return (
+        <div className="flex items-center gap-2 mt-3">
+          <CircularProgress size={20} />
+          <span>Processing...</span>
+        </div>
+      );
+    }
+
+    if (!jobStatus) {
+      return (
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleCreateTrimRequest}
+          sx={{ mt: 2, textTransform: "none" }}
+        >
+          🎬 Create Trim Job
+        </Button>
+      );
+    }
+
+    const statusColor =
+      jobStatus === "Completed" ? "green" : jobStatus === "Pending" || jobStatus === "Processing" ? "#ffa500" : "red";
+
+    return (
+      <div style={{ marginTop: "12px" }}>
+        <Typography variant="body2" sx={{ color: statusColor }}>
+          Trim Job Status: {jobStatus}
+        </Typography>
+
+        {jobStatus === "Failed" && (
+          <Button
+            variant="outlined"
+            color="error"
+            sx={{ mt: 1, textTransform: "none" }}
+            onClick={handleCreateTrimRequest}
+          >
+            🔁 Retry Trim
+          </Button>
+        )}
+      </div>
+    );
+  };
+
   return (
     <Card elevation={0} sx={{ display: "flex", flexDirection: "column", p: 2, gap: 2, position: "relative" }}>
       <Link to={`/clips/${clip.id}`}>
@@ -113,6 +172,7 @@ const ClipItem: React.FC<ClipItemProps> = ({ clip }) => {
           🎬 {t("static.clip")} #{clip.id}: {clip.name}
         </p>
       </Link>
+
       {clip.isExternal && player && (
         <button
           onClick={() => {
@@ -167,6 +227,19 @@ const ClipItem: React.FC<ClipItemProps> = ({ clip }) => {
         <Typography variant="body2" color="text.secondary">
           {t("static.match")}: {clip.matchName || "N/A"} • {t("static.coach")}: {clip.coachName}
         </Typography>
+
+        {clip.trimmedVideoUrl && (
+          <div className="mt-3">
+            <Link target="_blank" to={apiUrl + "/" + clip.trimmedVideoUrl}>
+              <p className="whitespace-nowrap overflow-hidden text-md" color="primary">
+                🎬 Trimmed Video
+              </p>
+            </Link>
+          </div>
+        )}
+
+        {/* 🆕 Trim Job Section */}
+        {renderTrimSection()}
       </CardContent>
 
       <div className="absolute top-2 right-2">
@@ -187,13 +260,12 @@ const ClipItem: React.FC<ClipItemProps> = ({ clip }) => {
           ]}
         />
       </div>
+
       {selectedClip && (
         <CustomModal open={isOpen} setOpen={setIsOpen}>
           <EditClip
             clip={selectedClip}
-            onCancel={() => {
-              setIsOpen(false);
-            }}
+            onCancel={() => setIsOpen(false)}
             onSuccess={() => {
               dispatch(fetchClips({ matchId: clip.matchId }));
               setIsOpen(false);

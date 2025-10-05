@@ -66,6 +66,18 @@ export const deleteClip = createAsyncThunk("clips/deleteClip", async (id: string
     return rejectWithValue(err.response?.data || "Error deleting clip");
   }
 });
+export const createTrimRequest = createAsyncThunk(
+  "clips/createTrimRequest",
+  async (clipId: string, { rejectWithValue }) => {
+    try {
+      const res = await clipsService.createTrimRequest(clipId);
+      return res.data;
+    } catch (err: any) {
+      return rejectWithValue(err.response?.data || "Error creating trim request");
+    }
+  }
+);
+
 
 const clipsSlice = createSlice({
   name: "clips",
@@ -115,6 +127,18 @@ const clipsSlice = createSlice({
       })
       .addCase(deleteClip.fulfilled, (state, action) => {
         state.clips = state.clips.filter((c) => c.id !== action.payload);
+      })
+        // 🆕 Handle createTrimRequest
+      .addCase(createTrimRequest.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(createTrimRequest.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(createTrimRequest.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
       });
   },
 });

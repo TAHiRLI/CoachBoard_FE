@@ -61,6 +61,9 @@ class ClipsService {
   async delete(id: string) {
     return apiClient.delete(`api/Clips/${id}`);
   }
+  async createTrimRequest(clipId: string) {
+    return apiClient.post("api/VideoTrimRequests", { clipId });
+  }
 }
 
 export const clipsService = new ClipsService();
