@@ -26,6 +26,7 @@ interface ClipItemProps {
 }
 
 const ClipItem: React.FC<ClipItemProps> = ({ clip }) => {
+  console.log("🚀 ~ ClipItem ~ clip:", clip)
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
@@ -73,11 +74,11 @@ const ClipItem: React.FC<ClipItemProps> = ({ clip }) => {
   );
 
   // 🆕 Trim Job Handler
-  const handleCreateTrimRequest = async () => {
+  const handleCreateTrimRequest = async (matchId: string) => {
     try {
       await dispatch(createTrimRequest(clip.id)).unwrap();
       Swal.fire("🎬 Trim job created!", "", "success");
-      dispatch(fetchClips({ matchId: clip.matchId }));
+      dispatch(fetchClips({ matchId: matchId }));
     } catch (err: any) {
       Swal.fire("❌ Failed", err || "Error creating trim request", "error");
     }
@@ -129,12 +130,12 @@ const ClipItem: React.FC<ClipItemProps> = ({ clip }) => {
       );
     }
 
-    if (!jobStatus) {
+    if (!jobStatus && clip.matchId) {
       return (
         <Button
           variant="contained"
           color="primary"
-          onClick={handleCreateTrimRequest}
+          onClick={() => handleCreateTrimRequest(clip.matchId!)}
           sx={{ mt: 2, textTransform: "none" }}
         >
           🎬 Create Trim Job
@@ -151,12 +152,12 @@ const ClipItem: React.FC<ClipItemProps> = ({ clip }) => {
           Trim Job Status: {jobStatus}
         </Typography>
 
-        {jobStatus === "Failed" && (
+        {jobStatus === "Failed"  && (
           <Button
             variant="outlined"
             color="error"
             sx={{ mt: 1, textTransform: "none" }}
-            onClick={handleCreateTrimRequest}
+            onClick={() => handleCreateTrimRequest(clip.matchId!)}
           >
             🔁 Retry Trim
           </Button>
