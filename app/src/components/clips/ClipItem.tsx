@@ -1,5 +1,5 @@
-import { Button, Card, CardContent, CardMedia, CircularProgress, Typography } from "@mui/material";
-import { Delete, Edit } from "@mui/icons-material";
+import { Button, Card, CardContent, CardMedia, CircularProgress, IconButton, Typography } from "@mui/material";
+import { Delete, Edit, SkipNext, SkipPrevious } from "@mui/icons-material";
 import EditClip, { formatSeconds } from "./EditClip";
 import { createTrimRequest, deleteClip, fetchClips, selectClip } from "@/store/slices/clips.slice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
@@ -23,10 +23,10 @@ declare global {
 
 interface ClipItemProps {
   clip: Clip;
+  expanded?: boolean;
 }
 
-const ClipItem: React.FC<ClipItemProps> = ({ clip }) => {
-  console.log("🚀 ~ ClipItem ~ clip:", clip)
+const ClipItem: React.FC<ClipItemProps> = ({ clip, expanded }) => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
@@ -152,7 +152,7 @@ const ClipItem: React.FC<ClipItemProps> = ({ clip }) => {
           Trim Job Status: {jobStatus}
         </Typography>
 
-        {jobStatus === "Failed"  && (
+        {jobStatus === "Failed" && (
           <Button
             variant="outlined"
             color="error"
@@ -168,11 +168,31 @@ const ClipItem: React.FC<ClipItemProps> = ({ clip }) => {
 
   return (
     <Card elevation={0} sx={{ display: "flex", flexDirection: "column", p: 2, gap: 2, position: "relative" }}>
-      <Link to={`/clips/${clip.id}`}>
-        <p className="whitespace-nowrap overflow-hidden text-md" color="primary">
-          🎬 {t("static.clip")} #{clip.id}: {clip.name}
-        </p>
-      </Link>
+      <div className="flex justify-between me-6 items-center">
+        <Link to={`/clips/${clip.id}`}>
+          <p className="whitespace-nowrap overflow-hidden text-md" color="primary">
+            🎬 {t("static.clip")} #{clip.id}: {clip.name}
+          </p>
+        </Link>
+        {expanded && (
+          <div className="flex">
+            {clip.previousClipId && (
+              <Link to={`/clips/${clip.previousClipId}`}>
+                <IconButton>
+                  <SkipPrevious color="primary" />
+                </IconButton>
+              </Link>
+            )}
+            {clip.nextClipId && (
+              <Link to={`/clips/${clip.nextClipId}`}>
+                <IconButton>
+                  <SkipNext color="primary" />
+                </IconButton>
+              </Link>
+            )}
+          </div>
+        )}
+      </div>
 
       {clip.isExternal && player && (
         <button
@@ -243,7 +263,7 @@ const ClipItem: React.FC<ClipItemProps> = ({ clip }) => {
         {renderTrimSection()}
       </CardContent>
 
-      <div className="absolute top-2 right-2">
+      <div className="absolute top-4 right-2">
         <RowActions
           actions={[
             {

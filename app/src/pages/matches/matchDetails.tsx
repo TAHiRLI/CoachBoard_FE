@@ -42,7 +42,7 @@ const MatchDetailsPage = () => {
                 {t("static.addClip")}
               </Button>
             </div>
-            <MatchClips match={selectedMatch} />{" "}
+            <MatchClips match={selectedMatch} />
           </div>
         )}
       </div>

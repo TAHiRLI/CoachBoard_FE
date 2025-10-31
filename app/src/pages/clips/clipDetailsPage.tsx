@@ -57,7 +57,7 @@ const ClipDetailsPage = () => {
 
         <div className="w-full md:w-1/3 flex flex-col">
           <div className="flex-1">
-            <ClipItem clip={selectedClip} />
+            <ClipItem clip={selectedClip} expanded />
           </div>
         </div>
       </Paper>

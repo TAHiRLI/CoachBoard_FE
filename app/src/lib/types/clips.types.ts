@@ -1,6 +1,8 @@
 export interface Clip {
   id: string;
   name: string;
+  nextClipId?: string; 
+  previousClipId?: string; 
   startTime: string;
   endTime: string;
   videoUrl: string;
