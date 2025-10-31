@@ -1,6 +1,6 @@
 import * as yup from "yup";
 
-import { Button, Checkbox, FormControlLabel, MenuItem, TextField } from "@mui/material";
+import { Autocomplete, Button, Checkbox, FormControlLabel, TextField } from "@mui/material";
 import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 
@@ -52,20 +52,21 @@ const AddPlayerMatchParticipation: React.FC<Props> = ({ matchId, onSuccess, onCa
   return (
     <form onSubmit={formik.handleSubmit} className="flex flex-col gap-4">
       <h2 className="text-xl font-bold text-center">{t("static.addParticipation")}</h2>
-      <TextField
-        select
-        label={t("static.player")}
-        fullWidth
-        {...formik.getFieldProps("playerId")}
-        error={!!formik.touched.playerId && !!formik.errors.playerId}
-        helperText={formik.touched.playerId && formik.errors.playerId}
-      >
-        {players.map((p) => (
-          <MenuItem key={p.id} value={p.id}>
-            {p.fullName}
-          </MenuItem>
-        ))}
-      </TextField>
+      <Autocomplete
+        options={players}
+        getOptionLabel={(option) => {
+          return option.fullName + " - " + option.teamName;
+        }}
+        onChange={(_, value) => formik.setFieldValue("playerId", value?.id || "")}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label={t("static.player")}
+            error={formik.touched.playerId && Boolean(formik.errors.playerId)}
+            helperText={formik.touched.playerId && formik.errors.playerId}
+          />
+        )}
+      />
       <TextField
         type="number"
         label={t("static.minutesPlayed")}
@@ -74,7 +75,7 @@ const AddPlayerMatchParticipation: React.FC<Props> = ({ matchId, onSuccess, onCa
         error={!!formik.touched.minutesPlayed && !!formik.errors.minutesPlayed}
         helperText={formik.touched.minutesPlayed && formik.errors.minutesPlayed}
       />
-        <TextField
+      <TextField
         type="number"
         label={t("static.score0to100")}
         fullWidth
