@@ -9,6 +9,7 @@ import clubsSlice from "./slices/clubs.slice";
 import coachesSlice from "./slices/coaches.slice";
 import episodesSlice from "./slices/episodes.slice";
 import evaluationsSlice from "./slices/evaluations.slice";
+import keycloakSlice from "./slices/keycloak.slice";
 import matchesSlice from "./slices/matches.slice";
 import participationslice from "./slices/playerMatchParticipation.slice";
 import playersSlice from "./slices/players.slice";
@@ -26,6 +27,7 @@ const persistConfig = {
 };
 
 const rootReducer = combineReducers({
+  keycloak: keycloakSlice.reducer,
   auth: authSlice.reducer,
   seasonData: seasonsSlice.reducer,
   matchData: matchesSlice.reducer,
