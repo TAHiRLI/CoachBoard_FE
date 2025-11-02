@@ -17,7 +17,7 @@ import { useTranslation } from "react-i18next";
 const ClipDetailsPage = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  const { selectedClip } = useAppSelector((x) => x.clipData);
+  const { selectedClip, loading } = useAppSelector((x) => x.clipData);
   const { selectedMatch } = useAppSelector((state) => state.matchData);
   const { id } = useParams();
 
@@ -35,7 +35,8 @@ const ClipDetailsPage = () => {
   }, [selectedClip]);
   // evaluations
   const [isOpen, setIsOpen] = useState(false);
-  if (!selectedClip) return <LinearProgress />;
+  if (!selectedClip) return <>NOT FOUND</>;
+  if (loading) return <LinearProgress />;
 
   return (
     <div>
