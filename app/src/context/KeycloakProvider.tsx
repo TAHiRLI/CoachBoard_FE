@@ -19,29 +19,14 @@ export const KeycloakProvider = ({ children }: KeycloakProviderProps) => {
 
   // Show loading screen while Keycloak initializes
   if (!initialized || loading) {
-    return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-          flexDirection: "column",
-          gap: "16px",
-        }}
-      >
-        <div>Loading authentication...</div>
-        <div style={{ fontSize: "12px", color: "#666" }}>
-          Connecting to Keycloak...
-        </div>
-      </div>
-    );
+    return <></>;
   }
 
   // Show error screen if initialization failed
   if (error) {
     return (
       <div
+        className="w-screen h-screen"
         style={{
           display: "flex",
           justifyContent: "center",

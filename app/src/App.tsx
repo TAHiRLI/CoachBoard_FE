@@ -27,11 +27,11 @@ function App() {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <KeycloakProvider>
-          <ColorModeProvider>
+        <ColorModeProvider>
+          <KeycloakProvider>
             <RouterProvider router={router} />
-          </ColorModeProvider>
-        </KeycloakProvider>
+          </KeycloakProvider>
+        </ColorModeProvider>
       </PersistGate>
     </Provider>
   );
