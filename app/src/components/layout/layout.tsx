@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from "@/store/store";
 
 import LangSelect from "../langSelect/langSelect";
 import { Routes } from "@/router/routes";
-import { logout } from "@/store/slices/auth.slice";
+import { logoutKeycloak } from "@/store/slices/keycloak.slice";
 import { useTranslation } from "react-i18next";
 
 interface Breadcrumb {
@@ -111,7 +111,7 @@ const Layout: React.FC<LayoutProps> = ({ children, pageTitle, breadcrumbs = [] }
               <IconButton
                 className="logout-button"
                 onClick={() => {
-                  dispatch(logout());
+                  dispatch(logoutKeycloak());
                   navigate("/login");
                 }}
                 title={t("static.logout")}

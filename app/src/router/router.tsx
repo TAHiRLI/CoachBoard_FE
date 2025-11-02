@@ -6,13 +6,13 @@ import EpisodesPage from "@/pages/episodes/episodesPage";
 import ForgotPasswordPage from "@/pages/login/forgotPassword";
 import HomePage from "@/pages/home/homePage";
 import Layout from "@/components/layout/layout";
-import LoginPage from "@/pages/login/loginPage";
+import LoginPage from "@/pages/login/v2/loginPage";
 import MatchDetailsPage from "@/pages/matches/matchDetails";
 import MatchesPage from "@/pages/matches/matchesPage";
 import NotFoundPage from "@/pages/notFoundPage/notFoundPage";
 import PlayerDetailsPage from "@/pages/players/PlayerDetailsPage";
 import PlayersPage from "@/pages/players/PlayersPage";
-import PrivateRoute from "@/components/PrivateRoute/privateRoute";
+import PrivateRoute from "@/components/PrivateRoute/v2/privateRoute";
 import RegisterPage from "@/pages/login/registerPage";
 import ResetPasswordPage from "@/pages/login/resetPassword";
 import { Routes } from "./routes";
@@ -188,7 +188,7 @@ export const router = createBrowserRouter([
     path: Routes.Base,
     element: (
       <>
-        <PrivateRoute redirectUrl={Routes.Base}>
+        <PrivateRoute>
           <Layout>
             <HomePage />
           </Layout>
