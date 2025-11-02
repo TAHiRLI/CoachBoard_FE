@@ -71,8 +71,8 @@ const UsersList: React.FC = () => {
         flex: 1,
       },
       {
-        field: "roles",
-        headerName: t("static.role"),
+        field: "keycloakId",
+        headerName: "Keycloak Id",
         flex: 1,
       },
       {

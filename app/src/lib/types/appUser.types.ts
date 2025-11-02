@@ -4,6 +4,7 @@ export interface AppUserDto {
   id: string;
   userName: string;
   email: string;
+  keycloakId?: string;
   coach?: Coach | null;
   roles: string[];
 }
@@ -17,6 +18,7 @@ export interface CreateUserDto {
 
 export interface UpdateUserDto {
   userName: string;
+  keycloakId?: string;
   email: string;
   coachId?: string | null;
   roles: string[];

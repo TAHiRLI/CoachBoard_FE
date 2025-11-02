@@ -45,6 +45,7 @@ const EditUser: React.FC<EditUserProps> = ({ user, onSuccess, onCancel }) => {
     initialValues: {
       userName: user.userName,
       email: user.email,
+      keycloakId: user.keycloakId,
       coachId: user.coach?.id ?? null,
       roles: user.roles[0],
     },
@@ -61,7 +62,7 @@ const EditUser: React.FC<EditUserProps> = ({ user, onSuccess, onCancel }) => {
   return (
     <form onSubmit={formik.handleSubmit}>
       <Typography variant="h6" mb={2}>
-       {t("static.editUser")}
+        {t("static.editUser")}
       </Typography>
 
       <TextField
@@ -87,6 +88,17 @@ const EditUser: React.FC<EditUserProps> = ({ user, onSuccess, onCancel }) => {
         onBlur={formik.handleBlur}
         error={formik.touched.email && !!formik.errors.email}
         helperText={formik.touched.email && formik.errors.email}
+        margin="normal"
+      />
+      <TextField
+        fullWidth
+        label={t("static.keycloakId")}
+        name="keycloakId"
+        value={formik.values.keycloakId}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        error={formik.touched.keycloakId && !!formik.errors.keycloakId}
+        helperText={formik.touched.keycloakId && formik.errors.keycloakId}
         margin="normal"
       />
       <TextField
