@@ -7,10 +7,7 @@ const cookies = new Cookies();
 // Create Axios instance for API
 export const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
-  timeout: 100000,
-  headers: {
-    'Content-Type': 'application/json',
-  },
+  timeout: 100000
 });
 
 // Add Request Interceptor for Keycloak Token

@@ -92,7 +92,7 @@ const EditUser: React.FC<EditUserProps> = ({ user, onSuccess, onCancel }) => {
       />
       <TextField
         fullWidth
-        label={t("static.keycloakId")}
+        label={"Keycloak Id"}
         name="keycloakId"
         value={formik.values.keycloakId}
         onChange={formik.handleChange}
