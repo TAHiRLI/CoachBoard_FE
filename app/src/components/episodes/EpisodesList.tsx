@@ -103,7 +103,7 @@ const EpisodesList = () => {
           columns={columns}
           disableRowSelectionOnClick
           loading={loading}
-          hideFooter
+          
         />
       </Box>
 

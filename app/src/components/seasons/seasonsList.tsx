@@ -120,7 +120,7 @@ const SeasonsList: React.FC = () => {
             columns={columns}
             disableRowSelectionOnClick
             loading={loading}
-            hideFooter
+            
           />
         </Box>
       </div>

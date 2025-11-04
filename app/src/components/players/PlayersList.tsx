@@ -161,7 +161,6 @@ const PlayersList: React.FC = () => {
           columns={columns}
           disableRowSelectionOnClick
           loading={loading}
-          hideFooter
         />
       </Box>
       {selectedPlayer && (

@@ -93,7 +93,7 @@ const CoachesList = () => {
           columns={columns}
           disableRowSelectionOnClick
           loading={loading}
-          hideFooter
+          
         />
       </Box>
       {selectedCoach && (

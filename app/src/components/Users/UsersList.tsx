@@ -121,7 +121,7 @@ const UsersList: React.FC = () => {
           rowHeight={30}
           disableRowSelectionOnClick
           loading={loading}
-          hideFooter
+          
         />
       </Box>
 

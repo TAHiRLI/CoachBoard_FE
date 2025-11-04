@@ -83,7 +83,7 @@ const TeamsList = () => {
     <>
       {loading && <LinearProgress />}
       <Box sx={{ display: "grid", gridTemplateColumns: "1fr" }}>
-        <StyledDataGrid rows={teams} columns={columns} disableRowSelectionOnClick hideFooter />
+        <StyledDataGrid rows={teams} columns={columns} disableRowSelectionOnClick  />
       </Box>
 
       {selectedTeam && (

@@ -132,7 +132,7 @@ const EvaluationsList = () => {
           columns={columns}
           disableRowSelectionOnClick
           loading={loading}
-          hideFooter
+          
         />
       </Box>
       {selectedEvaluation && (
