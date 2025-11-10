@@ -5,6 +5,7 @@ import keycloak from "@/API/Services/keycloak.service";
 interface UserInfo {
   preferred_username?: string;
   email?: string;
+  roles?: string[];
   [key: string]: any;
 }
 
@@ -26,11 +27,24 @@ const initialState: KeycloakState = {
   loading: false,
 };
 
+const getKeycloakRoles = (): string[] => {
+  if (!keycloak.token) return [];
+
+  try {
+    const tokenParsed = keycloak.tokenParsed;
+    console.log("🚀 ~ getKeycloakRoles ~ tokenParsed:", tokenParsed);
+    const realmRoles = tokenParsed?.roles || [];
+    const clientId = keycloak.clientId ?? "";
+    const clientRoles = tokenParsed?.[clientId]?.roles || [];
+    return [...realmRoles, ...clientRoles];
+  } catch (err) {
+    console.error("Failed to parse roles:", err);
+    return [];
+  }
+};
 // 🔹 Initialize Keycloak & Login
 export const initializeKeycloak = createAsyncThunk("keycloak/init", async (_, { rejectWithValue }) => {
   try {
-    console.log("🔹 Starting Keycloak initialization...");
-
     const authenticated = await keycloak.init({
       onLoad: "login-required",
       checkLoginIframe: false,
@@ -38,13 +52,14 @@ export const initializeKeycloak = createAsyncThunk("keycloak/init", async (_, { 
       redirectUri: window.location.origin + window.location.pathname,
     });
 
-    console.log("🔹 Keycloak initialized. Authenticated:", authenticated);
-
     let userInfo = null;
+    let roles: string[] = [];
+
     if (authenticated) {
       try {
         userInfo = await keycloak.loadUserInfo();
         console.log("🔹 User info loaded:", userInfo);
+        roles = getKeycloakRoles();
       } catch (err) {
         console.error("Failed to load user info:", err);
       }
@@ -62,11 +77,10 @@ export const initializeKeycloak = createAsyncThunk("keycloak/init", async (_, { 
 
     return {
       authenticated,
-      userInfo,
+      userInfo: { ...userInfo, roles },
       token: keycloak.token ?? null,
     };
   } catch (err: any) {
-    console.error("❌ Keycloak init failed:", err);
     return rejectWithValue(err.message || "Keycloak initialization failed");
   }
 });

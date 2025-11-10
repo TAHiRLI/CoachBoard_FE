@@ -4,7 +4,6 @@ import ClubsPage from "@/pages/clubs/clubsPage";
 import CoachesPage from "@/pages/coaches/CoachesPage";
 import EpisodesPage from "@/pages/episodes/episodesPage";
 import ForgotPasswordPage from "@/pages/login/forgotPassword";
-import HomePage from "@/pages/home/homePage";
 import Layout from "@/components/layout/layout";
 import LoginPage from "@/pages/login/v2/loginPage";
 import MatchDetailsPage from "@/pages/matches/matchDetails";
@@ -12,8 +11,9 @@ import MatchesPage from "@/pages/matches/matchesPage";
 import NotFoundPage from "@/pages/notFoundPage/notFoundPage";
 import PlayerDetailsPage from "@/pages/players/PlayerDetailsPage";
 import PlayersPage from "@/pages/players/PlayersPage";
-import PrivateRoute from "@/components/PrivateRoute/v2/privateRoute";
+import PrivateRoute from "@/components/auth/PrivateRoute/v2/privateRoute";
 import RegisterPage from "@/pages/login/registerPage";
+import ReportsPage from "@/pages/reportsPage/reportsPage";
 import ResetPasswordPage from "@/pages/login/resetPassword";
 import { Routes } from "./routes";
 import SeasonsPage from "@/pages/seasons/seasonsPage";
@@ -108,7 +108,7 @@ export const router = createBrowserRouter([
       </>
     ),
   },
-    {
+  {
     path: Routes.Players.Details,
     element: (
       <>
@@ -157,6 +157,18 @@ export const router = createBrowserRouter([
     ),
   },
   {
+    path: Routes.Reports.Base,
+    element: (
+      <>
+        <PrivateRoute>
+          <Layout pageTitle="static.reports">
+            <ReportsPage />
+          </Layout>
+        </PrivateRoute>
+      </>
+    ),
+  },
+  {
     path: Routes.Users.Base,
     element: (
       <>
@@ -189,13 +201,15 @@ export const router = createBrowserRouter([
     element: (
       <>
         <PrivateRoute>
-          <Layout>
-            <HomePage />
+          <Layout pageTitle="static.matches">
+            {/* <HomePage /> */}
+            <MatchesPage />
           </Layout>
         </PrivateRoute>
       </>
     ),
   },
+
   {
     path: "*",
     element: <NotFoundPage />,

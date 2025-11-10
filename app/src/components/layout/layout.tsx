@@ -37,7 +37,7 @@ const Layout: React.FC<LayoutProps> = ({ children, pageTitle, breadcrumbs = [] }
     { id: "Coaches", label: t("static.coaches"), icon: <AccountBox />, href: Routes.Coaches.Base },
     { id: "players", label: t("static.players"), icon: "👥", href: Routes.Players.Base },
     { id: "Episodes", label: t("static.episodes"), icon: <Category />, href: Routes.Episodes.Base },
-    { id: "reports", label: t("static.reports"), icon: "📋", href: "#" },
+    { id: "reports", label: t("static.reports"), icon: "📋", href: Routes.Reports.Base },
     { id: "Users", label: t("static.users"), icon: <AccountCircle />, href: Routes.Users.Base },
   ];
 
