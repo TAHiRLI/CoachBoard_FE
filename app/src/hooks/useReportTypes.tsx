@@ -1,4 +1,4 @@
-import { AccountBox, Category, Groups } from "@mui/icons-material";
+import { Category, Groups } from "@mui/icons-material";
 
 import { ReactNode } from "react";
 import { Routes } from "@/router/routes";
