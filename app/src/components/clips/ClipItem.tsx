@@ -5,9 +5,11 @@ import { createTrimRequest, deleteClip, fetchClips, selectClip } from "@/store/s
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { useCallback, useEffect, useState } from "react";
 
+import { AnyPermissionGuard } from "../auth/PermissionGuard/PermissionGuard";
 import { Clip } from "@/lib/types/clips.types";
 import CustomModal from "../customModal/customModal";
 import { Link } from "react-router-dom";
+import { Permission } from "@/lib/types/permissionTypes";
 import RowActions from "../rowActions/rowActions";
 import Swal from "sweetalert2";
 import { apiUrl } from "@/lib/constants/constants";
@@ -132,14 +134,16 @@ const ClipItem: React.FC<ClipItemProps> = ({ clip, expanded }) => {
 
     if (!jobStatus && clip.matchId) {
       return (
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => handleCreateTrimRequest(clip.matchId!)}
-          sx={{ mt: 2, textTransform: "none" }}
-        >
-          🎬 Create Trim Job
-        </Button>
+        <AnyPermissionGuard permissions={[Permission.TRIM_VIDEO]}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => handleCreateTrimRequest(clip.matchId!)}
+            sx={{ mt: 2, textTransform: "none" }}
+          >
+            🎬 Create Trim Job
+          </Button>
+        </AnyPermissionGuard>
       );
     }
 
@@ -250,13 +254,15 @@ const ClipItem: React.FC<ClipItemProps> = ({ clip, expanded }) => {
         </Typography>
 
         {clip.trimmedVideoUrl && (
-          <div className="mt-3">
-            <Link target="_blank" to={apiUrl + "/" + clip.trimmedVideoUrl}>
-              <p className="whitespace-nowrap overflow-hidden text-md" color="primary">
-                🎬 Trimmed Video
-              </p>
-            </Link>
-          </div>
+          <AnyPermissionGuard permissions={[Permission.TRIM_VIDEO]}>
+            <div className="mt-3">
+              <Link target="_blank" to={apiUrl + "/" + clip.trimmedVideoUrl}>
+                <p className="whitespace-nowrap overflow-hidden text-md" color="primary">
+                  🎬 Trimmed Video
+                </p>
+              </Link>
+            </div>
+          </AnyPermissionGuard>
         )}
 
         {/* 🆕 Trim Job Section */}

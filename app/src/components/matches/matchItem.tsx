@@ -11,9 +11,9 @@ import { Match } from "@/lib/types/matches.types";
 import MatchStatusChip from "./matchStatusChip";
 import RowActions from "../rowActions/rowActions";
 import Swal from "sweetalert2";
+import { apiUrl } from "@/lib/constants/constants";
 import { useTranslation } from "react-i18next";
 
-const apiUrl = import.meta.env.VITE_API_URL;
 const MatchItem = ({ match }: { match: Match }) => {
   const { selectedSeason } = useAppSelector((x) => x.seasonData);
   const { t } = useTranslation();

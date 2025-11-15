@@ -37,4 +37,8 @@ export const Routes = {
     Base: "/Episodes",
     Details: "/Episodes/:id",
   },
+  Reports: {
+    Base: "/Reports",
+    PlayerOverview: "/Reports/player-overview", 
+  },
 };

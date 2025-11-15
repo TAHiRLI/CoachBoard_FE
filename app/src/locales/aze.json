@@ -197,5 +197,19 @@
     "sendNotificationDesc": "Users in this workspace will get email about file upload",
     "success": "Uğurlu",
     "tokenMissing": "Token is missing. Please use the reset link from your email."
+  },
+  "reportTypes": {
+    "playerOverview": {
+      "name": "Oyunçu İcmalı",
+      "description": "Oyunçunun performansının ətraflı analizi"
+    },
+    "teamPerformance": {
+      "name": "Komanda Performansı",
+      "description": "Komanda üzrə statistika və zəif tərəflərin analizi"
+    },
+    "episodeAnalysis": {
+      "name": "Epizod Analizi",
+      "description": "Müəyyən epizodun performansına dərindən baxış"
+    }
   }
 }

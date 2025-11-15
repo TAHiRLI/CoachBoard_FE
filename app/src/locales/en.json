@@ -202,5 +202,19 @@
     "sendNotificationDesc": "Users in this workspace will get email about file upload",
     "success": "Success",
     "tokenMissing": "Token is missing. Please use the reset link from your email."
+  },
+  "reportTypes": {
+    "playerOverview": {
+      "name": "Player Overview",
+      "description": "Comprehensive player performance analysis"
+    },
+    "teamPerformance": {
+      "name": "Team Performance",
+      "description": "Team-wide statistics and weakness analysis"
+    },
+    "episodeAnalysis": {
+      "name": "Episode Analysis",
+      "description": "Deep dive into specific episode performance"
+    }
   }
 }
