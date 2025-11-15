@@ -2,11 +2,13 @@ import { AccountBox, AccountCircle, Apartment, Category, Groups, Logout, Loop, M
 import { Avatar, IconButton } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "@/store/store";
 
+import { KeycloakUserInfo } from "@/lib/types/authTypes";
 import LangSelect from "../langSelect/langSelect";
 import { Routes } from "@/router/routes";
+import keycloak from "@/API/Services/keycloak.service";
 import { logoutKeycloak } from "@/store/slices/keycloak.slice";
+import { useAppDispatch } from "@/store/store";
 import { useTranslation } from "react-i18next";
 
 interface Breadcrumb {
@@ -26,7 +28,7 @@ const Layout: React.FC<LayoutProps> = ({ children, pageTitle, breadcrumbs = [] }
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { user } = useAppSelector((x) => x.auth);
+  const user = keycloak.userInfo as KeycloakUserInfo;
 
   const navigationItems = [
     { id: "dashboard", label: t("static.dashboard"), icon: "🏠", href: Routes.Base },
@@ -103,10 +105,10 @@ const Layout: React.FC<LayoutProps> = ({ children, pageTitle, breadcrumbs = [] }
           <div className="topbar-right">
             <LangSelect />
             <div className="coach-profile">
-              <Avatar className="coach-avatar">{user?.fullname?.[0] || user?.username?.[0]}</Avatar>
+              <Avatar className="coach-avatar">{user?.name?.[0] || user?.preferred_username?.[0]}</Avatar>
               <div className="coach-info">
-                <h4>{user?.fullname}</h4>
-                <p>{user?.username}</p>
+                <h4>{user.name}</h4>
+                <p>{user?.preferred_username}</p>
               </div>
               <IconButton
                 className="logout-button"
