@@ -2,8 +2,12 @@ import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import keycloak from "@/API/Services/keycloak.service";
 
-interface UserInfo {
+export interface UserInfo {
   preferred_username?: string;
+  email_verified: boolean;
+  family_name: string;
+  given_name: string;
+  name: string;
   email?: string;
   roles?: string[];
   [key: string]: any;

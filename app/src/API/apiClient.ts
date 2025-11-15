@@ -1,4 +1,5 @@
 import Cookies from "universal-cookie";
+import { apiUrl } from "@/lib/constants/constants";
 import axios from "axios";
 import keycloak from "@/API/Services/keycloak.service";
 
@@ -6,7 +7,7 @@ const cookies = new Cookies();
 
 // Create Axios instance for API
 export const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  baseURL: apiUrl,
   timeout: 100000,
   headers: {
     'Content-Type': 'application/json',

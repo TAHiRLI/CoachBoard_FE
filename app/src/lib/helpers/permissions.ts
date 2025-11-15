@@ -1,11 +1,11 @@
 import { Permission, ROLE_PERMISSIONS, UserRole } from '@/lib/types/permissionTypes';
 
-import { TUser } from '@/lib/types/authTypes';
+import { UserInfo } from '@/store/slices/keycloak.slice';
 
 /**
  * Check if user has a specific permission
  */
-export const hasPermission = (user: TUser | null, permission: Permission): boolean => {
+export const hasPermission = (user: UserInfo | null, permission: Permission): boolean => {
   if (!user || !user.roles || user.roles.length === 0) return false;
   
   return user.roles.some(role => {
@@ -17,21 +17,21 @@ export const hasPermission = (user: TUser | null, permission: Permission): boole
 /**
  * Check if user has ANY of the specified permissions
  */
-export const hasAnyPermission = (user: TUser | null, permissions: Permission[]): boolean => {
+export const hasAnyPermission = (user: UserInfo | null, permissions: Permission[]): boolean => {
   return permissions.some(permission => hasPermission(user, permission));
 };
 
 /**
  * Check if user has ALL of the specified permissions
  */
-export const hasAllPermissions = (user: TUser | null, permissions: Permission[]): boolean => {
+export const hasAllPermissions = (user: UserInfo | null, permissions: Permission[]): boolean => {
   return permissions.every(permission => hasPermission(user, permission));
 };
 
 /**
  * Check if user has any of the specified roles
  */
-export const hasRole = (user: TUser | null, roles: UserRole[]): boolean => {
+export const hasRole = (user: UserInfo | null, roles: UserRole[]): boolean => {
   if (!user || !user.roles) return false;
   return user.roles.some(role => roles.includes(role as UserRole));
 };
@@ -39,7 +39,7 @@ export const hasRole = (user: TUser | null, roles: UserRole[]): boolean => {
 /**
  * Get all permissions for current user
  */
-export const getUserPermissions = (user: TUser | null): Permission[] => {
+export const getUserPermissions = (user: UserInfo | null): Permission[] => {
   if (!user || !user.roles) return [];
   
   const permissions = new Set<Permission>();
@@ -55,7 +55,7 @@ export const getUserPermissions = (user: TUser | null): Permission[] => {
 /**
  * Check if user can access a specific player's data
  */
-export const canAccessPlayerData = (user: TUser | null, playerId: string): boolean => {
+export const canAccessPlayerData = (user: UserInfo | null, playerId: string): boolean => {
   if (!user) return false;
   
   // Admins and coaches can access all players

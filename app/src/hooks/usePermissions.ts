@@ -14,7 +14,7 @@ import { RootState } from '@/store/store';
 import { useSelector } from 'react-redux';
 
 export const usePermissions = () => {
-  const user = useSelector((state: RootState) => state.auth.user);
+  const user = useSelector((state: RootState) => state.keycloak.userInfo);
   
   return {
     user,
