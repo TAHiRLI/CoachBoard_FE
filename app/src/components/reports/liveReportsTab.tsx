@@ -14,7 +14,7 @@ const LiveReportsTab = () => {
           {Object.values(reportTypes).map((reportType) => (
             <button
               key={reportType.id}
-              onClick={() => navigate(reportType.url, { replace: false })}
+              onClick={() => navigate(reportType.url, { replace: true })}
               className="bg-white rounded-xl p-6 border-2 border-slate-200 hover:border-blue-500 hover:shadow-lg transition-all text-left group"
             >
               <div className="flex items-start gap-4">

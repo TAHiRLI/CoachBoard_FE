@@ -1,5 +1,5 @@
 import { Autocomplete, Box, Button, Chip, Collapse, IconButton, Paper, TextField, Typography } from "@mui/material";
-import { Close, FilterList, RestartAlt } from "@mui/icons-material";
+import { Close, FilterList, RestartAlt, Save } from "@mui/icons-material";
 import { FilterFieldConfig, FilterOption, FilterValues } from "@/lib/types/dynamicFilter.types";
 import { useEffect, useState } from "react";
 
@@ -16,6 +16,7 @@ export interface DynamicFilterProps {
   showFilterCount?: boolean;
   collapsible?: boolean;
   compact?: boolean;
+  autoApply?: boolean;
 }
 
 const DynamicFilter: React.FC<DynamicFilterProps> = ({
@@ -27,6 +28,7 @@ const DynamicFilter: React.FC<DynamicFilterProps> = ({
   showFilterCount = true,
   collapsible = false,
   compact = false,
+  autoApply = false,
 }) => {
   const [filterValues, setFilterValues] = useState<FilterValues>(initialValues);
   const [fieldOptions, setFieldOptions] = useState<Record<string, FilterOption[]>>({});
@@ -66,7 +68,7 @@ const DynamicFilter: React.FC<DynamicFilterProps> = ({
 
   // Notify parent of changes
   useEffect(() => {
-    onChange(filterValues);
+    if (autoApply) onChange(filterValues);
   }, [filterValues]);
 
   const handleFilterChange = (key: string, value: any) => {
@@ -231,6 +233,7 @@ const DynamicFilter: React.FC<DynamicFilterProps> = ({
         }}
       >
         {/* Header */}
+
         <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: collapsible ? 2 : 0 }}>
           <Box sx={{ display: "flex", alignItems: "center", gap: 0 }}>
             <FilterList color="action" />
@@ -264,7 +267,6 @@ const DynamicFilter: React.FC<DynamicFilterProps> = ({
           </Box>
         </Box>
 
-        {/* Filter Fields */}
         <Collapse in={expanded} timeout="auto">
           <div className=" flex flex-col gap-5 mt-5">{fields.map((field) => renderField(field))}</div>
 
@@ -316,7 +318,16 @@ const DynamicFilter: React.FC<DynamicFilterProps> = ({
                     />
                   );
                 })}
+                {!autoApply && (
+                  <div className="mt-5 w-full flex justify-end">
+                    <Button onClick={() => onChange(filterValues)} startIcon={<Save />} variant="outlined">
+                      Apply
+                    </Button>
+                  </div>
+                )}
               </Box>
+
+              {/* Filter Fields */}
             </Box>
           )}
         </Collapse>

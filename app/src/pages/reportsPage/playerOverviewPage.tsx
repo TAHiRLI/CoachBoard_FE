@@ -2,6 +2,7 @@ import { FilterFieldConfig, FilterValues } from "@/lib/types/dynamicFilter.types
 import { useAppDispatch, useAppSelector } from "@/store/store";
 
 import DynamicFilter from "@/components/dynamicFilter/dynamicFilter";
+import PlayerStatistics from "../players/playerStatistics";
 import { fetchEpisodes } from "@/store/slices/episodes.slice";
 import { fetchMatches } from "@/store/slices/matches.slice";
 import { fetchPlayerStatistics } from "@/store/slices/statistics.slice";
@@ -60,8 +61,8 @@ const PlayerOverviewPage = () => {
 
         matchIds: Array.isArray(values.matches) ? values.matches.map((m: any) => m.id) : [],
 
-        from: values.dateRange?.from || undefined,
-        to: values.dateRange?.to || undefined,
+        from: values.dateRange_from || undefined,
+        to: values.dateRange_to || undefined,
       },
     };
     if (values.player?.id) {
@@ -85,9 +86,9 @@ const PlayerOverviewPage = () => {
   };
 
   return (
-    <div>
+    <div className="">
       <div className="grid grid-cols-12 gap-8">
-        <div className="col-span-12 xl:col-span-4 bg-red-200 p-4">
+        <div className="col-span-12 xl:col-span-4">
           <DynamicFilter
             fields={filterFields}
             onChange={handleFilterChange}
@@ -96,7 +97,9 @@ const PlayerOverviewPage = () => {
             showFilterCount={true}
           />
         </div>
-        <div className="col-span-12 xl:col-span-8 bg-red-200 p-4"></div>
+        <div className="col-span-12 xl:col-span-8">
+          <PlayerStatistics />
+        </div>
       </div>
     </div>
   );

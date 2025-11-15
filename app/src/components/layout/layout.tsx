@@ -83,7 +83,7 @@ const Layout: React.FC<LayoutProps> = ({ children, pageTitle, breadcrumbs = [] }
         </ul>
       </nav>
 
-      <main className="main-content">
+      <main className="main-content  bg-gradient-to-br from-blue-50 to-indigo-100 ">
         <header className="topbar">
           <div className="topbar-left">
             <IconButton className="menu-toggle" onClick={() => setSidebarVisible(!sidebarVisible)}>

@@ -29,6 +29,7 @@
     "react-i18next": "^15.4.1",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.4.1",
+    "recharts": "^3.4.1",
     "redux-offline": "^2.0.0",
     "redux-persist": "^6.0.0",
     "sweetalert2": "^11.17.2",
