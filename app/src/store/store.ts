@@ -14,6 +14,7 @@ import matchesSlice from "./slices/matches.slice";
 import participationslice from "./slices/playerMatchParticipation.slice";
 import playersSlice from "./slices/players.slice";
 import seasonsSlice from "./slices/seasons.slice";
+import statisticsSlice from "./slices/statistics.slice";
 import storage from "redux-persist/lib/storage"; // Default localStorage for web
 import teamsSlice from "./slices/teams.slice";
 
@@ -40,6 +41,7 @@ const rootReducer = combineReducers({
   participationData: participationslice.reducer,
   coachData: coachesSlice.reducer,
   appUserData: appUsersSlice.reducer,
+  statistics: statisticsSlice.reducer,
 });
 
 // Wrap rootReducer with persistReducer

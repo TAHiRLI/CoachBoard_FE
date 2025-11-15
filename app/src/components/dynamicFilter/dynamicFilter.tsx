@@ -184,7 +184,7 @@ const DynamicFilter: React.FC<DynamicFilterProps> = ({
 
       case "dateRange":
         return (
-          <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-5" key={`${field.key}`}>
             <DatePicker
               label={`${field.label} (From)`}
               value={filterValues[`${field.key}_from`] || null}
@@ -197,7 +197,7 @@ const DynamicFilter: React.FC<DynamicFilterProps> = ({
                 },
               }}
             />
-           
+
             <DatePicker
               label={`${field.label} (To)`}
               value={filterValues[`${field.key}_to`] || null}
@@ -244,7 +244,14 @@ const DynamicFilter: React.FC<DynamicFilterProps> = ({
 
           <Box sx={{ display: "flex", gap: 1 }}>
             {showResetButton && activeFilterCount > 0 && (
-              <Button className="text-nowrap" startIcon={<RestartAlt />} onClick={handleReset} size="small" variant="outlined" color="error">
+              <Button
+                className="text-nowrap"
+                startIcon={<RestartAlt />}
+                onClick={handleReset}
+                size="small"
+                variant="outlined"
+                color="error"
+              >
                 Reset
               </Button>
             )}
@@ -259,9 +266,7 @@ const DynamicFilter: React.FC<DynamicFilterProps> = ({
 
         {/* Filter Fields */}
         <Collapse in={expanded} timeout="auto">
-          <div className=" flex flex-col gap-5 mt-5" >
-            {fields.map((field) => renderField(field))}
-          </div>
+          <div className=" flex flex-col gap-5 mt-5">{fields.map((field) => renderField(field))}</div>
 
           {/* Active Filters Summary */}
           {showFilterCount && activeFilterCount > 0 && (

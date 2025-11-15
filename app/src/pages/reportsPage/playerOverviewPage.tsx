@@ -1,11 +1,11 @@
 import { FilterFieldConfig, FilterValues } from "@/lib/types/dynamicFilter.types";
+import { useAppDispatch, useAppSelector } from "@/store/store";
 
 import DynamicFilter from "@/components/dynamicFilter/dynamicFilter";
 import { fetchEpisodes } from "@/store/slices/episodes.slice";
 import { fetchMatches } from "@/store/slices/matches.slice";
+import { fetchPlayerStatistics } from "@/store/slices/statistics.slice";
 import { fetchPlayers } from "@/store/slices/players.slice";
-import { useAppDispatch } from "@/store/store";
-import { useAppSelector } from "@/store/store";
 import { useEffect } from "react";
 
 const PlayerOverviewPage = () => {
@@ -14,11 +14,13 @@ const PlayerOverviewPage = () => {
   const { matches } = useAppSelector((x) => x.matchData);
 
   const dispatch = useAppDispatch();
+
   useEffect(() => {
     dispatch(fetchEpisodes());
     dispatch(fetchPlayers());
     dispatch(fetchMatches({}));
   }, [dispatch]);
+
   const filterFields: FilterFieldConfig[] = [
     {
       key: "player",
@@ -50,14 +52,38 @@ const PlayerOverviewPage = () => {
   ];
 
   const handleFilterChange = (values: FilterValues) => {
-    console.log("Filter values:", values);
-    // dispatch(filterEvaluations(values));
+    const dto = {
+      filter: {
+        playerId: values.player?.id ?? undefined,
+
+        episodeIds: Array.isArray(values.episodes) ? values.episodes.map((e: any) => e.id) : [],
+
+        matchIds: Array.isArray(values.matches) ? values.matches.map((m: any) => m.id) : [],
+
+        from: values.dateRange?.from || undefined,
+        to: values.dateRange?.to || undefined,
+      },
+    };
+    if (values.player?.id) {
+      console.log("🚀 ~ handleFilterChange ~ values:", values);
+      dispatch(fetchPlayerStatistics(dto));
+    }
   };
 
   const handleReset = () => {
-    console.log("Filters reset");
-    // dispatch(clearEvaluationFilters());
+    dispatch(
+      fetchPlayerStatistics({
+        filter: {
+          playerId: undefined,
+          episodeIds: [],
+          matchIds: [],
+          from: undefined,
+          to: undefined,
+        },
+      })
+    );
   };
+
   return (
     <div>
       <div className="grid grid-cols-12 gap-8">
