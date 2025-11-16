@@ -1,15 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import { useReportTypes } from "@/hooks/useReportTypes";
+import { useTranslation } from "react-i18next";
 
 const LiveReportsTab = () => {
   const navigate = useNavigate();
   const reportTypes = useReportTypes();
-
+  const { t } = useTranslation();
   return (
-    <div className="p-6">
-      {/* Report Type Selection */}
+    <div className=" py-6">
       <div>
-        <h2 className="text-lg font-semibold text-slate-900 mb-4">Select Report Type</h2>
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
           {Object.values(reportTypes).map((reportType) => (
             <button
@@ -26,10 +25,14 @@ const LiveReportsTab = () => {
                   <p className="text-sm text-slate-600 mb-3">{reportType.description}</p>
                   <div className="flex gap-2">
                     {reportType.canCompare && (
-                      <span className="text-xs px-2 py-1 bg-green-50 text-green-700 rounded-full">Comparable</span>
+                      <span className="text-xs px-2 py-1 bg-green-50 text-green-700 rounded-full">
+                        {t("static.comparable")}
+                      </span>
                     )}
                     {reportType.canSchedule && (
-                      <span className="text-xs px-2 py-1 bg-purple-50 text-purple-700 rounded-full">Schedulable</span>
+                      <span className="text-xs px-2 py-1 bg-purple-50 text-purple-700 rounded-full">
+                        {t("static.schedulable")}
+                      </span>
                     )}
                   </div>
                 </div>

@@ -32,6 +32,10 @@
     "delete": "Удалить",
     "clips": "клипов",
     "success": "Успех",
+    "liveReports": "Онлайн-отчёты",
+    "archive": "Архив",
+    "comparable": "Сравнимо",
+    "schedulable": "Планируемо",
     "scoreSeparator": "-",
     "upcoming": "Скоро",
     "played": "Сыгран",
@@ -86,6 +90,8 @@
     "coach": "Тренер",
     "notAvailable": "Нет данных",
 
+    "generateAnalyze": "Создавайте и анализируйте отчёты о производительности",
+    "browseSaved": "Просматривайте сохранённые отчёты",
     "createTeam": "Создать команду",
     "editTeam": "Редактировать команду",
     "createCoach": "Создать тренера",
@@ -142,6 +148,20 @@
     "editUser": "Редактировать пользователя",
 
     "minPassword": "Минимум 6 символов",
+    "filters": "Фильтры",
+    "reset": "Сбросить",
+    "activeFilters": "Активные фильтры:",
+    "apply": "Применить",
+    "selected": "выбрано",
+    "from": "От",
+    "to": "До",
+    "loading": "Загрузка...",
+    "openFilters": "Открыть фильтры",
+    "placeholder_default": "Выберите",
+    "selectPlayer": "Выберите игрока",
+    "selectEpisodes": "Выберите эпизоды",
+    "selectMatches": "Выберите матчи",
+    "dateRange": "Диапазон дат",
     "finalScore": "Окончательный счёт"
   },
   "reportTypes": {
@@ -157,5 +177,48 @@
       "name": "Анализ эпизода",
       "description": "Подробный разбор конкретного эпизода"
     }
+  },
+  "statistics": {
+    "noDataTitle": "Статистика недоступна",
+    "noDataSubtitle": "Примените фильтр, чтобы получить статистику",
+    "pageTitle": "Статистика эффективности игрока",
+
+    "totalEpisodes": "Общее количество эпизодов",
+    "successRate": "Процент успеха",
+    "criticalSaves": "Критические спасения",
+    "unsuccessfulEpisodes": "Неуспешные эпизоды",
+
+    "tabEpisodes": "Статистика по эпизодам",
+    "tabMonthly": "Месячный тренд",
+
+    "distributionTitle": "Общее распределение",
+    "successful": "Успешно",
+    "unsuccessful": "Неуспешно",
+
+    "episodeSuccessTitle": "Процент успеха по эпизодам",
+    "episodeBarLabel": "Процент успеха %",
+
+    "episodeTableTitle": "Подробная статистика эпизодов",
+    "episodeColumnEpisode": "Эпизод",
+    "episodeColumnTotal": "Всего",
+    "episodeColumnSuccessful": "Успешно",
+    "episodeColumnUnsuccessful": "Неуспешно",
+    "episodeColumnCritical": "Критические",
+    "episodeColumnSuccessRate": "Успех %",
+    "episodeColumnProgress": "Прогресс",
+
+    "monthlyTrendTitle": "Месячный тренд эффективности",
+    "monthlySuccessRateLabel": "Процент успеха %",
+    "monthlyAverageScoreLabel": "Средний балл",
+
+    "monthlyTableTitle": "Подробная месячная статистика",
+    "monthlyColumnMonth": "Месяц",
+    "monthlyColumnMatchCount": "Количество матчей",
+    "monthlyColumnSuccessful": "Успешно",
+    "monthlyColumnUnsuccessful": "Неуспешно",
+    "monthlyColumnSuccessRate": "Успех %",
+    "monthlyColumnCritical": "Критические",
+    "monthlyColumnMinutes": "Минуты",
+    "monthlyColumnAverageScore": "Средний балл"
   }
 }

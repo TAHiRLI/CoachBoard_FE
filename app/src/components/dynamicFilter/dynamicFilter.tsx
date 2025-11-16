@@ -1,4 +1,4 @@
-import { Autocomplete, Box, Button, Chip, Collapse, IconButton, Paper, TextField, Typography } from "@mui/material";
+import { Autocomplete, Box, Button, Chip, Collapse, IconButton, TextField, Typography } from "@mui/material";
 import { Close, FilterList, RestartAlt, Save } from "@mui/icons-material";
 import { FilterFieldConfig, FilterOption, FilterValues } from "@/lib/types/dynamicFilter.types";
 import { useEffect, useState } from "react";
@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { useTranslation } from "react-i18next";
 
 export interface DynamicFilterProps {
   fields: FilterFieldConfig[];
@@ -30,6 +31,7 @@ const DynamicFilter: React.FC<DynamicFilterProps> = ({
   compact = false,
   autoApply = false,
 }) => {
+  const { t } = useTranslation();
   const [filterValues, setFilterValues] = useState<FilterValues>(initialValues);
   const [fieldOptions, setFieldOptions] = useState<Record<string, FilterOption[]>>({});
   const [expanded, setExpanded] = useState(!collapsible);
@@ -188,7 +190,7 @@ const DynamicFilter: React.FC<DynamicFilterProps> = ({
         return (
           <div className="flex flex-col gap-5" key={`${field.key}`}>
             <DatePicker
-              label={`${field.label} (From)`}
+              label={`${field.label} (${t("static.from")})`}
               value={filterValues[`${field.key}_from`] || null}
               onChange={(newValue) => handleFilterChange(`${field.key}_from`, newValue)}
               disabled={field.disabled}
@@ -201,7 +203,7 @@ const DynamicFilter: React.FC<DynamicFilterProps> = ({
             />
 
             <DatePicker
-              label={`${field.label} (To)`}
+              label={`${field.label} (${t("static.to")})`}
               value={filterValues[`${field.key}_to`] || null}
               onChange={(newValue) => handleFilterChange(`${field.key}_to`, newValue)}
               disabled={field.disabled}
@@ -223,22 +225,14 @@ const DynamicFilter: React.FC<DynamicFilterProps> = ({
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Paper
-        elevation={1}
-        sx={{
-          p: compact ? 2 : 3,
-          borderRadius: 2,
-          border: "1px solid",
-          borderColor: "divider",
-        }}
-      >
+      <div>
         {/* Header */}
 
         <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: collapsible ? 2 : 0 }}>
           <Box sx={{ display: "flex", alignItems: "center", gap: 0 }}>
             <FilterList color="action" />
             <Typography className="ms-2 block" variant="h6" component="h4" sx={{ fontWeight: 600 }}>
-              Filters
+              {t("static.filters")}
             </Typography>
             {showFilterCount && activeFilterCount > 0 && (
               <Chip label={activeFilterCount} size="small" color="primary" sx={{ ml: 1 }} />
@@ -255,7 +249,7 @@ const DynamicFilter: React.FC<DynamicFilterProps> = ({
                 variant="outlined"
                 color="error"
               >
-                Reset
+                {t("static.reset")}
               </Button>
             )}
 
@@ -274,7 +268,7 @@ const DynamicFilter: React.FC<DynamicFilterProps> = ({
           {showFilterCount && activeFilterCount > 0 && (
             <Box sx={{ mt: 3, pt: 2, borderTop: "1px solid", borderColor: "divider" }}>
               <Typography variant="caption" sx={{ color: "text.secondary", mb: 1, display: "block" }}>
-                Active Filters:
+                {t("static.activeFilters")}
               </Typography>
               <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
                 {Object.entries(filterValues).map(([key, value]) => {
@@ -284,7 +278,7 @@ const DynamicFilter: React.FC<DynamicFilterProps> = ({
                   let displayValue: string | null = null;
 
                   if (Array.isArray(value) && value.length > 0) {
-                    displayValue = `${value.length} selected`;
+                    displayValue = `${value.length} ${t("static.selected")}`;
                   } else if (value && !Array.isArray(value)) {
                     if (value instanceof Date) {
                       displayValue = value.toLocaleDateString();
@@ -321,7 +315,7 @@ const DynamicFilter: React.FC<DynamicFilterProps> = ({
                 {!autoApply && (
                   <div className="mt-5 w-full flex justify-end">
                     <Button onClick={() => onChange(filterValues)} startIcon={<Save />} variant="outlined">
-                      Apply
+                      {t("static.apply")}
                     </Button>
                   </div>
                 )}
@@ -331,7 +325,7 @@ const DynamicFilter: React.FC<DynamicFilterProps> = ({
             </Box>
           )}
         </Collapse>
-      </Paper>
+      </div>
     </LocalizationProvider>
   );
 };

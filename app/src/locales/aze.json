@@ -88,6 +88,10 @@
     "clip": "Klip",
     "duration": "Müddət",
     "match": "Oyun",
+    "liveReports": "Canlı Hesabatlar",
+    "archive": "Arxiv",
+    "comparable": "Müqayisə",
+    "schedulable": "Planlaşdırılan",
     "coach": "Məşqçi",
     "notAvailable": "Məlum deyil",
     "editClip": "Klipi redaktə et",
@@ -166,6 +170,20 @@
     "role": "Rol",
     "min6Characters": "Minimum 6 simvol",
     "editUser": "İstifadəçini redaktə et",
+    "filters": "Filtrlər",
+    "reset": "Sıfırla",
+    "activeFilters": "Aktiv filtrlər:",
+    "apply": "Tətbiq et",
+    "selected": "seçilmiş",
+    "from": "Başlanğıc",
+    "to": "Son",
+    "loading": "Yüklənir...",
+    "openFilters": "Filtrləri aç",
+    "selectPlayer": "Oyunçu seçin",
+    "selectEpisodes": "Episodları seçin",
+    "selectMatches": "Oyunları seçin",
+    "dateRange": "Tarix aralığı",
+    "placeholder_default": "Seçin",
 
     "recieveAutoSmartReminderDesc": "Mustscan AI agent generates Reminders when file is uploaded by managers"
   },
@@ -211,5 +229,52 @@
       "name": "Epizod Analizi",
       "description": "Müəyyən epizodun performansına dərindən baxış"
     }
+  },
+  "statistics": {
+    "noDataTitle": "Statistika mövcud deyil",
+    "noDataSubtitle": "Filter tətbiq edərək statistikanı əldə edə bilərsiniz",
+    "pageTitle": "Oyunçu Performans Statistikası",
+
+    "totalEpisodes": "Ümumi Epizodlar",
+    "successRate": "Uğur Nisbəti",
+    "criticalSaves": "Kritik Qurtarışlar",
+    "unsuccessfulEpisodes": "Uğursuz Epizodlar",
+
+    "tabEpisodes": "Epizod Statistikası",
+    "tabMonthly": "Aylıq Trend",
+
+    "distributionTitle": "Ümumi Bölgü",
+    "successful": "Uğurlu",
+    "unsuccessful": "Uğursuz",
+
+    "reports": "Hesabatlar",
+    "generateAnalyze": "Performans hesabatları yaradın və analiz edin",
+    "browseSaved": "Saxlanılmış hesabatlara baxın",
+
+    "episodeSuccessTitle": "Epizod üzrə Uğur Nisbəti",
+    "episodeBarLabel": "Uğur Nisbəti %",
+
+    "episodeTableTitle": "Detallı Epizod Statistikası",
+    "episodeColumnEpisode": "Epizod",
+    "episodeColumnTotal": "Ümumi",
+    "episodeColumnSuccessful": "Uğurlu",
+    "episodeColumnUnsuccessful": "Uğursuz",
+    "episodeColumnCritical": "Kritik",
+    "episodeColumnSuccessRate": "Uğur %",
+    "episodeColumnProgress": "Progress",
+
+    "monthlyTrendTitle": "Aylıq Performans Trendi",
+    "monthlySuccessRateLabel": "Uğur Nisbəti %",
+    "monthlyAverageScoreLabel": "Orta bal",
+
+    "monthlyTableTitle": "Aylıq Detallı Statistika",
+    "monthlyColumnMonth": "Ay",
+    "monthlyColumnMatchCount": "Oyun Sayı",
+    "monthlyColumnSuccessful": "Uğurlu",
+    "monthlyColumnUnsuccessful": "Uğursuz",
+    "monthlyColumnSuccessRate": "Uğur %",
+    "monthlyColumnCritical": "Kritik",
+    "monthlyColumnMinutes": "Dəqiqə",
+    "monthlyColumnAverageScore": "Orta bal"
   }
 }

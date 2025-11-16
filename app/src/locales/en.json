@@ -20,6 +20,12 @@
     "players": "Players",
     "episodes": "Episodes",
     "reports": "Reports",
+    "generateAnalyze": "Generate and analyze performance reports",
+    "browseSaved": "Browse saved reports",
+    "liveReports": "Live Reports",
+    "archive": "Archive",
+    "comparable": "Comparable",
+    "schedulable": "Schedulable",
     "users": "Users",
     "coachBoard": "CoachBoard",
     "logout": "Logout",
@@ -172,6 +178,21 @@
     "role": "Role",
 
     "recieveAutoSmartReminder": "Recieve Auto Smart Reminders",
+
+    "filters": "Filters",
+    "reset": "Reset",
+    "activeFilters": "Active Filters:",
+    "apply": "Apply",
+    "selected": "selected",
+    "from": "From",
+    "to": "To",
+    "loading": "Loading...",
+    "openFilters": "Open Filters",
+    "placeholder_default": "Select",
+    "selectPlayer": "Select a player",
+    "selectEpisodes": "Select episodes",
+    "selectMatches": "Select matches",
+    "dateRange": "Date Range",
     "recieveAutoSmartReminderDesc": "Mustscan AI agent generates Reminders when file is uploaded by managers"
   },
   "user": {
@@ -216,5 +237,48 @@
       "name": "Episode Analysis",
       "description": "Deep dive into specific episode performance"
     }
+  },
+  "statistics": {
+    "noDataTitle": "No statistics available",
+    "noDataSubtitle": "Apply filters to view player statistics",
+    "pageTitle": "Player Performance Statistics",
+
+    "totalEpisodes": "Total Episodes",
+    "successRate": "Success Rate",
+    "criticalSaves": "Critical Saves",
+    "unsuccessfulEpisodes": "Unsuccessful Episodes",
+
+    "tabEpisodes": "Episode Statistics",
+    "tabMonthly": "Monthly Trend",
+
+    "distributionTitle": "Overall Distribution",
+    "successful": "Successful",
+    "unsuccessful": "Unsuccessful",
+
+    "episodeSuccessTitle": "Episode Success Rate",
+    "episodeBarLabel": "Success Rate %",
+
+    "episodeTableTitle": "Detailed Episode Statistics",
+    "episodeColumnEpisode": "Episode",
+    "episodeColumnTotal": "Total",
+    "episodeColumnSuccessful": "Successful",
+    "episodeColumnUnsuccessful": "Unsuccessful",
+    "episodeColumnCritical": "Critical",
+    "episodeColumnSuccessRate": "Success %",
+    "episodeColumnProgress": "Progress",
+
+    "monthlyTrendTitle": "Monthly Performance Trend",
+    "monthlySuccessRateLabel": "Success Rate %",
+    "monthlyAverageScoreLabel": "Average Score",
+
+    "monthlyTableTitle": "Detailed Monthly Statistics",
+    "monthlyColumnMonth": "Month",
+    "monthlyColumnMatchCount": "Match Count",
+    "monthlyColumnSuccessful": "Successful",
+    "monthlyColumnUnsuccessful": "Unsuccessful",
+    "monthlyColumnSuccessRate": "Success %",
+    "monthlyColumnCritical": "Critical",
+    "monthlyColumnMinutes": "Minutes",
+    "monthlyColumnAverageScore": "Average Score"
   }
 }

@@ -8,7 +8,6 @@ const ReportsPage = () => {
   const [activeTab, setActiveTab] = useState<string>(() => {
     return localStorage.getItem("reportsTab") || "live";
   });
-  console.log("🚀 ~ ReportsPage ~ activeTab:", activeTab)
 
   useEffect(() => {
     localStorage.setItem("reportsTab", activeTab);

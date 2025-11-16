@@ -10,6 +10,7 @@ export type Match = {
   id: string;
   date: string;
   stadium: string;
+  name: string;
   note: string;
   homeTeam: TeamMatch;
   awayTeam: TeamMatch;

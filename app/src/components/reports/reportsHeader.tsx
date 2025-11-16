@@ -1,5 +1,7 @@
 import { BarChart, Description } from "@mui/icons-material";
 
+import { useTranslation } from "react-i18next";
+
 interface ReportsHeaderProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;
@@ -8,14 +10,16 @@ interface ReportsHeaderProps {
 const MOCK_GENERATED_REPORTS = [""];
 
 const ReportsHeader: React.FC<ReportsHeaderProps> = ({ activeTab, setActiveTab }) => {
+    
+  const { t } = useTranslation();
   return (
     <div className="bg-white border-b border-slate-200 sticky top-0 z-10">
       <div className="mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           <div className="hidden md:block">
-            <h1 className="text-2xl font-bold text-slate-900">Reports</h1>
+            <h1 className="text-2xl font-bold text-slate-900">{t("static.reports")}</h1>
             <p className="text-sm text-slate-600 mt-1">
-              {activeTab === "live" ? "Generate and analyze performance reports" : "Browse saved reports"}
+              {activeTab === "live" ? t("static.generateAnalyze") : t("static.browseSaved")}
             </p>
           </div>
 
@@ -27,7 +31,7 @@ const ReportsHeader: React.FC<ReportsHeaderProps> = ({ activeTab, setActiveTab }
               }`}
             >
               <BarChart fontSize="small" className="mr-2" />
-              Live Reports
+              {t("static.liveReports")}
             </button>
 
             <button
@@ -37,7 +41,7 @@ const ReportsHeader: React.FC<ReportsHeaderProps> = ({ activeTab, setActiveTab }
               }`}
             >
               <Description fontSize="small" className="mr-2" />
-              Archive ({MOCK_GENERATED_REPORTS.length})
+              {t('static.archive')} ({MOCK_GENERATED_REPORTS.length})
             </button>
           </div>
         </div>
