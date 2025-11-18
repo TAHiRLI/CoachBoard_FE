@@ -1,7 +1,8 @@
 // src/components/KeycloakProvider.tsx
-import { ReactNode, useEffect } from "react";
+import { ReactNode, useEffect, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 
+import { Button } from "@mui/material";
 import { initializeKeycloak } from "@/store/slices/keycloak.slice";
 
 interface KeycloakProviderProps {
@@ -11,15 +12,20 @@ interface KeycloakProviderProps {
 export const KeycloakProvider = ({ children }: KeycloakProviderProps) => {
   const dispatch = useAppDispatch();
   const { initialized, loading, error } = useAppSelector((state) => state.keycloak);
+  const hasInitialized = useRef(false);
 
   useEffect(() => {
+    // Prevent double initialization
+    if (hasInitialized.current) return;
+    hasInitialized.current = true;
+
     console.log("🚀 Initializing Keycloak...");
     dispatch(initializeKeycloak());
   }, [dispatch]);
 
   // Show loading screen while Keycloak initializes
   if (!initialized || loading) {
-    return <></>;
+    return <div className="w-screen h-screen flex justify-center items-center"><div>Loading authentication...</div></div>;
   }
 
   // Show error screen if initialization failed
@@ -38,7 +44,7 @@ export const KeycloakProvider = ({ children }: KeycloakProviderProps) => {
       >
         <h3>Authentication Error</h3>
         <p>{error}</p>
-        <button onClick={() => window.location.reload()}>Retry</button>
+        <Button variant="contained" onClick={() => window.location.reload()}>Retry</Button>
       </div>
     );
   }
