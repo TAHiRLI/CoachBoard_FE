@@ -7,10 +7,11 @@ import { fetchMatches } from "@/store/slices/matches.slice";
 const MatchesList = () => {
   const dispatch = useAppDispatch();
   const { selectedSeason } = useAppSelector((s) => s.seasonData);
-  const { matches } = useAppSelector((s) => s.matchData); // assume matches are already fetched
+  const { matches } = useAppSelector((s) => s.matchData);
 
   useEffect(() => {
-    dispatch(fetchMatches({ seasonId: selectedSeason?.id })); // if you fetch by season
+    if(selectedSeason)
+    dispatch(fetchMatches({ seasonId: selectedSeason?.id }));
   }, [selectedSeason]);
 
   return (

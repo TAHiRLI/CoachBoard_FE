@@ -106,6 +106,21 @@ const DynamicFilter: React.FC<DynamicFilterProps> = ({
     const isLoading = loading[field.key] || false;
 
     switch (field.type) {
+      case "text":
+        return (
+          <TextField
+            key={field.key}
+            label={field.label}
+            placeholder={field.placeholder}
+            value={filterValues[field.key] || ""}
+            onChange={(e) => handleFilterChange(field.key, e.target.value)}
+            disabled={field.disabled}
+            required={field.required}
+            size={compact ? "small" : "medium"}
+            fullWidth
+          />
+        );
+
       case "select":
         return (
           <Autocomplete

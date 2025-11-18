@@ -146,7 +146,7 @@
     "password": "Пароль",
     "role": "Роль",
     "editUser": "Редактировать пользователя",
-
+    "search": "Поиск",
     "minPassword": "Минимум 6 символов",
     "filters": "Фильтры",
     "reset": "Сбросить",
@@ -156,6 +156,7 @@
     "from": "От",
     "to": "До",
     "loading": "Загрузка...",
+    "loadMore": "Показать больше",
     "openFilters": "Открыть фильтры",
     "placeholder_default": "Выберите",
     "selectPlayer": "Выберите игрока",

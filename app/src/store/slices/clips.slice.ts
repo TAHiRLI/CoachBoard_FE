@@ -19,9 +19,12 @@ const initialState: ClipState = {
 
 export const fetchClips = createAsyncThunk(
   "clips/fetchClips",
-  async (filter: { matchId?: string }, { rejectWithValue }) => {
+  async (
+    filter: { matchId?: string; playerId?: string; episodeId?: string; searchTerm?: string },
+    { rejectWithValue }
+  ) => {
     try {
-      const res = await clipsService.getAll(filter.matchId);
+      const res = await clipsService.getAll(filter);
       return res.data;
     } catch (err: any) {
       return rejectWithValue(err.response?.data || "Error fetching clips");
@@ -78,7 +81,6 @@ export const createTrimRequest = createAsyncThunk(
   }
 );
 
-
 const clipsSlice = createSlice({
   name: "clips",
   initialState,
@@ -128,7 +130,7 @@ const clipsSlice = createSlice({
       .addCase(deleteClip.fulfilled, (state, action) => {
         state.clips = state.clips.filter((c) => c.id !== action.payload);
       })
-        // 🆕 Handle createTrimRequest
+      // 🆕 Handle createTrimRequest
       .addCase(createTrimRequest.pending, (state) => {
         state.loading = true;
         state.error = null;

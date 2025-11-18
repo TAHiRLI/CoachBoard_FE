@@ -178,15 +178,17 @@
     "role": "Role",
 
     "recieveAutoSmartReminder": "Recieve Auto Smart Reminders",
-
     "filters": "Filters",
     "reset": "Reset",
     "activeFilters": "Active Filters:",
     "apply": "Apply",
+    "search": "Search",
+
     "selected": "selected",
     "from": "From",
     "to": "To",
     "loading": "Loading...",
+    "loadMore": "Load More",
     "openFilters": "Open Filters",
     "placeholder_default": "Select",
     "selectPlayer": "Select a player",

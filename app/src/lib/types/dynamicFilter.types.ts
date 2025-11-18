@@ -1,4 +1,4 @@
-export type FilterFieldType = "select" | "multiSelect" | "date" | "dateRange";
+export type FilterFieldType = "text" | "select" | "multiSelect" | "date" | "dateRange" ;
 
 export interface FilterOption {
   id: string | number;

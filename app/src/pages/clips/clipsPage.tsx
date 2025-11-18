@@ -1,27 +1,33 @@
 import { FilterFieldConfig, FilterValues } from "@/lib/types/dynamicFilter.types";
-import { clearPlayerOverview, fetchPlayerStatistics } from "@/store/slices/statistics.slice";
-import { useAppDispatch, useAppSelector } from "@/store/store";
 import { useEffect, useState } from "react";
 
 import { Button } from "@mui/material";
+import ClipsList from "@/components/clips/ClipsList";
 import CustomModal from "@/components/customModal/customModal";
 import DynamicFilter from "@/components/dynamicFilter/dynamicFilter";
 import { FilterAlt } from "@mui/icons-material";
-import PlayerStatistics from "../players/playerStatistics";
+import { fetchClips } from "@/store/slices/clips.slice";
 import { fetchEpisodes } from "@/store/slices/episodes.slice";
 import { fetchMatches } from "@/store/slices/matches.slice";
 import { fetchPlayers } from "@/store/slices/players.slice";
+import { useAppDispatch } from "@/store/store";
+import { useAppSelector } from "@/store/store";
 import { useTranslation } from "react-i18next";
 
-const PlayerOverviewPage = () => {
+const ClipsPage = () => {
+  const [statsOpen, setStatsOpen] = useState(false);
+  const [filterValues, setFilterValues] = useState<FilterValues>({});
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fetchClips({}));
+  }, []);
+
   const { t } = useTranslation();
+  const { clips } = useAppSelector((x) => x.clipData);
   const { players } = useAppSelector((x) => x.playerData);
   const { episodes } = useAppSelector((x) => x.episodeData);
   const { matches } = useAppSelector((x) => x.matchData);
-
-  const dispatch = useAppDispatch();
-  const [statsOpen, setStatsOpen] = useState(false);
-  const [filterValues, setFilterValues] = useState<FilterValues>({});
 
   useEffect(() => {
     dispatch(fetchEpisodes());
@@ -31,72 +37,73 @@ const PlayerOverviewPage = () => {
 
   const filterFields: FilterFieldConfig[] = [
     {
+      key: "searchTerm",
+      label: t("static.search"),
+      type: "text",
+      options: [],
+      placeholder: t("static.search"),
+      required: false,
+    },
+    {
       key: "player",
       label: t("static.player"),
       type: "select",
       options: players.map((p) => ({ id: p.id, label: p.fullName })),
       placeholder: t("static.selectPlayer"),
-      required: true,
+      required: false,
     },
     {
-      key: "episodes",
+      key: "episode",
       label: t("static.episodes"),
-      type: "multiSelect",
+      type: "select",
       options: episodes.map((e) => ({ id: e.id, label: e.name })),
       placeholder: t("static.selectEpisodes"),
     },
     {
-      key: "matches",
+      key: "match",
       label: t("static.matches"),
-      type: "multiSelect",
+      type: "select",
       options: matches.map((m) => ({ id: m.id, label: m.name })),
       placeholder: t("static.selectMatches"),
-    },
-    {
-      key: "dateRange",
-      label: t("static.dateRange"),
-      type: "dateRange",
     },
   ];
 
   const handleFilterChange = (values: FilterValues) => {
     setFilterValues(values); // save!
-    const dto = {
-      filter: {
-        playerId: values.player?.id ?? undefined,
-        episodeIds: Array.isArray(values.episodes) ? values.episodes.map((e: any) => e.id) : [],
-        matchIds: Array.isArray(values.matches) ? values.matches.map((m: any) => m.id) : [],
-        from: values.dateRange_from || undefined,
-        to: values.dateRange_to || undefined,
-      },
-    };
 
-    if (values.player?.id) {
-      dispatch(fetchPlayerStatistics(dto));
-      setStatsOpen(false); // close popup after clicking apply
-    }
+    const dto = {
+      searchTerm: values.searchTerm ?? undefined,
+      playerId: values.player?.id ?? undefined,
+      episodeId: values.episode?.id ?? undefined,
+      matchId: values.match?.id ?? undefined,
+    };
+    dispatch(fetchClips(dto));
+
+    setStatsOpen(false);
   };
 
   const handleReset = () => {
-    clearPlayerOverview();
+    dispatch(fetchClips({}));
+    setStatsOpen(false);
   };
 
   return (
-    <div className="">
-      <div className=" mx-auto mb-6 flex justify-end">
+    <div>
+      <div className="mx-auto mb-6 flex justify-between">
+        <div className="text-2xl capitalize">
+          {clips.length} {t("static.clips")}
+        </div>
         <Button onClick={() => setStatsOpen(true)} variant="contained" startIcon={<FilterAlt />}>
           {t("static.openFilters") || "Open Filters"}
         </Button>
       </div>
 
-      {/* MAIN STATISTICS BLOCK */}
       <div className="grid grid-cols-12 gap-8">
         <div className="col-span-12">
-          <PlayerStatistics />
+          <ClipsList />
         </div>
       </div>
 
-      {/* FILTER POPUP */}
       <CustomModal open={statsOpen} setOpen={setStatsOpen}>
         <div className="p-4 w-full">
           <DynamicFilter
@@ -113,4 +120,4 @@ const PlayerOverviewPage = () => {
   );
 };
 
-export default PlayerOverviewPage;
+export default ClipsPage;

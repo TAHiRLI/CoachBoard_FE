@@ -1,4 +1,4 @@
-import { AccountBox, AccountCircle, Apartment, Category, Groups, Logout, Loop, Menu } from "@mui/icons-material";
+import { AccountBox, AccountCircle, Apartment, Category, Groups, Logout, Loop, Menu, OndemandVideo } from "@mui/icons-material";
 import { Avatar, IconButton } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
@@ -33,6 +33,7 @@ const Layout: React.FC<LayoutProps> = ({ children, pageTitle, breadcrumbs = [] }
   const navigationItems = [
     { id: "dashboard", label: t("static.dashboard"), icon: "🏠", href: Routes.Base },
     { id: "matches", label: t("static.matches"), icon: "⚽", href: Routes.Matches.Base },
+    { id: "matches", label: t("static.clips"), icon: <OndemandVideo/>, href: Routes.Clips.Base },
     { id: "seasons", label: t("static.seasons"), icon: <Loop />, href: Routes.Seasons.Base },
     { id: "Clubs", label: t("static.clubs"), icon: <Apartment />, href: Routes.Clubs.Base },
     { id: "Teams", label: t("static.teams"), icon: <Groups />, href: Routes.Teams.Base },
@@ -74,7 +75,7 @@ const Layout: React.FC<LayoutProps> = ({ children, pageTitle, breadcrumbs = [] }
         <ul className="nav-menu">
           {navigationItems.map((item) => (
             <li key={item.id} className="nav-item">
-              <Link to={item.href} className={`nav-link ${isActiveRoute(item.href) ? "active" : ""}`}>
+              <Link to={item.href} className={`nav-link capitalize ${isActiveRoute(item.href) ? "active" : ""}`}>
                 <span>{item.icon}</span>
                 <span>{item.label}</span>
               </Link>

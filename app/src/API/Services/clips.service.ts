@@ -3,10 +3,14 @@ import { Clip, ClipPostDto, ClipPutDto } from "@/lib/types/clips.types";
 import { apiClient } from "../apiClient";
 
 class ClipsService {
-  async getAll(matchId?: string) {
-    return apiClient.get<Clip[]>("api/Clips", {
-      params: matchId ? { matchId } : {},
-    });
+  async getAll(filter: { matchId?: string; playerId?: string; episodeId?: string; searchTerm?: string }) {
+    const params: any = {};
+    if (filter.matchId) params.matchId = filter.matchId;
+    if (filter.playerId) params.playerId = filter.playerId;
+    if (filter.episodeId) params.episodeId = filter.episodeId;
+    if (filter.searchTerm) params.searchTerm = filter.searchTerm;
+
+    return apiClient.get<Clip[]>("api/Clips", { params });
   }
 
   async getById(id: string) {

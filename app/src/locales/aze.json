@@ -163,7 +163,7 @@
     "critical": "Kritik",
     "couldBeBetter": "Daha yaxşı",
     "recieveAutoSmartReminder": "Recieve Auto Smart Reminders",
-
+    "search": "Axtarış",
     "createUser": "İstifadəçi yarat",
     "username": "İstifadəçi adı",
     "password": "Şifrə",
@@ -178,6 +178,7 @@
     "from": "Başlanğıc",
     "to": "Son",
     "loading": "Yüklənir...",
+    "loadMore": "Daha çox",
     "openFilters": "Filtrləri aç",
     "selectPlayer": "Oyunçu seçin",
     "selectEpisodes": "Episodları seçin",

@@ -56,6 +56,7 @@ const statisticsSlice = createSlice({
       })
       .addCase(fetchPlayerStatistics.rejected, (state, action) => {
         state.loading = false;
+        alert("Something went wrong"); 
         state.error = (action.payload as string) ?? "Something went wrong";
       });
   },

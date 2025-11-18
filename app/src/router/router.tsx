@@ -1,5 +1,6 @@
 import { AdminPage } from "@/pages/testPages/testPages";
 import ClipDetailsPage from "@/pages/clips/clipDetailsPage";
+import ClipsPage from "@/pages/clips/clipsPage";
 import ClubsPage from "@/pages/clubs/clubsPage";
 import CoachesPage from "@/pages/coaches/CoachesPage";
 import EpisodesPage from "@/pages/episodes/episodesPage";
@@ -140,6 +141,18 @@ export const router = createBrowserRouter([
         <PrivateRoute>
           <Layout>
             <ClipDetailsPage />
+          </Layout>
+        </PrivateRoute>
+      </>
+    ),
+  },
+  {
+    path: Routes.Clips.Base,
+    element: (
+      <>
+        <PrivateRoute>
+          <Layout>
+            <ClipsPage />
           </Layout>
         </PrivateRoute>
       </>
