@@ -81,17 +81,11 @@ const MatchItem = ({ match }: { match: Match }) => {
                 style={{ width: 24, height: 24, objectFit: "contain" }}
               />
             )}
-            <span>{match.homeTeam.teamName}</span>
           </div>
         </Tooltip>
-        <span>
-          ({match.homeTeam.score}
-          <span className="text-slate-400">{t("static.scoreSeparator")}</span>
-          {match.awayTeam.score})
-        </span>
+       <span>{match.name}</span>
         <Tooltip title={match.awayTeam.clubName}>
           <div className="flex items-center gap-1">
-            <span>{match.awayTeam.teamName}</span>
             {match.awayTeam.logo && (
               <img
                 src={apiUrl + "/" + match.awayTeam.logo}

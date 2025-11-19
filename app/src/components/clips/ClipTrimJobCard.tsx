@@ -20,7 +20,6 @@ export const ClipTrimJobCard: React.FC<ClipTrimJobCardProps> = ({ clip }) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { loading } = useAppSelector((x) => x.clipData);
-  console.log("🚀 ~ ClipTrimJobCard ~ jobStatus:", clip.videoTrimRequest?.status);
 
   const handleCreateTrimRequest = async () => {
     if (!clip.matchId ) return;
