@@ -44,7 +44,20 @@ const EvaluationsList = () => {
 
   const columns: GridColDef[] = useMemo(
     () => [
-      { field: "playerName", headerName: t("static.player"), flex: 1 },
+      {
+        field: "playerName",
+        headerName: t("static.player"),
+        flex: 1,
+        valueGetter: (_, row) => {
+          return row.playerName;
+        },
+
+        renderCell: (params) => (
+          <Link target="_blank" to={`/players/${params.row.playerId}`}>
+            {params.row.playerName}
+          </Link>
+        ),
+      },
       { field: "episodeName", headerName: t("static.episode"), flex: 1.5 },
       { field: "occurrenceCount", headerName: t("static.occurrenceCount"), flex: 1 },
       {
@@ -72,7 +85,17 @@ const EvaluationsList = () => {
         headerName: t("static.note"),
         flex: 2,
         renderCell: (params) => (
-          <Tooltip title={params.value || ""} arrow>
+          <Tooltip
+            slotProps={{
+              tooltip: {
+                sx: {
+                  fontSize: "16px", // ⬅️ Change to any size you need
+                },
+              },
+            }}
+            title={params.value || ""}
+            arrow
+          >
             <Typography
               variant="body2"
               sx={{
@@ -91,9 +114,8 @@ const EvaluationsList = () => {
         field: "clip",
         headerName: t("static.clip"),
         flex: 2.3,
-        valueGetter: (_ , row) =>{
-           console.log("🚀 ~ EvaluationsList ~ row:", row)
-           return row.matchName
+        valueGetter: (_, row) => {
+          return row.matchName;
         },
 
         renderCell: (params) => (

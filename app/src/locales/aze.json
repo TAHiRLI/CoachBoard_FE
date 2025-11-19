@@ -190,7 +190,10 @@
     "viewTrimmedVideo": "Kəsilmiş videoya bax",
     "createTrimJob": "Trim tapşırığı yarat",
     "trimJobStatus": "Trim tapşırığının statusu",
-    "retryTrim": "Trim-i yenidən cəhd et"
+    "retryTrim": "Trim-i yenidən cəhd et",
+    "all": "Hamısı",
+    "yes": "Bəli",
+    "no": "Xeyr"
   },
   "user": {
     "username": "Username",

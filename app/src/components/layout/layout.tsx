@@ -31,9 +31,8 @@ const Layout: React.FC<LayoutProps> = ({ children, pageTitle, breadcrumbs = [] }
   const user = keycloak.userInfo as KeycloakUserInfo;
 
   const navigationItems = [
-    { id: "dashboard", label: t("static.dashboard"), icon: "🏠", href: Routes.Base },
-    { id: "matches", label: t("static.matches"), icon: "⚽", href: Routes.Matches.Base },
-    { id: "matches", label: t("static.clips"), icon: <OndemandVideo/>, href: Routes.Clips.Base },
+    { id: "matches", label: t("static.matches"), icon: "⚽", href: Routes.Base },
+    { id: "clips", label: t("static.clips"), icon: <OndemandVideo/>, href: Routes.Clips.Base },
     { id: "seasons", label: t("static.seasons"), icon: <Loop />, href: Routes.Seasons.Base },
     { id: "Clubs", label: t("static.clubs"), icon: <Apartment />, href: Routes.Clubs.Base },
     { id: "Teams", label: t("static.teams"), icon: <Groups />, href: Routes.Teams.Base },

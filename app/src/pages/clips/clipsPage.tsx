@@ -66,6 +66,12 @@ const ClipsPage = () => {
       options: matches.map((m) => ({ id: m.id, label: m.name })),
       placeholder: t("static.selectMatches"),
     },
+    {
+      key: "isExample",
+      label: t("static.isExample"),
+      type: "checkbox",
+      placeholder: t("static.isExample"),
+    },
   ];
 
   const handleFilterChange = (values: FilterValues) => {
@@ -76,6 +82,7 @@ const ClipsPage = () => {
       playerId: values.player?.id ?? undefined,
       episodeId: values.episode?.id ?? undefined,
       matchId: values.match?.id ?? undefined,
+      isExample: values.isExample ?? undefined
     };
     dispatch(fetchClips(dto));
 

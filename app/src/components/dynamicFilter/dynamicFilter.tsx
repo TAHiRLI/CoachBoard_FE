@@ -1,4 +1,18 @@
-import { Autocomplete, Box, Button, Chip, Collapse, IconButton, TextField, Typography } from "@mui/material";
+import {
+  Autocomplete,
+  Box,
+  Button,
+  Chip,
+  Collapse,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  IconButton,
+  Radio,
+  RadioGroup,
+  TextField,
+  Typography
+} from "@mui/material";
 import { Close, FilterList, RestartAlt, Save } from "@mui/icons-material";
 import { FilterFieldConfig, FilterOption, FilterValues } from "@/lib/types/dynamicFilter.types";
 import { useEffect, useState } from "react";
@@ -119,6 +133,39 @@ const DynamicFilter: React.FC<DynamicFilterProps> = ({
             size={compact ? "small" : "medium"}
             fullWidth
           />
+        );
+      case "checkbox":
+        return (
+          <FormControl key={field.key} component="fieldset" size={compact ? "small" : "medium"}>
+            <FormLabel component="legend">{field.label}</FormLabel>
+            <RadioGroup
+              row
+              value={filterValues[field.key] === true ? "true" : filterValues[field.key] === false ? "false" : "null"}
+              onChange={(e) => {
+                const val = e.target.value;
+                handleFilterChange(field.key, val === "true" ? true : val === "false" ? false : null);
+              }}
+            >
+              <FormControlLabel
+                value="null"
+                control={<Radio size={compact ? "small" : "medium"} />}
+                label={t("static.all") || "All"}
+                disabled={field.disabled}
+              />
+              <FormControlLabel
+                value="true"
+                control={<Radio size={compact ? "small" : "medium"} />}
+                label={t("static.yes") || "Yes"}
+                disabled={field.disabled}
+              />
+              <FormControlLabel
+                value="false"
+                control={<Radio size={compact ? "small" : "medium"} />}
+                label={t("static.no") || "No"}
+                disabled={field.disabled}
+              />
+            </RadioGroup>
+          </FormControl>
         );
 
       case "select":
@@ -292,9 +339,23 @@ const DynamicFilter: React.FC<DynamicFilterProps> = ({
 
                   let displayValue: string | null = null;
 
-                  if (Array.isArray(value) && value.length > 0) {
+                  // Handle checkbox type (tri-state: true, false, null/undefined)
+                  if (field.type === "checkbox") {
+                    if (value === true) {
+                      displayValue = t("static.yes") || "Yes";
+                    } else if (value === false) {
+                      displayValue = t("static.no") || "No";
+                    } else {
+                      // null or undefined - don't show chip
+                      return null;
+                    }
+                  }
+                  // Handle arrays
+                  else if (Array.isArray(value) && value.length > 0) {
                     displayValue = `${value.length} ${t("static.selected")}`;
-                  } else if (value && !Array.isArray(value)) {
+                  }
+                  // Handle other values
+                  else if (value && !Array.isArray(value)) {
                     if (value instanceof Date) {
                       displayValue = value.toLocaleDateString();
                     } else if (typeof value === "object" && value.label) {
@@ -312,7 +373,10 @@ const DynamicFilter: React.FC<DynamicFilterProps> = ({
                       label={`${field.label}: ${displayValue}`}
                       size="small"
                       onDelete={() => {
-                        if (Array.isArray(filterValues[key])) {
+                        if (field.type === "checkbox") {
+                          // Reset to null (no filter applied)
+                          handleFilterChange(key, null);
+                        } else if (Array.isArray(filterValues[key])) {
                           handleFilterChange(key, []);
                         } else {
                           handleFilterChange(key, null);
@@ -335,8 +399,6 @@ const DynamicFilter: React.FC<DynamicFilterProps> = ({
                   </div>
                 )}
               </Box>
-
-              {/* Filter Fields */}
             </Box>
           )}
         </Collapse>

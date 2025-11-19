@@ -200,7 +200,10 @@
     "viewTrimmedVideo": "View Trimmed Video",
     "createTrimJob": "Create Trim Job",
     "trimJobStatus": "Trim Job Status",
-    "retryTrim": "Retry Trim"
+    "retryTrim": "Retry Trim",
+    "all": "All",
+    "yes": "Yes",
+    "no": "No"
   },
   "user": {
     "username": "Username",

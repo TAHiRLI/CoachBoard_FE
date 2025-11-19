@@ -20,7 +20,7 @@ const initialState: ClipState = {
 export const fetchClips = createAsyncThunk(
   "clips/fetchClips",
   async (
-    filter: { matchId?: string; playerId?: string; episodeId?: string; searchTerm?: string },
+    filter: { matchId?: string; playerId?: string; episodeId?: string; searchTerm?: string , isExample?: boolean},
     { rejectWithValue }
   ) => {
     try {

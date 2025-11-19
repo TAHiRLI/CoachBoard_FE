@@ -169,7 +169,10 @@
     "viewTrimmedVideo": "Посмотреть обрезанное видео",
     "createTrimJob": "Создать задачу обрезки",
     "trimJobStatus": "Статус задачи обрезки",
-    "retryTrim": "Повторить обрезку"
+    "retryTrim": "Повторить обрезку",
+    "all": "Все",
+    "yes": "Да",
+    "no": "Нет"
   },
   "reportTypes": {
     "playerOverview": {
