@@ -1,6 +1,6 @@
 import * as yup from "yup";
 
-import { Button, MenuItem, TextField } from "@mui/material";
+import { Button, Checkbox, FormControlLabel, MenuItem, TextField } from "@mui/material";
 import { Clip, ClipPutDto } from "@/lib/types/clips.types";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { useMemo, useState } from "react";
@@ -128,8 +128,7 @@ const EditClip: React.FC<EditClipProps> = ({ clip, onCancel }) => {
             {...formik.getFieldProps("startTime")}
             error={formik.touched.startTime && Boolean(formik.errors.startTime)}
             helperText={
-              (formik.touched.startTime && (formik.errors.startTime as string)) ||
-              "e.g. 01:12:34, 34:00 or 34"
+              (formik.touched.startTime && (formik.errors.startTime as string)) || "e.g. 01:12:34, 34:00 or 34"
             }
           />
           <TextField
@@ -139,12 +138,15 @@ const EditClip: React.FC<EditClipProps> = ({ clip, onCancel }) => {
             inputProps={{ inputMode: "numeric", pattern: "(^([0-9]{1,2}:)?[0-5]?\\d:[0-5]\\d$)|(^\\d+$)" }}
             {...formik.getFieldProps("endTime")}
             error={formik.touched.endTime && Boolean(formik.errors.endTime)}
-            helperText={
-              (formik.touched.endTime && (formik.errors.endTime as string)) || "e.g. 01:15:00 or 36:15"
-            }
+            helperText={(formik.touched.endTime && (formik.errors.endTime as string)) || "e.g. 01:15:00 or 36:15"}
           />
         </div>
-
+        <div className="flex">
+          <FormControlLabel
+            control={<Checkbox name="isExample" checked={formik.values.isExample} onChange={formik.handleChange} />}
+            label={t("static.isExample")}
+          />
+        </div>
         {mode === "external" ? (
           <TextField
             label={t("static.youtubeExternalUrl")}
@@ -170,7 +172,7 @@ const EditClip: React.FC<EditClipProps> = ({ clip, onCancel }) => {
           </Button>
         </div>
       </div>
-  </form>
+    </form>
   );
 };
 

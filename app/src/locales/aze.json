@@ -35,6 +35,7 @@
     "successRate": "Uğur faizi",
     "scoreSeparator": "-",
     "score0to100": "Qiymət (0–100)",
+    "isExample": "Nümunəvi",
 
     "editMatch": "Oyunu redaktə et",
     "stadium": "Stadion",
@@ -185,8 +186,11 @@
     "selectMatches": "Oyunları seçin",
     "dateRange": "Tarix aralığı",
     "placeholder_default": "Seçin",
-
-    "recieveAutoSmartReminderDesc": "Mustscan AI agent generates Reminders when file is uploaded by managers"
+    "processing": "Emal olunur...",
+    "viewTrimmedVideo": "Kəsilmiş videoya bax",
+    "createTrimJob": "Trim tapşırığı yarat",
+    "trimJobStatus": "Trim tapşırığının statusu",
+    "retryTrim": "Trim-i yenidən cəhd et"
   },
   "user": {
     "username": "Username",

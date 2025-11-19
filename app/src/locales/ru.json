@@ -136,6 +136,7 @@
     "editPlayer": "Редактировать игрока",
     "heightCm": "Рост (см)",
     "position": "Позиция",
+    "isExample": "Примерный",
     "birthDate": "Дата рождения",
     "team": "Команда",
     "none": "Нет",
@@ -163,7 +164,12 @@
     "selectEpisodes": "Выберите эпизоды",
     "selectMatches": "Выберите матчи",
     "dateRange": "Диапазон дат",
-    "finalScore": "Окончательный счёт"
+    "finalScore": "Окончательный счёт",
+    "processing": "Обработка...",
+    "viewTrimmedVideo": "Посмотреть обрезанное видео",
+    "createTrimJob": "Создать задачу обрезки",
+    "trimJobStatus": "Статус задачи обрезки",
+    "retryTrim": "Повторить обрезку"
   },
   "reportTypes": {
     "playerOverview": {

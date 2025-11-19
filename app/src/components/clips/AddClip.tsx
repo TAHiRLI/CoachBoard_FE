@@ -1,14 +1,6 @@
 import * as yup from "yup";
 
-import {
-  Box,
-  Button,
-  FormControlLabel,
-  MenuItem,
-  Switch,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Checkbox, FormControlLabel, MenuItem, Switch, TextField, Typography } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { useEffect, useMemo, useState } from "react";
 
@@ -27,8 +19,7 @@ export const parseTimeToSeconds = (value: string): number => {
   let total = 0;
   if (parts.length === 1) total = parts[0] * 60;
   else if (parts.length === 2) total = parts[0] * 60 + parts[1];
-  else if (parts.length === 3)
-    total = parts[0] * 3600 + parts[1] * 60 + parts[2];
+  else if (parts.length === 3) total = parts[0] * 3600 + parts[1] * 60 + parts[2];
   return negative ? -total : total;
 };
 
@@ -51,12 +42,7 @@ interface AddClipProps {
   matchUrl?: string;
 }
 
-const AddClip: React.FC<AddClipProps> = ({
-  onSuccess,
-  onCancel,
-  matchId,
-  matchUrl,
-}) => {
+const AddClip: React.FC<AddClipProps> = ({ onSuccess, onCancel, matchId, matchUrl }) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { loading } = useAppSelector((s) => s.clipData);
@@ -72,12 +58,7 @@ const AddClip: React.FC<AddClipProps> = ({
       yup.object({
         name: yup.string().required(t("static.required")),
         videoUrl:
-          mode === "external"
-            ? yup
-                .string()
-                .url(t("static.invalidUrl"))
-                .required(t("static.required"))
-            : yup.string(),
+          mode === "external" ? yup.string().url(t("static.invalidUrl")).required(t("static.required")) : yup.string(),
       }),
     [mode, t]
   );
@@ -159,9 +140,7 @@ const AddClip: React.FC<AddClipProps> = ({
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <h2 className="text-xl font-bold text-center mb-4">
-        {t("static.createClip")}
-      </h2>
+      <h2 className="text-xl font-bold text-center mb-4">{t("static.createClip")}</h2>
 
       <div className="flex flex-col gap-3">
         <TextField
@@ -183,23 +162,25 @@ const AddClip: React.FC<AddClipProps> = ({
           <MenuItem value="external">{t("static.youtubeExternalUrl")}</MenuItem>
         </TextField>
 
-        {mode === "external" && (
-          <>
+        <div className="flex">
+          <FormControlLabel
+            control={<Checkbox name="isExample" checked={formik.values.isExample} onChange={formik.handleChange} />}
+            label={t("static.isExample")}
+          />
+          {mode === "external" && (
             <FormControlLabel
-              control={
-                <Switch
-                  checked={isLive}
-                  onChange={(e) => setIsLive(e.target.checked)}
-                />
-              }
+              control={<Switch checked={isLive} onChange={(e) => setIsLive(e.target.checked)} />}
               label="Is Live Stream"
             />
+          )}
+        </div>
 
+        {mode === "external" && (
+          <>
             {isLive && (
               <>
                 <Typography variant="body2" color="text.secondary">
-                  Enter the live start (e.g. “-4:00:00”) and clip times (e.g.
-                  “-2:00”) — it will auto-calculate offset.
+                  Enter the live start (e.g. “-4:00:00”) and clip times (e.g. “-2:00”) — it will auto-calculate offset.
                 </Typography>
                 <TextField
                   label="Live Start Time (e.g. -4:00:00)"
@@ -221,17 +202,13 @@ const AddClip: React.FC<AddClipProps> = ({
 
             <div className="flex gap-3">
               <TextField
-                label={
-                  isLive ? "Start Time (e.g. -2:00)" : t("static.startTimeSeconds")
-                }
+                label={isLive ? "Start Time (e.g. -2:00)" : t("static.startTimeSeconds")}
                 placeholder="hh:mm:ss or mm:ss or m"
                 fullWidth
                 {...formik.getFieldProps("startTime")}
               />
               <TextField
-                label={
-                  isLive ? "End Time (e.g. 0:00)" : t("static.endTimeSeconds")
-                }
+                label={isLive ? "End Time (e.g. 0:00)" : t("static.endTimeSeconds")}
                 placeholder="hh:mm:ss or mm:ss or m"
                 fullWidth
                 {...formik.getFieldProps("endTime")}
@@ -259,28 +236,15 @@ const AddClip: React.FC<AddClipProps> = ({
           <input
             type="file"
             accept="video/*"
-            onChange={(e) =>
-              e.currentTarget.files &&
-              formik.setFieldValue("videoFile", e.currentTarget.files[0])
-            }
+            onChange={(e) => e.currentTarget.files && formik.setFieldValue("videoFile", e.currentTarget.files[0])}
           />
         )}
 
         <div className="flex justify-end gap-3 mt-3">
-          <Button
-            disabled={formik.isSubmitting}
-            onClick={onCancel}
-            color="warning"
-            variant="contained"
-          >
+          <Button disabled={formik.isSubmitting} onClick={onCancel} color="warning" variant="contained">
             {t("static.cancel")}
           </Button>
-          <Button
-            type="submit"
-            variant="contained"
-            startIcon={<Save />}
-            disabled={loading}
-          >
+          <Button type="submit" variant="contained" startIcon={<Save />} disabled={loading}>
             {t("static.save")}
           </Button>
         </div>

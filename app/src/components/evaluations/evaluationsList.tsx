@@ -45,7 +45,7 @@ const EvaluationsList = () => {
   const columns: GridColDef[] = useMemo(
     () => [
       { field: "playerName", headerName: t("static.player"), flex: 1 },
-      { field: "episodeName", headerName: t("static.episode"), flex: 1 },
+      { field: "episodeName", headerName: t("static.episode"), flex: 1.5 },
       { field: "occurrenceCount", headerName: t("static.occurrenceCount"), flex: 1 },
       {
         field: "isSuccessful",
@@ -64,14 +64,13 @@ const EvaluationsList = () => {
       {
         field: "couldBeBetter",
         headerName: t("static.couldBeBetter"),
-        flex: 1,
         renderCell: (params) =>
           params.value ? <CheckCircle sx={{ color: green[500] }} /> : <Cancel sx={{ color: red[500] }} />,
       },
       {
         field: "notes",
         headerName: t("static.note"),
-        flex: 1.5,
+        flex: 2,
         renderCell: (params) => (
           <Tooltip title={params.value || ""} arrow>
             <Typography
@@ -91,8 +90,17 @@ const EvaluationsList = () => {
       {
         field: "clip",
         headerName: t("static.clip"),
-        flex: 1.5,
-        renderCell: (params) => <Link target="_blank" to={`/clips/${params.row.clipId}`}>{t("static.clip")}</Link>,
+        flex: 2.3,
+        valueGetter: (_ , row) =>{
+           console.log("🚀 ~ EvaluationsList ~ row:", row)
+           return row.matchName
+        },
+
+        renderCell: (params) => (
+          <Link target="_blank" to={`/clips/${params.row.clipId}`}>
+            {params.row.matchName}
+          </Link>
+        ),
       },
       { field: "coachName", headerName: t("static.coach"), flex: 1 },
       {
@@ -132,7 +140,6 @@ const EvaluationsList = () => {
           columns={columns}
           disableRowSelectionOnClick
           loading={loading}
-          
         />
       </Box>
       {selectedEvaluation && (

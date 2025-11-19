@@ -1,15 +1,14 @@
-import { Button, Card, CardContent, CardMedia, CircularProgress, IconButton, Typography } from "@mui/material";
+import { Card, CardContent, CardMedia, IconButton } from "@mui/material";
 import { Delete, Edit, SkipNext, SkipPrevious } from "@mui/icons-material";
 import EditClip, { formatSeconds } from "./EditClip";
-import { createTrimRequest, deleteClip, fetchClips, selectClip } from "@/store/slices/clips.slice";
+import { deleteClip, fetchClips, selectClip } from "@/store/slices/clips.slice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { useCallback, useEffect, useState } from "react";
 
-import { AnyPermissionGuard } from "../auth/PermissionGuard/PermissionGuard";
 import { Clip } from "@/lib/types/clips.types";
+import { ClipInfoCard } from "./ClipInfoCard";
 import CustomModal from "../customModal/customModal";
 import { Link } from "react-router-dom";
-import { Permission } from "@/lib/types/permissionTypes";
 import RowActions from "../rowActions/rowActions";
 import Swal from "sweetalert2";
 import { apiUrl } from "@/lib/constants/constants";
@@ -32,7 +31,7 @@ const ClipItem: React.FC<ClipItemProps> = ({ clip, expanded }) => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
-  const { selectedClip, loading } = useAppSelector((x) => x.clipData);
+  const { selectedClip } = useAppSelector((x) => x.clipData);
 
   const getVideoSrc = () => (clip.isExternal ? clip.videoUrl : `${apiUrl}/${clip.videoUrl}`);
   const getDuration = () => {
@@ -75,17 +74,6 @@ const ClipItem: React.FC<ClipItemProps> = ({ clip, expanded }) => {
     [dispatch, t]
   );
 
-  // 🆕 Trim Job Handler
-  const handleCreateTrimRequest = async (matchId: string) => {
-    try {
-      await dispatch(createTrimRequest(clip.id)).unwrap();
-      Swal.fire("🎬 Trim job created!", "", "success");
-      dispatch(fetchClips({ matchId: matchId }));
-    } catch (err: any) {
-      Swal.fire("❌ Failed", err || "Error creating trim request", "error");
-    }
-  };
-
   // Reload logic start
   const [player, setPlayer] = useState<any>(null);
 
@@ -118,57 +106,7 @@ const ClipItem: React.FC<ClipItemProps> = ({ clip, expanded }) => {
     }
   }, [clip.id, videoId, startTime, clip.isExternal]);
 
-  // reload logic end
-  const jobStatus = clip.videoTrimRequest?.status ?? null;
 
-  const renderTrimSection = () => {
-    if (!clip.isExternal) return <></>;
-    if (loading) {
-      return (
-        <div className="flex items-center gap-2 mt-3">
-          <CircularProgress size={20} />
-          <span>Processing...</span>
-        </div>
-      );
-    }
-
-    if (!jobStatus && clip.matchId) {
-      return (
-        <AnyPermissionGuard permissions={[Permission.TRIM_VIDEO]}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => handleCreateTrimRequest(clip.matchId!)}
-            sx={{ mt: 2, textTransform: "none" }}
-          >
-            🎬 Create Trim Job
-          </Button>
-        </AnyPermissionGuard>
-      );
-    }
-
-    const statusColor =
-      jobStatus === "Completed" ? "green" : jobStatus === "Pending" || jobStatus === "Processing" ? "#ffa500" : "red";
-
-    return (
-      <div style={{ marginTop: "12px" }}>
-        <Typography variant="body2" sx={{ color: statusColor }}>
-          Trim Job Status: {jobStatus}
-        </Typography>
-
-        {jobStatus === "Failed" && (
-          <Button
-            variant="outlined"
-            color="error"
-            sx={{ mt: 1, textTransform: "none" }}
-            onClick={() => handleCreateTrimRequest(clip.matchId!)}
-          >
-            🔁 Retry Trim
-          </Button>
-        )}
-      </div>
-    );
-  };
 
   return (
     <Card elevation={0} sx={{ display: "flex", flexDirection: "column", p: 2, gap: 2, position: "relative" }}>
@@ -244,29 +182,8 @@ const ClipItem: React.FC<ClipItemProps> = ({ clip, expanded }) => {
         )
       )}
 
-      <CardContent sx={{ paddingBottom: "0.5rem !important" }}>
-        <Typography variant="body2" color="text.secondary">
-          {formatSeconds(Number(clip.startTime))} - {formatSeconds(Number(clip.endTime))} • {t("static.duration")}:{" "}
-          {getDuration()}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {t("static.match")}: {clip.matchName || "N/A"} • {t("static.coach")}: {clip.coachName}
-        </Typography>
-
-        {clip.trimmedVideoUrl && (
-          <AnyPermissionGuard permissions={[Permission.TRIM_VIDEO]}>
-            <div className="mt-3">
-              <Link target="_blank" to={apiUrl + "/" + clip.trimmedVideoUrl}>
-                <p className="whitespace-nowrap overflow-hidden text-md" color="primary">
-                  🎬 Trimmed Video
-                </p>
-              </Link>
-            </div>
-          </AnyPermissionGuard>
-        )}
-
-        {/* 🆕 Trim Job Section */}
-        {renderTrimSection()}
+      <CardContent>
+        <ClipInfoCard clip={clip} formatSeconds={formatSeconds} getDuration={getDuration} />
       </CardContent>
 
       <div className="absolute top-4 right-2">

@@ -176,7 +176,7 @@
     "password": "Password",
     "minPassword": "Minimum 6 characters",
     "role": "Role",
-
+    "isExample": "Example",
     "recieveAutoSmartReminder": "Recieve Auto Smart Reminders",
     "filters": "Filters",
     "reset": "Reset",
@@ -195,7 +195,12 @@
     "selectEpisodes": "Select episodes",
     "selectMatches": "Select matches",
     "dateRange": "Date Range",
-    "recieveAutoSmartReminderDesc": "Mustscan AI agent generates Reminders when file is uploaded by managers"
+    "recieveAutoSmartReminderDesc": "Mustscan AI agent generates Reminders when file is uploaded by managers",
+    "processing": "Processing...",
+    "viewTrimmedVideo": "View Trimmed Video",
+    "createTrimJob": "Create Trim Job",
+    "trimJobStatus": "Trim Job Status",
+    "retryTrim": "Retry Trim"
   },
   "user": {
     "username": "Username",
