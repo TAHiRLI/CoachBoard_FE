@@ -9,9 +9,6 @@ const cookies = new Cookies();
 export const apiClient = axios.create({
   baseURL: apiUrl,
   timeout: 100000,
-  headers: {
-    'Content-Type': 'application/json',
-  },
 });
 
 // Add Request Interceptor for Keycloak Token
