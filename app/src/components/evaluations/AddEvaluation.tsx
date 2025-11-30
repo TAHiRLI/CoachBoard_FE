@@ -1,8 +1,11 @@
 import * as yup from "yup";
 
-import { Autocomplete, Button, Checkbox, FormControlLabel, TextField } from "@mui/material";
+import { Button, Checkbox, FormControlLabel, TextField } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 
+import AddEpisode from "../episodes/AddEpisode";
+import AddPlayer from "../players/AddPlayer";
+import AutocompleteWithAdd from "../AutocompleteWithAdd/AutocompleteWithAdd";
 import { EvaluationPostDto } from "@/lib/types/evaluation.types";
 import { Save } from "@mui/icons-material";
 import { createEvaluation } from "@/store/slices/evaluations.slice";
@@ -59,35 +62,30 @@ const AddEvaluation = ({ clipId, onSuccess, onCancel }: props) => {
   return (
     <form onSubmit={formik.handleSubmit} className="flex flex-col gap-4">
       <h1 className="text-xl font-bold text-center">{t("static.addEvaluation")}</h1>
-
-      <Autocomplete
+      <AutocompleteWithAdd
         options={players}
-        getOptionLabel={(option) => {
-          return option.fullName + " - " + option.teamName;
-        }}
-        onChange={(_, value) => formik.setFieldValue("playerId", value?.id || "")}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            label={t("static.player")}
-            error={formik.touched.playerId && Boolean(formik.errors.playerId)}
-            helperText={formik.touched.playerId && formik.errors.playerId}
-          />
-        )}
+        value={players.find((p) => p.id === formik.values.playerId) || null}
+        label={t("static.player")}
+        getOptionLabel={(option) => `${option.fullName} - ${option.teamName}`}
+        onChange={(value) => formik.setFieldValue("playerId", value?.id || "")}
+        error={formik.touched.playerId && Boolean(formik.errors.playerId)}
+        helperText={formik.touched.playerId ? formik.errors.playerId : undefined}
+        addButtonText={t("static.add")}
+        renderAddForm={(onSuccess, onCancel) => <AddPlayer onSuccess={onSuccess} onCancel={onCancel} />}
+        onItemAdded={() => dispatch(fetchPlayers())}
       />
-
-      <Autocomplete
+      
+      <AutocompleteWithAdd
         options={episodes}
+        value={episodes.find((e) => e.id === formik.values.episodeId) || null}
+        label={t("static.episode")}
         getOptionLabel={(option) => option.name}
-        onChange={(_, value) => formik.setFieldValue("episodeId", value?.id || "")}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            label={t("static.episode")}
-            error={formik.touched.episodeId && Boolean(formik.errors.episodeId)}
-            helperText={formik.touched.episodeId && formik.errors.episodeId}
-          />
-        )}
+        onChange={(value) => formik.setFieldValue("episodeId", value?.id || "")}
+        error={formik.touched.episodeId && Boolean(formik.errors.episodeId)}
+        helperText={formik.touched.episodeId ? formik.errors.episodeId : undefined}
+        addButtonText={t("static.addEpisode")}
+        renderAddForm={(onSuccess, onCancel) => <AddEpisode onSuccess={onSuccess} onCancel={onCancel} />}
+        onItemAdded={() => dispatch(fetchEpisodes())}
       />
       <TextField
         fullWidth
@@ -96,7 +94,6 @@ const AddEvaluation = ({ clipId, onSuccess, onCancel }: props) => {
         {...formik.getFieldProps("occurrenceCount")}
       />
       <TextField fullWidth label={t("static.note")} multiline rows={3} {...formik.getFieldProps("notes")} />
-
       <div className="grid grid-cols-3">
         <FormControlLabel
           control={
@@ -126,7 +123,6 @@ const AddEvaluation = ({ clipId, onSuccess, onCancel }: props) => {
           label={t("static.couldBeBetter")}
         />
       </div>
-
       <div className="flex justify-end gap-3">
         <Button onClick={onCancel} variant="outlined" color="warning">
           Cancel
