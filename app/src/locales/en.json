@@ -203,7 +203,11 @@
     "retryTrim": "Retry Trim",
     "all": "All",
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
+    "tags": "Tags",
+    "selectOrCreateTags": "Select a tag or create a new one",
+    "typeToCreateNewTag": "Type to create a new tag and press Enter",
+    "selectTags": "Select tag"
   },
   "user": {
     "username": "Username",

@@ -1,12 +1,23 @@
 import * as yup from "yup";
 
-import { Box, Button, Checkbox, FormControlLabel, MenuItem, Switch, TextField, Typography } from "@mui/material";
+import {
+  Autocomplete,
+  Box,
+  Button,
+  Checkbox,
+  FormControlLabel,
+  MenuItem,
+  Switch,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { useEffect, useMemo, useState } from "react";
 
 import { ClipPostDto } from "@/lib/types/clips.types";
 import { Save } from "@mui/icons-material";
 import { createClip } from "@/store/slices/clips.slice";
+import { fetchTags } from "@/store/slices/tags.slice";
 import { useFormik } from "formik";
 import { useTranslation } from "react-i18next";
 
@@ -47,6 +58,7 @@ const AddClip: React.FC<AddClipProps> = ({ onSuccess, onCancel, matchId, matchUr
   const dispatch = useAppDispatch();
   const { loading } = useAppSelector((s) => s.clipData);
   const { user } = useAppSelector((s) => s.auth);
+  const { tags } = useAppSelector((s) => s.tagData);
 
   const [mode, setMode] = useState<"external" | "upload">("external");
   const [isLive, setIsLive] = useState(false);
@@ -74,6 +86,7 @@ const AddClip: React.FC<AddClipProps> = ({ onSuccess, onCancel, matchId, matchUr
       videoFile: undefined,
       isExternal: mode === "external",
       isExample: false,
+      tags: [],
     },
     validationSchema,
     onSubmit: (values) => {
@@ -98,6 +111,10 @@ const AddClip: React.FC<AddClipProps> = ({ onSuccess, onCancel, matchId, matchUr
         });
     },
   });
+
+  useEffect(() => {
+    dispatch(fetchTags());
+  }, [dispatch]);
 
   // keep isExternal in sync with source mode
   useEffect(() => {
@@ -149,6 +166,25 @@ const AddClip: React.FC<AddClipProps> = ({ onSuccess, onCancel, matchId, matchUr
           {...formik.getFieldProps("name")}
           error={formik.touched.name && Boolean(formik.errors.name)}
           helperText={formik.touched.name && formik.errors.name}
+        />
+        
+        <Autocomplete
+          multiple
+          freeSolo
+          options={tags.map((tag) => tag.name)}
+          value={formik.values.tags || []}
+          onChange={(_, newValue) => {
+            formik.setFieldValue("tags", newValue);
+          }}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label={t("static.tags")}
+              placeholder={t("static.selectOrCreateTags")}
+              helperText={t("static.typeToCreateNewTag")}
+            />
+          )}
+          slotProps={{ chip: { size: "small" } }}
         />
 
         <TextField
@@ -216,7 +252,7 @@ const AddClip: React.FC<AddClipProps> = ({ onSuccess, onCancel, matchId, matchUr
             </div>
 
             {iframeSrc && (
-              <Box sx={{ mt: 2 }}>
+              <Box sx={{ mt: 2, display: "none" }}>
                 <iframe
                   key={iframeSrc}
                   width="100%"

@@ -7,6 +7,7 @@ class ClipsService {
     matchId?: string;
     playerId?: string;
     episodeId?: string;
+    tagId?: string;
     searchTerm?: string;
     isExample?: boolean;
   }) {
@@ -14,6 +15,7 @@ class ClipsService {
     if (filter.matchId) params.matchId = filter.matchId;
     if (filter.playerId) params.playerId = filter.playerId;
     if (filter.episodeId) params.episodeId = filter.episodeId;
+    if (filter.tagId) params.tagId = filter.tagId;
     if (filter.searchTerm) params.searchTerm = filter.searchTerm;
     if (filter.isExample) params.isExample = filter.isExample;
 
@@ -32,6 +34,9 @@ class ClipsService {
     formData.append("createdByCoachId", dto.createdByCoachId.toString());
     formData.append("isExternal", dto.isExternal.toString());
     formData.append("isExample", dto.isExample.toString());
+    dto.tags?.forEach((tag) => {
+      formData.append("tags", tag);
+    });
     if (dto.matchId !== null && dto.matchId !== undefined) {
       formData.append("matchId", dto.matchId.toString());
     }
@@ -54,6 +59,9 @@ class ClipsService {
     formData.append("endTime", dto.endTime.toString());
     formData.append("isExternal", dto.isExternal.toString());
     formData.append("isExample", dto.isExample.toString());
+    dto.tags?.forEach((tag) => {
+      formData.append("tags", tag);
+    });
     if (dto.matchId !== null && dto.matchId !== undefined) {
       formData.append("matchId", dto.matchId.toString());
     }

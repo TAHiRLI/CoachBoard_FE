@@ -10,6 +10,7 @@ import { fetchClips } from "@/store/slices/clips.slice";
 import { fetchEpisodes } from "@/store/slices/episodes.slice";
 import { fetchMatches } from "@/store/slices/matches.slice";
 import { fetchPlayers } from "@/store/slices/players.slice";
+import { fetchTags } from "@/store/slices/tags.slice";
 import { useAppDispatch } from "@/store/store";
 import { useAppSelector } from "@/store/store";
 import { useTranslation } from "react-i18next";
@@ -27,10 +28,12 @@ const ClipsPage = () => {
   const { clips } = useAppSelector((x) => x.clipData);
   const { players } = useAppSelector((x) => x.playerData);
   const { episodes } = useAppSelector((x) => x.episodeData);
+  const { tags } = useAppSelector((x) => x.tagData);
   const { matches } = useAppSelector((x) => x.matchData);
 
   useEffect(() => {
     dispatch(fetchEpisodes());
+    dispatch(fetchTags());
     dispatch(fetchPlayers());
     dispatch(fetchMatches({}));
   }, [dispatch]);
@@ -60,6 +63,13 @@ const ClipsPage = () => {
       placeholder: t("static.selectEpisodes"),
     },
     {
+      key: "tag",
+      label: t("static.tags"),
+      type: "select",
+      options: tags.map((e) => ({ id: e.id, label: e.name })),
+      placeholder: t("static.selectTags"),
+    },
+    {
       key: "match",
       label: t("static.matches"),
       type: "select",
@@ -81,8 +91,9 @@ const ClipsPage = () => {
       searchTerm: values.searchTerm ?? undefined,
       playerId: values.player?.id ?? undefined,
       episodeId: values.episode?.id ?? undefined,
+      tagId: values.tag?.id ?? undefined,
       matchId: values.match?.id ?? undefined,
-      isExample: values.isExample ?? undefined
+      isExample: values.isExample ?? undefined,
     };
     dispatch(fetchClips(dto));
 

@@ -1,12 +1,13 @@
 import * as yup from "yup";
 
-import { Button, Checkbox, FormControlLabel, MenuItem, TextField } from "@mui/material";
+import { Autocomplete, Button, Checkbox, FormControlLabel, MenuItem, TextField } from "@mui/material";
 import { Clip, ClipPutDto } from "@/lib/types/clips.types";
 import { useAppDispatch, useAppSelector } from "@/store/store";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { Edit } from "@mui/icons-material";
 import Swal from "sweetalert2";
+import { fetchTags } from "@/store/slices/tags.slice";
 import { parseTimeToSeconds } from "./AddClip";
 import { updateClip } from "@/store/slices/clips.slice";
 import { useFormik } from "formik";
@@ -32,7 +33,13 @@ const EditClip: React.FC<EditClipProps> = ({ clip, onCancel }) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { loading } = useAppSelector((s) => s.clipData);
+  const { tags: allTags } = useAppSelector((s) => s.tagData);
+
   const [mode, setMode] = useState<"external" | "upload">(clip.isExternal ? "external" : "upload");
+
+  useEffect(() => {
+    dispatch(fetchTags());
+  }, [dispatch]);
 
   // Accepts:
   // - "34" (minutes only)
@@ -74,6 +81,7 @@ const EditClip: React.FC<EditClipProps> = ({ clip, onCancel }) => {
       videoFile: undefined,
       isExternal: clip.isExternal,
       isExample: clip.isExample,
+      tags: clip.tags?.map((t) => t.name) ?? [],
     },
     validationSchema,
     onSubmit: (values) => {
@@ -107,7 +115,22 @@ const EditClip: React.FC<EditClipProps> = ({ clip, onCancel }) => {
           error={formik.touched.name && Boolean(formik.errors.name)}
           helperText={formik.touched.name && formik.errors.name}
         />
-
+        <Autocomplete
+          multiple
+          freeSolo
+          options={allTags.map((t) => t.name)}
+          value={formik.values.tags || []}
+          onChange={(_, value) => formik.setFieldValue("tags", value)}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label={t("static.tags")}
+              placeholder={t("static.selectOrCreateTags")}
+              helperText={t("static.typeToCreateNewTag")}
+            />
+          )}
+          slotProps={{ chip: { size: "small" } }}
+        />
         <TextField
           select
           label={t("static.clipSource")}

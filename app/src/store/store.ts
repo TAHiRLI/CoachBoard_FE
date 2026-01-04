@@ -16,6 +16,7 @@ import playersSlice from "./slices/players.slice";
 import seasonsSlice from "./slices/seasons.slice";
 import statisticsSlice from "./slices/statistics.slice";
 import storage from "redux-persist/lib/storage"; // Default localStorage for web
+import tagsSlice from "./slices/tags.slice";
 import teamsSlice from "./slices/teams.slice";
 
 //import slices
@@ -42,6 +43,7 @@ const rootReducer = combineReducers({
   coachData: coachesSlice.reducer,
   appUserData: appUsersSlice.reducer,
   statistics: statisticsSlice.reducer,
+  tagData: tagsSlice.reducer,
 });
 
 // Wrap rootReducer with persistReducer

@@ -20,7 +20,14 @@ const initialState: ClipState = {
 export const fetchClips = createAsyncThunk(
   "clips/fetchClips",
   async (
-    filter: { matchId?: string; playerId?: string; episodeId?: string; searchTerm?: string , isExample?: boolean},
+    filter: {
+      matchId?: string;
+      playerId?: string;
+      episodeId?: string;
+      tagId?: string;
+      searchTerm?: string;
+      isExample?: boolean;
+    },
     { rejectWithValue }
   ) => {
     try {
@@ -119,11 +126,34 @@ const clipsSlice = createSlice({
         state.error = action.payload as string;
       })
       .addCase(updateClip.fulfilled, (state, action) => {
-        const index = state.clips.findIndex((c) => c.id === action.payload.id);
+        const { id, dto } = action.payload;
+
+        const mapTags = (): { id: string; name: string }[] =>
+          Array.isArray(dto.tags)
+            ? dto.tags.map((name) => ({
+                id: "temp",
+                name,
+              }))
+            : [];
+
+        const { tags: _ignoredTags, ...dtoWithoutTags } = dto;
+
+        // update list
+        const index = state.clips.findIndex((c) => c.id === id);
         if (index !== -1) {
           state.clips[index] = {
             ...state.clips[index],
-            ...action.payload.dto,
+            ...dtoWithoutTags,
+            tags: mapTags(),
+          };
+        }
+
+        // update selected clip
+        if (state.selectedClip && state.selectedClip.id === id) {
+          state.selectedClip = {
+            ...state.selectedClip,
+            ...dtoWithoutTags,
+            tags: mapTags(),
           };
         }
       })

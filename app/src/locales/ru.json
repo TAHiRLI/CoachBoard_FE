@@ -172,7 +172,11 @@
     "retryTrim": "Повторить обрезку",
     "all": "Все",
     "yes": "Да",
-    "no": "Нет"
+    "no": "Нет",
+    "tags": "Теги",
+    "selectOrCreateTags": "Выберите тег или создайте новый",
+    "typeToCreateNewTag": "Введите, чтобы создать новый тег, и нажмите Enter",
+    "selectTags": "Выберите теги"
   },
   "reportTypes": {
     "playerOverview": {

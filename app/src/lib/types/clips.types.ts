@@ -1,8 +1,10 @@
+import { Tag } from "./tag.types";
+
 export interface Clip {
   id: string;
   name: string;
-  nextClipId?: string; 
-  previousClipId?: string; 
+  nextClipId?: string;
+  previousClipId?: string;
   startTime: string;
   endTime: string;
   videoUrl: string;
@@ -17,6 +19,7 @@ export interface Clip {
   coachName: string;
   trimmedVideoUrl?: string;
   videoTrimRequest: VideoTrimRequest | null;
+  tags: Tag[];
 }
 
 export interface VideoTrimRequest {
@@ -28,8 +31,8 @@ export interface VideoTrimRequest {
   jobId?: number | null;
   resultVideoUrl?: string | null;
   errorMessage?: string | null;
-  completedAt?: string | null; 
-  status: string; 
+  completedAt?: string | null;
+  status: string;
   createdAt: string;
 }
 
@@ -43,6 +46,7 @@ export interface ClipPostDto {
   videoFile?: File;
   isExternal: boolean;
   isExample: boolean;
+  tags?: string[];
 }
 
 export interface ClipPutDto {
@@ -54,4 +58,5 @@ export interface ClipPutDto {
   videoFile?: File;
   isExternal: boolean;
   isExample: boolean;
+  tags: string[]
 }

@@ -193,7 +193,12 @@
     "retryTrim": "Trim-i yenidən cəhd et",
     "all": "Hamısı",
     "yes": "Bəli",
-    "no": "Xeyr"
+    "no": "Xeyr",
+    "tags": "Etiketlər",
+    "selectOrCreateTags": "Etiket seçin və ya yenisini yazın",
+    "typeToCreateNewTag": "Yeni etiket yaratmaq üçün yazın və Enter basın",
+    "selectTags": "Etiket Seçin"
+
   },
   "user": {
     "username": "Username",
