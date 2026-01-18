@@ -13,6 +13,7 @@ import keycloakSlice from "./slices/keycloak.slice";
 import matchesSlice from "./slices/matches.slice";
 import participationslice from "./slices/playerMatchParticipation.slice";
 import playersSlice from "./slices/players.slice";
+import reportsSlice from "./slices/reports.slice";
 import seasonsSlice from "./slices/seasons.slice";
 import statisticsSlice from "./slices/statistics.slice";
 import storage from "redux-persist/lib/storage"; // Default localStorage for web
@@ -44,6 +45,7 @@ const rootReducer = combineReducers({
   appUserData: appUsersSlice.reducer,
   statistics: statisticsSlice.reducer,
   tagData: tagsSlice.reducer,
+  reportsData: reportsSlice.reducer,
 });
 
 // Wrap rootReducer with persistReducer
