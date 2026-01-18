@@ -236,7 +236,15 @@
     "revieceReminderOffAlert": "By disabling this future you won't get reminders when new file is uploaded by admin",
     "sendNotificationDesc": "Users in this workspace will get email about file upload",
     "success": "Success",
-    "tokenMissing": "Token is missing. Please use the reset link from your email."
+    "tokenMissing": "Token is missing. Please use the reset link from your email.",
+    "noFileAvailable": "No File Available",
+    "reportHasNoFile": "This report does not have an associated file.",
+    "noReportsFound": "No reports found. Generate reports from the Live Reports tab.",
+    "created": "Created",
+    "by": "By",
+    "view": "View",
+    "download": "Download",
+    "reportDeleted": "Report has been deleted successfully."
   },
   "reportTypes": {
     "playerOverview": {
@@ -250,6 +258,18 @@
     "episodeAnalysis": {
       "name": "Episode Analysis",
       "description": "Deep dive into specific episode performance"
+    },
+    "player": {
+      "name": "Player Reports"
+    },
+    "team": {
+      "name": "Team Reports"
+    },
+    "episode": {
+      "name": "Episode Reports"
+    },
+    "comparative": {
+      "name": "Comparative Reports"
     }
   },
   "statistics": {
