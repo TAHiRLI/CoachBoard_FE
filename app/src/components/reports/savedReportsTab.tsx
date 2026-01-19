@@ -1,35 +1,37 @@
-import { useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Alert,
   Box,
   Card,
   CardContent,
-  Typography,
   Chip,
-  IconButton,
   CircularProgress,
-  Alert,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
+  IconButton,
   Tooltip,
+  Typography,
 } from "@mui/material";
 import {
   Delete as DeleteIcon,
   Download as DownloadIcon,
-  Visibility as VisibilityIcon,
   ExpandMore as ExpandMoreIcon,
   Folder as FolderIcon,
+  Visibility as VisibilityIcon,
 } from "@mui/icons-material";
-import { useAppDispatch, useAppSelector } from "@/store/store";
-import { deleteReport, fetchAllReports } from "@/store/slices/reports.slice";
 import { ReportCategoryEnum, ReportGetDto } from "@/lib/types/reports.types";
+import { deleteReport, fetchAllReports } from "@/store/slices/reports.slice";
+import { useAppDispatch, useAppSelector } from "@/store/store";
+import { useEffect, useMemo, useState } from "react";
+
 import Swal from "sweetalert2";
+import { useTranslation } from "react-i18next";
 
 const SavedReportsTab = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { reports, loading, error } = useAppSelector((state) => state.reportsData);
+  console.log("🚀 ~ SavedReportsTab ~ reports:", reports);
   const [expandedCategory, setExpandedCategory] = useState<string | false>(false);
 
   // Fetch reports on mount
@@ -40,20 +42,26 @@ const SavedReportsTab = () => {
   // Categorize reports by category
   const categorizedReports = useMemo(() => {
     const categories: Record<string, ReportGetDto[]> = {
-      [ReportCategoryEnum.Player]: [],
-      [ReportCategoryEnum.Team]: [],
-      [ReportCategoryEnum.Episode]: [],
-      [ReportCategoryEnum.Comparative]: [],
+      Player: [],
+      Team: [],
+      Episode: [],
+      Comparative: [],
     };
 
     reports.forEach((report) => {
-      if (categories[report.category]) {
-        categories[report.category].push(report);
+      const key = String(report.type);
+      console.log("🚀 ~ SavedReportsTab ~ key:", key);
+
+      if (!categories[key]) {
+        categories[key] = [];
       }
+
+      categories[key].push(report);
     });
 
     return categories;
   }, [reports]);
+  console.log("🚀 ~ SavedReportsTab ~ categorizedReports:", categorizedReports);
 
   const handleAccordionChange = (category: string) => (_event: React.SyntheticEvent, isExpanded: boolean) => {
     setExpandedCategory(isExpanded ? category : false);
@@ -61,17 +69,33 @@ const SavedReportsTab = () => {
 
   const handleViewReport = (report: ReportGetDto) => {
     if (report.fileUrl) {
+      // absolute local path coming from backend -> convert to API-served URL
+      if (report.fileUrl.startsWith("/")) {
+        const apiBase = import.meta.env.VITE_API_BASE_URL; // e.g. http://localhost:5000
+        const normalizedPath = report.fileUrl.replace(/^\/+/, "");
+        window.open(`${apiBase}/${normalizedPath}`, "_blank");
+        return;
+      }
+
+      // already a valid http/https URL
       window.open(report.fileUrl, "_blank");
-    } else if (report.filePath) {
-      // Handle local file path if needed
-      console.log("Opening local file:", report.filePath);
-    } else {
+      return;
+    }
+
+    if (report.fileName) {
       Swal.fire({
         icon: "info",
         title: t("static.noFileAvailable"),
-        text: t("static.reportHasNoFile"),
+        text: t("static.fileNotPubliclyAccessible"),
       });
+      return;
     }
+
+    Swal.fire({
+      icon: "info",
+      title: t("static.noFileAvailable"),
+      text: t("static.reportHasNoFile"),
+    });
   };
 
   const handleDownloadReport = (report: ReportGetDto) => {
@@ -114,7 +138,7 @@ const SavedReportsTab = () => {
     }
   };
 
-  const getCategoryIcon = (category: string) => {
+  const getCategoryIcon = () => {
     return <FolderIcon />;
   };
 
@@ -182,7 +206,7 @@ const SavedReportsTab = () => {
               }}
             >
               <Box className="flex items-center gap-3 w-full">
-                <Box sx={{ color: getCategoryColor(category) }}>{getCategoryIcon(category)}</Box>
+                <Box sx={{ color: getCategoryColor(category) }}>{getCategoryIcon()}</Box>
                 <Typography variant="h6" className="font-semibold capitalize">
                   {t(`reportTypes.${category}.name`) || category}
                 </Typography>
@@ -207,21 +231,12 @@ const SavedReportsTab = () => {
                           <Typography variant="h6" className="font-semibold mb-1">
                             {report.title}
                           </Typography>
-                          {report.description && (
-                            <Typography variant="body2" color="text.secondary" className="mb-2">
-                              {report.description}
-                            </Typography>
-                          )}
+
                           <Box className="flex gap-2 items-center flex-wrap">
-                            <Chip label={report.reportType} size="small" color="primary" variant="outlined" />
+                            <Chip label={report.type} size="small" color="primary" variant="outlined" />
                             <Typography variant="caption" color="text.secondary">
                               {t("static.created")}: {formatDate(report.createdAt)}
                             </Typography>
-                            {report.createdBy && (
-                              <Typography variant="caption" color="text.secondary">
-                                {t("static.by")}: {report.createdBy}
-                              </Typography>
-                            )}
                           </Box>
                         </Box>
                         <Box className="flex gap-1">
@@ -230,7 +245,7 @@ const SavedReportsTab = () => {
                               size="small"
                               color="primary"
                               onClick={() => handleViewReport(report)}
-                              disabled={!report.fileUrl && !report.filePath}
+                              disabled={!report.fileUrl && !report.fileName}
                             >
                               <VisibilityIcon />
                             </IconButton>

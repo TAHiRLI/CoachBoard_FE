@@ -11,7 +11,7 @@ import CustomModal from "../customModal/customModal";
 import { Link } from "react-router-dom";
 import RowActions from "../rowActions/rowActions";
 import Swal from "sweetalert2";
-import { apiUrl } from "@/lib/constants/constants";
+import { minioUrl } from "@/lib/constants/constants";
 import { useTranslation } from "react-i18next";
 
 // Add TypeScript declaration for window.YT
@@ -33,7 +33,7 @@ const ClipItem: React.FC<ClipItemProps> = ({ clip, expanded }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { selectedClip } = useAppSelector((x) => x.clipData);
 
-  const getVideoSrc = () => (clip.isExternal ? clip.videoUrl : `${apiUrl}/${clip.videoUrl}`);
+  const getVideoSrc = () => (clip.isExternal ? clip.videoUrl : `${minioUrl}${clip.videoUrl}`);
   const getDuration = () => {
     const start = parseInt(clip.startTime as any, 10);
     const end = parseInt(clip.endTime as any, 10);
@@ -174,7 +174,7 @@ const ClipItem: React.FC<ClipItemProps> = ({ clip, expanded }) => {
           <CardMedia
             component="img"
             className="cursor-pointer"
-            image={`${apiUrl}${clip.thumbnailUrl}`}
+            image={`${minioUrl}${clip.thumbnailUrl}`}
             alt={clip.name}
             onClick={() => window.open(getVideoSrc(), "_blank")}
             sx={{ width: "100%", height: "300px", objectFit: "contain" }}

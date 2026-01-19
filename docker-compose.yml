@@ -11,6 +11,8 @@ services:
       dockerfile: ./Dockerfile
       args:
         VITE_API_URL: "https://api.coachboard.az"
+        VITE_MINIO_URL: "https://minio.coachboard.az"
+        VITE_DEPLOY_ENV: prod
     environment:
       - NODE_ENV=production
     networks:

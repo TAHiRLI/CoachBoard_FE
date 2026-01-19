@@ -11,7 +11,7 @@ import { Match } from "@/lib/types/matches.types";
 import MatchStatusChip from "./matchStatusChip";
 import RowActions from "../rowActions/rowActions";
 import Swal from "sweetalert2";
-import { apiUrl } from "@/lib/constants/constants";
+import { minioUrl } from "@/lib/constants/constants";
 import { useTranslation } from "react-i18next";
 
 const MatchItem = ({ match }: { match: Match }) => {
@@ -51,7 +51,7 @@ const MatchItem = ({ match }: { match: Match }) => {
         }
       });
     },
-    [dispatch, t]
+    [dispatch, t],
   );
   return (
     <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-6 relative">
@@ -76,19 +76,19 @@ const MatchItem = ({ match }: { match: Match }) => {
           <div className="flex items-center gap-1">
             {match.homeTeam.logo && (
               <img
-                src={apiUrl + "/" + match.homeTeam.logo}
+                src={minioUrl + match.homeTeam.logo}
                 alt={match.awayTeam.teamName}
                 style={{ width: 24, height: 24, objectFit: "contain" }}
               />
             )}
           </div>
         </Tooltip>
-       <span>{match.name}</span>
+        <span>{match.name}</span>
         <Tooltip title={match.awayTeam.clubName}>
           <div className="flex items-center gap-1">
             {match.awayTeam.logo && (
               <img
-                src={apiUrl + "/" + match.awayTeam.logo}
+                src={minioUrl + match.awayTeam.logo}
                 alt={match.awayTeam.teamName}
                 style={{ width: 24, height: 24, objectFit: "contain" }}
               />
@@ -138,7 +138,7 @@ const MatchItem = ({ match }: { match: Match }) => {
       <CustomModal open={isOpen} setOpen={setIsOpen}>
         <EditMatch
           onCancel={() => {
-            setIsOpen(false); 
+            setIsOpen(false);
           }}
           match={match}
           onSuccess={() => {

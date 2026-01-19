@@ -12,8 +12,8 @@ import { Player } from "@/lib/types/players.types";
 import RowActions from "../rowActions/rowActions";
 import StyledDataGrid from "../styledDatagrid/styledDatagrid";
 import Swal from "sweetalert2";
-import { apiUrl } from "@/lib/constants/constants";
 import dayjs from "dayjs";
+import { minioUrl } from "@/lib/constants/constants";
 import { usePlayerPositions } from "@/hooks/usePlayerPositions";
 import { useTranslation } from "react-i18next";
 
@@ -74,7 +74,7 @@ const PlayersList: React.FC = () => {
           return (
             <div className="flex items-center h-full">
               <img
-                src={apiUrl + "/" + value}
+                src={minioUrl + value}
                 alt="player"
                 style={{ aspectRatio: 4 / 3, objectFit: "cover", height: "100%" }}
               />

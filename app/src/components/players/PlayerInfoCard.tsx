@@ -2,7 +2,7 @@ import { Avatar, Box, Card, CardContent, LinearProgress, Typography } from "@mui
 import { useEffect, useMemo, useState } from "react";
 
 import { DetailedPlayer } from "@/lib/types/players.types";
-import { apiUrl } from "@/lib/constants/constants";
+import { minioUrl } from "@/lib/constants/constants";
 import { playersService } from "@/API/Services/players.service";
 import { usePlayerPositions } from "@/hooks/usePlayerPositions";
 import { useTranslation } from "react-i18next";
@@ -83,7 +83,7 @@ const PlayerInfoCard: React.FC<Props> = ({ playerId }) => {
               <Typography variant="body1">{player.clubName || "-"}</Typography>
               {player.clubLogo && (
                 <Box className="">
-                  <Avatar src={`${apiUrl}/${player.clubLogo}`} alt={player.clubName} sx={{ width: 40, height: 40 }} />
+                  <Avatar src={`${minioUrl}${player.clubLogo}`} alt={player.clubName} sx={{ width: 40, height: 40 }} />
                 </Box>
               )}
             </div>
@@ -93,7 +93,7 @@ const PlayerInfoCard: React.FC<Props> = ({ playerId }) => {
       {player.photo && (
         <Box className="flex items-center justify-center p-4">
           <img
-            src={`${apiUrl}/${player.photo}`}
+            src={`${minioUrl}${player.photo}`}
             alt={player.fullName}
             className="w-[180px] h-[180px] object-cover rounded-lg"
           />{" "}

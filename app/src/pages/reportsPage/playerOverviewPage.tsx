@@ -11,6 +11,7 @@ import PlayerStatistics from "../players/playerStatistics";
 import { fetchEpisodes } from "@/store/slices/episodes.slice";
 import { fetchMatches } from "@/store/slices/matches.slice";
 import { fetchPlayers } from "@/store/slices/players.slice";
+import { reportsService } from "@/API/Services/reports.service";
 import { useTranslation } from "react-i18next";
 
 const PlayerOverviewPage = () => {
@@ -81,11 +82,30 @@ const PlayerOverviewPage = () => {
     clearPlayerOverview();
   };
 
+  const handleGeneratePdf = () => {
+    if (!filterValues) return;
+
+    const dto = {
+      filter: {
+        playerId: filterValues.player?.id ?? undefined,
+        episodeIds: Array.isArray(filterValues.episodes) ? filterValues.episodes.map((e: any) => e.id) : [],
+        matchIds: Array.isArray(filterValues.matches) ? filterValues.matches.map((m: any) => m.id) : [],
+        from: filterValues.dateRange_from || undefined,
+        to: filterValues.dateRange_to || undefined,
+      },
+    };
+    reportsService.generatePlayerOverview(dto);
+    
+  };
+
   return (
     <div className="">
       <div className=" mx-auto mb-6 flex justify-end">
         <Button onClick={() => setStatsOpen(true)} variant="contained" startIcon={<FilterAlt />}>
           {t("static.openFilters") || "Open Filters"}
+        </Button>
+        <Button onClick={() => handleGeneratePdf()} variant="contained" startIcon={<FilterAlt />}>
+          {t("static.generatePDF") || "generatePDF"}
         </Button>
       </div>
 

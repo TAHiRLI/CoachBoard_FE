@@ -10,7 +10,7 @@ import EditMatch from "./EditMatch";
 import { Match } from "@/lib/types/matches.types";
 import RowActions from "../rowActions/rowActions";
 import Swal from "sweetalert2";
-import { apiUrl } from "@/lib/constants/constants";
+import { minioUrl } from "@/lib/constants/constants";
 import { useTranslation } from "react-i18next";
 
 type Props = {
@@ -131,7 +131,7 @@ const MatchInfoCard: React.FC<Props> = ({ match }) => {
             <div className="flex items-center gap-2 mt-1 text-lg font-bold text-gray-800">
               {match.homeTeam.logo && (
                 <img
-                  src={`${apiUrl}/${match.homeTeam.logo}`}
+                  src={`${minioUrl}${match.homeTeam.logo}`}
                   alt={match.homeTeam.teamName}
                   style={{ width: 24, height: 24, objectFit: "contain" }}
                 />
@@ -143,7 +143,7 @@ const MatchInfoCard: React.FC<Props> = ({ match }) => {
               <span>{match.awayTeam.teamName}</span>
               {match.awayTeam.logo && (
                 <img
-                  src={`${apiUrl}/${match.awayTeam.logo}`}
+                  src={`${minioUrl}${match.awayTeam.logo}`}
                   alt={match.awayTeam.teamName}
                   style={{ width: 24, height: 24, objectFit: "contain" }}
                 />

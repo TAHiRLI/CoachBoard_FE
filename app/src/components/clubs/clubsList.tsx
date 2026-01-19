@@ -11,7 +11,7 @@ import { GridColDef } from "@mui/x-data-grid";
 import RowActions from "@/components/rowActions/rowActions";
 import StyledDataGrid from "@/components/styledDatagrid/styledDatagrid";
 import Swal from "sweetalert2";
-import { apiUrl } from "@/lib/constants/constants";
+import { minioUrl } from "@/lib/constants/constants";
 import { useTranslation } from "react-i18next";
 
 const ClubsList: React.FC = () => {
@@ -61,7 +61,7 @@ const ClubsList: React.FC = () => {
         }
       });
     },
-    [dispatch]
+    [dispatch],
   );
 
   const columns = useMemo<GridColDef[]>(
@@ -79,7 +79,7 @@ const ClubsList: React.FC = () => {
           params.value ? (
             <div className="flex items-center h-full">
               {" "}
-              <img src={apiUrl + "/" + params.value} alt="logo" style={{ height: 42, objectFit: "contain" }} />
+              <img src={minioUrl + params.value} alt="logo" style={{ height: 42, objectFit: "contain" }} />
             </div>
           ) : (
             "—"
@@ -110,21 +110,14 @@ const ClubsList: React.FC = () => {
         ),
       },
     ],
-    [handleDelete]
+    [handleDelete],
   );
 
   return (
     <>
       {loading && <LinearProgress />}
       <Box sx={{ display: "grid", gridTemplateColumns: "1fr" }}>
-        <StyledDataGrid
-          rowHeight={55}
-          rows={clubs}
-          columns={columns}
-          disableRowSelectionOnClick
-          loading={loading}
-          
-        />
+        <StyledDataGrid rowHeight={55} rows={clubs} columns={columns} disableRowSelectionOnClick loading={loading} />
       </Box>
 
       {selectedClub && (

@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 import { Movie } from "@mui/icons-material";
 import { Permission } from "@/lib/types/permissionTypes";
 import Swal from "sweetalert2";
-import { apiUrl } from "@/lib/constants/constants";
+import { minioUrl } from "@/lib/constants/constants";
 import { useTranslation } from "react-i18next";
 
 interface ClipTrimJobCardProps {
@@ -55,7 +55,7 @@ export const ClipTrimJobCard: React.FC<ClipTrimJobCardProps> = ({ clip }) => {
         <AnyPermissionGuard permissions={[Permission.TRIM_VIDEO]}>
           <Button
             component={Link}
-            to={apiUrl + "/" + clip.trimmedVideoUrl}
+            to={minioUrl + clip.trimmedVideoUrl}
             target="_blank"
             variant="outlined"
             size="small"

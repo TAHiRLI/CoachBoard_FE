@@ -1,15 +1,11 @@
 export interface ReportGetDto {
   id: string;
   title: string;
-  description?: string;
-  reportType: ReportTypeEnum;
-  category: ReportCategoryEnum;
-  createdAt: string;
-  createdBy?: string;
-  filePath?: string;
+  type: ReportTypeEnum;
+  fileName?: string;
   fileUrl?: string;
-  metadata?: Record<string, any>;
-  filter?: any;
+  filtersJson?: string;
+  createdAt: string;
 }
 
 export enum ReportTypeEnum {
