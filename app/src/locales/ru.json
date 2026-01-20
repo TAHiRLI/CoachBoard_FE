@@ -176,7 +176,8 @@
     "tags": "Теги",
     "selectOrCreateTags": "Выберите тег или создайте новый",
     "typeToCreateNewTag": "Введите, чтобы создать новый тег, и нажмите Enter",
-    "selectTags": "Выберите теги"
+    "selectTags": "Выберите теги",
+    "generatePdf": "Создать PDF"
   },
   "reportTypes": {
     "playerOverview": {

@@ -31,7 +31,6 @@ const SavedReportsTab = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { reports, loading, error } = useAppSelector((state) => state.reportsData);
-  console.log("🚀 ~ SavedReportsTab ~ reports:", reports);
   const [expandedCategory, setExpandedCategory] = useState<string | false>(false);
 
   // Fetch reports on mount
@@ -61,7 +60,6 @@ const SavedReportsTab = () => {
 
     return categories;
   }, [reports]);
-  console.log("🚀 ~ SavedReportsTab ~ categorizedReports:", categorizedReports);
 
   const handleAccordionChange = (category: string) => (_event: React.SyntheticEvent, isExpanded: boolean) => {
     setExpandedCategory(isExpanded ? category : false);

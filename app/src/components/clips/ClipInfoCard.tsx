@@ -7,6 +7,7 @@ import { ClipTrimJobCard } from "./ClipTrimJobCard";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import PersonIcon from "@mui/icons-material/Person";
 import SportsIcon from "@mui/icons-material/Sports";
+import { useFlag } from "@unleash/proxy-client-react";
 import { useTranslation } from "react-i18next";
 
 interface ClipInfoCardProps {
@@ -17,6 +18,7 @@ interface ClipInfoCardProps {
 
 export const ClipInfoCard: React.FC<ClipInfoCardProps> = ({ clip, formatSeconds, getDuration }) => {
   const { t } = useTranslation();
+  const isClipTrimEnabled = useFlag("video_trim_job");
 
   return (
     <Stack spacing={1.5}>
@@ -28,13 +30,13 @@ export const ClipInfoCard: React.FC<ClipInfoCardProps> = ({ clip, formatSeconds,
             {formatSeconds(Number(clip.startTime))} - {formatSeconds(Number(clip.endTime))}
           </Typography>
         </Box>
-        
+
         <Chip
           label={`${getDuration()} ${t("static.duration")}`}
           size="small"
           sx={{ height: 20, fontSize: "0.75rem" }}
         />
-        
+
         {clip.isExample && (
           <Chip
             label={t("static.isExample")}
@@ -74,8 +76,8 @@ export const ClipInfoCard: React.FC<ClipInfoCardProps> = ({ clip, formatSeconds,
                 size="small"
                 variant="outlined"
                 color="default"
-                sx={{ 
-                  height: 22, 
+                sx={{
+                  height: 22,
                   fontSize: "0.75rem",
                   borderRadius: 1,
                 }}
@@ -85,7 +87,7 @@ export const ClipInfoCard: React.FC<ClipInfoCardProps> = ({ clip, formatSeconds,
         </Box>
       )}
 
-      <ClipTrimJobCard clip={clip} />
+      {isClipTrimEnabled && <ClipTrimJobCard clip={clip} />}
     </Stack>
   );
 };

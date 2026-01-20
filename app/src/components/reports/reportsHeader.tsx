@@ -1,5 +1,6 @@
 import { BarChart, Description } from "@mui/icons-material";
 
+import { useFlag } from "@unleash/proxy-client-react";
 import { useTranslation } from "react-i18next";
 
 interface ReportsHeaderProps {
@@ -10,7 +11,8 @@ interface ReportsHeaderProps {
 const MOCK_GENERATED_REPORTS = [""];
 
 const ReportsHeader: React.FC<ReportsHeaderProps> = ({ activeTab, setActiveTab }) => {
-    
+  const isPDFGenerateEnabled = useFlag("FE_reports_generatePdf");
+
   const { t } = useTranslation();
   return (
     <div className="bg-white border-b border-slate-200 sticky top-0 z-10">
@@ -34,15 +36,17 @@ const ReportsHeader: React.FC<ReportsHeaderProps> = ({ activeTab, setActiveTab }
               {t("static.liveReports")}
             </button>
 
-            <button
-              onClick={() => setActiveTab("archive")}
-              className={`px-4 py-2 rounded-md font-medium transition-all flex items-center ${
-                activeTab === "archive" ? "bg-white text-slate-900 shadow-sm" : "text-slate-600 hover:text-slate-900"
-              }`}
-            >
-              <Description fontSize="small" className="mr-2" />
-              {t('static.archive')} ({MOCK_GENERATED_REPORTS.length})
-            </button>
+            {isPDFGenerateEnabled && (
+              <button
+                onClick={() => setActiveTab("archive")}
+                className={`px-4 py-2 rounded-md font-medium transition-all flex items-center ${
+                  activeTab === "archive" ? "bg-white text-slate-900 shadow-sm" : "text-slate-600 hover:text-slate-900"
+                }`}
+              >
+                <Description fontSize="small" className="mr-2" />
+                {t("static.archive")} ({MOCK_GENERATED_REPORTS.length})
+              </button>
+            )}
           </div>
         </div>
       </div>

@@ -13,6 +13,7 @@ services:
         VITE_API_URL: "https://api.coachboard.az"
         VITE_MINIO_URL: "https://minio.coachboard.az"
         VITE_DEPLOY_ENV: prod
+        VITE_UNLEASH_APIKEY: "*:production.331c4c9b2406f2fb4cf62b657789eca12b7194fcdb1ca2ef9d70538b"
     environment:
       - NODE_ENV=production
     networks:

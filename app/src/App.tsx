@@ -2,6 +2,7 @@ import "./App.css";
 import "../i18n";
 
 import { ColorModeProvider } from "./context/colorMode.context";
+import { FeatureFlagsProvider } from "./context/FeatureFlagsProvider";
 import { KeycloakProvider } from "./context/KeycloakProvider";
 import { PersistGate } from "redux-persist/integration/react";
 import { Provider } from "react-redux";
@@ -25,15 +26,17 @@ declare module "@mui/material/styles" {
 }
 function App() {
   return (
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <ColorModeProvider>
-          <KeycloakProvider>
-            <RouterProvider router={router} />
-          </KeycloakProvider>
-        </ColorModeProvider>
-      </PersistGate>
-    </Provider>
+    <FeatureFlagsProvider>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <ColorModeProvider>
+            <KeycloakProvider>
+              <RouterProvider router={router} />
+            </KeycloakProvider>
+          </ColorModeProvider>
+        </PersistGate>
+      </Provider>
+    </FeatureFlagsProvider>
   );
 }
 

@@ -197,7 +197,9 @@
     "tags": "Etiketlər",
     "selectOrCreateTags": "Etiket seçin və ya yenisini yazın",
     "typeToCreateNewTag": "Yeni etiket yaratmaq üçün yazın və Enter basın",
-    "selectTags": "Etiket Seçin"
+    "selectTags": "Etiket Seçin",
+      "generatePdf": "PDF yarat"
+
 
   },
   "user": {

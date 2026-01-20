@@ -1,3 +1,4 @@
+import { FilterAlt, PictureAsPdf } from "@mui/icons-material";
 import { FilterFieldConfig, FilterValues } from "@/lib/types/dynamicFilter.types";
 import { clearPlayerOverview, fetchPlayerStatistics } from "@/store/slices/statistics.slice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
@@ -6,12 +7,12 @@ import { useEffect, useState } from "react";
 import { Button } from "@mui/material";
 import CustomModal from "@/components/customModal/customModal";
 import DynamicFilter from "@/components/dynamicFilter/dynamicFilter";
-import { FilterAlt } from "@mui/icons-material";
 import PlayerStatistics from "../players/playerStatistics";
 import { fetchEpisodes } from "@/store/slices/episodes.slice";
 import { fetchMatches } from "@/store/slices/matches.slice";
 import { fetchPlayers } from "@/store/slices/players.slice";
 import { reportsService } from "@/API/Services/reports.service";
+import { useFlag } from "@unleash/proxy-client-react";
 import { useTranslation } from "react-i18next";
 
 const PlayerOverviewPage = () => {
@@ -23,6 +24,7 @@ const PlayerOverviewPage = () => {
   const dispatch = useAppDispatch();
   const [statsOpen, setStatsOpen] = useState(false);
   const [filterValues, setFilterValues] = useState<FilterValues>({});
+  const isPDFGenerateEnabled = useFlag("FE_reports_generatePdf");
 
   useEffect(() => {
     dispatch(fetchEpisodes());
@@ -95,18 +97,19 @@ const PlayerOverviewPage = () => {
       },
     };
     reportsService.generatePlayerOverview(dto);
-    
   };
 
   return (
-    <div className="">
-      <div className=" mx-auto mb-6 flex justify-end">
+    <div className="max-w-screen-2xl mx-auto">
+      <div className=" mx-auto mb-6 flex gap-3 justify-end" >
         <Button onClick={() => setStatsOpen(true)} variant="contained" startIcon={<FilterAlt />}>
           {t("static.openFilters") || "Open Filters"}
         </Button>
-        <Button onClick={() => handleGeneratePdf()} variant="contained" startIcon={<FilterAlt />}>
-          {t("static.generatePDF") || "generatePDF"}
-        </Button>
+        {Object.keys(filterValues).length > 0 && isPDFGenerateEnabled &&  (
+          <Button onClick={() => handleGeneratePdf()} variant="contained" startIcon={<PictureAsPdf />}>
+            {t("static.generatePdf")}
+          </Button>
+        )}
       </div>
 
       {/* MAIN STATISTICS BLOCK */}

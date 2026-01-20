@@ -119,7 +119,7 @@
     "editEvaluation": "Edit Evaluation",
     "start": "Start",
     "end": "End",
-
+    "generatePdf": "Generate PDF", 
     "createSeason": "Create Season",
 
     "editSeason": "Edit Season",
