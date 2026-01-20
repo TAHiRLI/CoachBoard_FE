@@ -235,5 +235,48 @@
     "monthlyColumnCritical": "Критические",
     "monthlyColumnMinutes": "Минуты",
     "monthlyColumnAverageScore": "Средний балл"
+  },
+  "reports": {
+    "noReportsTitle": "Отчёты Недоступны",
+    "noReportsDescription": "Вы ещё не создали ни одного отчёта. Создайте свой первый отчёт, чтобы увидеть его здесь.",
+    "today": "Сегодня в",
+    "yesterday": "Вчера в",
+    "downloadSuccess": "Отчёт успешно загружен",
+    "noFileAvailable": "Файл Недоступен",
+    "reportHasNoFile": "У этого отчёта нет связанного файла.",
+    "failedToOpenFile": "Не удалось открыть файл. Пожалуйста, попробуйте снова.",
+    "failedToDownloadFile": "Не удалось скачать файл. Пожалуйста, попробуйте снова.",
+    "deleteWarning": "Это действие нельзя отменить!",
+    "reportDeleted": "Ваш отчёт успешно удалён.",
+    "categories": {
+      "Player": {
+        "title": "Отчёты Игроков",
+        "description": "Индивидуальная производительность и статистика игрока"
+      },
+      "Team": {
+        "title": "Командные Отчёты",
+        "description": "Аналитика и метрики производительности команды"
+      },
+      "Episode": {
+        "title": "Отчёты Эпизодов",
+        "description": "Анализ и записи на основе сессий"
+      },
+      "Comparative": {
+        "title": "Сравнительные Отчёты",
+        "description": "Сравнение производительности игроков и команд"
+      }
+    },
+    "actions": {
+      "view": "Просмотреть Отчёт",
+      "download": "Скачать Отчёт",
+      "delete": "Удалить Отчёт"
+    }
+  },
+  "common": {
+    "error": "Ошибка",
+    "areYouSure": "Вы уверены?",
+    "yesDeleteIt": "Да, Удалить",
+    "cancel": "Отмена",
+    "deleted": "Удалено!"
   }
 }

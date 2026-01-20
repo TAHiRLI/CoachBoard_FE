@@ -7,7 +7,7 @@ import {
 import { apiClient } from "../apiClient";
 
 class ReportsService {
-  async getAll(){
+  async getAll() {
     return apiClient.get<ReportGetDto[]>("api/Reports");
   }
 
@@ -17,6 +17,11 @@ class ReportsService {
 
   async delete(id: string) {
     return apiClient.delete<void>(`api/Reports/${id}`);
+  }
+  async getReportFile(id: string) {
+    return apiClient.get<Blob>(`api/Reports/${id}/file`, {
+      responseType: "blob",
+    });
   }
 }
 

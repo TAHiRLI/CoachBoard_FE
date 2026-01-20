@@ -198,9 +198,7 @@
     "selectOrCreateTags": "Etiket seçin və ya yenisini yazın",
     "typeToCreateNewTag": "Yeni etiket yaratmaq üçün yazın və Enter basın",
     "selectTags": "Etiket Seçin",
-      "generatePdf": "PDF yarat"
-
-
+    "generatePdf": "PDF yarat"
   },
   "user": {
     "username": "Username",
@@ -291,5 +289,48 @@
     "monthlyColumnCritical": "Kritik",
     "monthlyColumnMinutes": "Dəqiqə",
     "monthlyColumnAverageScore": "Orta bal"
+  },
+  "reports": {
+    "noReportsTitle": "Hesabat Mövcud Deyil",
+    "noReportsDescription": "Hələ heç bir hesabat yaratmamısınız. İlk hesabatınızı yaradın və burada görün.",
+    "today": "Bu gün",
+    "yesterday": "Dünən",
+    "downloadSuccess": "Hesabat uğurla yükləndi",
+    "noFileAvailable": "Fayl Mövcud Deyil",
+    "reportHasNoFile": "Bu hesabatın əlaqəli faylı yoxdur.",
+    "failedToOpenFile": "Faylı açmaq mümkün olmadı. Zəhmət olmasa yenidən cəhd edin.",
+    "failedToDownloadFile": "Faylı yükləmək mümkün olmadı. Zəhmət olmasa yenidən cəhd edin.",
+    "deleteWarning": "Bu əməliyyat geri qaytarıla bilməz!",
+    "reportDeleted": "Hesabatınız uğurla silindi.",
+    "categories": {
+      "Player": {
+        "title": "Oyunçu Hesabatları",
+        "description": "Fərdi oyunçu performansı və statistikası"
+      },
+      "Team": {
+        "title": "Komanda Hesabatları",
+        "description": "Komanda səviyyəsində analitika və performans göstəriciləri"
+      },
+      "Episode": {
+        "title": "Epizod Hesabatları",
+        "description": "Sessiya əsaslı təhlil və qeydlər"
+      },
+      "Comparative": {
+        "title": "Müqayisəli Hesabatlar",
+        "description": "Oyunçular və komandalar arasında performans müqayisəsi"
+      }
+    },
+    "actions": {
+      "view": "Hesabata Bax",
+      "download": "Hesabatı Yüklə",
+      "delete": "Hesabatı Sil"
+    }
+  },
+  "common": {
+    "error": "Xəta",
+    "areYouSure": "Əminsiniz?",
+    "yesDeleteIt": "Bəli, Sil",
+    "cancel": "Ləğv et",
+    "deleted": "Silindi!"
   }
 }
