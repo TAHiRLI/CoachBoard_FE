@@ -17,7 +17,7 @@ import {
 import { ReportCategoryEnum, ReportGetDto } from "@/lib/types/reports.types";
 import { useMemo, useState } from "react";
 
-import ReportItem from "./Reportitem";
+import ReportItem from "./ReportItem";
 import { useTranslation } from "react-i18next";
 
 interface ReportsListProps {
