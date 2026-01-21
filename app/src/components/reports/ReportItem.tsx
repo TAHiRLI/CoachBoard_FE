@@ -170,45 +170,47 @@ const ReportItem = ({ report, categoryColor }: ReportItemProps) => {
   return (
     <Card
       sx={{
-        borderRadius: 2.5,
-        border: `1px solid ${alpha(categoryColor, 0.12)}`,
-        boxShadow: `0 2px 8px ${alpha(categoryColor, 0.04)}`,
-        transition: "all 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
+        borderRadius: 3,
+        border: `1px solid ${alpha(categoryColor, 0.18)}`,
+        backgroundColor: "#ffffff",
+        boxShadow: "0 6px 16px rgba(15, 23, 42, 0.08)",
+        transition: "all 0.2s ease",
         position: "relative",
         overflow: "visible",
         "&:hover": {
-          boxShadow: `0 8px 24px ${alpha(categoryColor, 0.12)}`,
+          boxShadow: "0 12px 28px rgba(15, 23, 42, 0.14)",
           transform: "translateY(-2px)",
-          borderColor: alpha(categoryColor, 0.3),
+          borderColor: alpha(categoryColor, 0.35),
         },
         "&::before": {
           content: '""',
           position: "absolute",
-          top: 0,
+          top: 12,
           left: 0,
-          right: 0,
-          height: 4,
-          background: `linear-gradient(90deg, ${categoryColor}, ${alpha(categoryColor, 0.6)})`,
-          borderTopLeftRadius: 10,
-          borderTopRightRadius: 10,
+          bottom: 12,
+          width: 4,
+          background: `linear-gradient(180deg, ${categoryColor}, ${alpha(categoryColor, 0.35)})`,
+          borderTopRightRadius: 8,
+          borderBottomRightRadius: 8,
         },
       }}
     >
-      <CardContent sx={{ p: 3, "&:last-child": { pb: 3 } }}>
-        <Box className="flex justify-between items-start gap-3">
+      <CardContent sx={{ p: 3, pl: 3.5, "&:last-child": { pb: 3 } }}>
+        <Box className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           {/* Left side - Content */}
           <Box className="flex-1 min-w-0">
-            <Box className="flex items-start gap-2 mb-3">
+            <Box className="flex items-start gap-3 mb-2">
               <Box
                 sx={{
                   mt: 0.5,
                   color: categoryColor,
-                  backgroundColor: alpha(categoryColor, 0.1),
-                  borderRadius: 1.5,
-                  p: 1,
+                  backgroundColor: alpha(categoryColor, 0.12),
+                  borderRadius: 2,
+                  p: 1.1,
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
+                  boxShadow: "inset 0 0 0 1px rgba(255, 255, 255, 0.7)",
                 }}
               >
                 <DescriptionIcon sx={{ fontSize: 20 }} />
@@ -218,10 +220,10 @@ const ReportItem = ({ report, categoryColor }: ReportItemProps) => {
                   variant="h6"
                   className="font-semibold truncate"
                   sx={{
-                    fontSize: "1rem",
+                    fontSize: "1.05rem",
                     lineHeight: 1.4,
                     color: "text.primary",
-                    mb: 0.5,
+                    mb: 0.75,
                   }}
                 >
                   {report.title}
@@ -231,13 +233,14 @@ const ReportItem = ({ report, categoryColor }: ReportItemProps) => {
                     label={report.type}
                     size="small"
                     sx={{
-                      backgroundColor: alpha(categoryColor, 0.12),
+                      backgroundColor: alpha(categoryColor, 0.14),
                       color: categoryColor,
                       fontWeight: 600,
-                      fontSize: "0.75rem",
-                      height: 24,
+                      fontSize: "0.78rem",
+                      height: 26,
+                      borderRadius: 999,
                       "& .MuiChip-label": {
-                        px: 1.5,
+                        px: 1.75,
                       },
                     }}
                   />
@@ -252,7 +255,7 @@ const ReportItem = ({ report, categoryColor }: ReportItemProps) => {
                       variant="caption"
                       sx={{
                         color: "text.secondary",
-                        fontSize: "0.75rem",
+                        fontSize: "0.8rem",
                       }}
                     >
                       {formatDate(report.createdAt)}
@@ -267,9 +270,10 @@ const ReportItem = ({ report, categoryColor }: ReportItemProps) => {
           <Box
             className="flex gap-1"
             sx={{
-              backgroundColor: alpha(categoryColor, 0.04),
-              borderRadius: 2,
-              p: 0.5,
+              backgroundColor: alpha(categoryColor, 0.06),
+              borderRadius: 2.5,
+              p: 0.75,
+              border: `1px solid ${alpha(categoryColor, 0.12)}`,
             }}
           >
             <Tooltip title={t("reports.actions.view")} arrow placement="top">
@@ -280,8 +284,9 @@ const ReportItem = ({ report, categoryColor }: ReportItemProps) => {
                   disabled={!hasFile}
                   sx={{
                     color: hasFile ? categoryColor : "text.disabled",
+                    borderRadius: 2,
                     "&:hover": {
-                      backgroundColor: alpha(categoryColor, 0.12),
+                      backgroundColor: alpha(categoryColor, 0.14),
                     },
                     "&.Mui-disabled": {
                       color: "text.disabled",
@@ -300,8 +305,9 @@ const ReportItem = ({ report, categoryColor }: ReportItemProps) => {
                   disabled={!report.fileUrl}
                   sx={{
                     color: report.fileUrl ? "#10b981" : "text.disabled",
+                    borderRadius: 2,
                     "&:hover": {
-                      backgroundColor: alpha("#10b981", 0.12),
+                      backgroundColor: alpha("#10b981", 0.14),
                     },
                     "&.Mui-disabled": {
                       color: "text.disabled",
@@ -318,8 +324,9 @@ const ReportItem = ({ report, categoryColor }: ReportItemProps) => {
                 onClick={handleDeleteReport}
                 sx={{
                   color: "#ef4444",
+                  borderRadius: 2,
                   "&:hover": {
-                    backgroundColor: alpha("#ef4444", 0.12),
+                    backgroundColor: alpha("#ef4444", 0.14),
                   },
                 }}
               >

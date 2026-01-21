@@ -114,7 +114,7 @@ const ReportsList = ({ reports }: ReportsListProps) => {
   };
 
   return (
-    <Box className="space-y-4">
+    <Box className="space-y-5">
       {Object.entries(categorizedReports).map(([category, categoryReports]) => {
         if (categoryReports.length === 0) return null;
 
@@ -129,10 +129,12 @@ const ReportsList = ({ reports }: ReportsListProps) => {
             sx={{
               borderRadius: 3,
               overflow: "hidden",
+              border: `1px solid ${alpha(colors.main, 0.12)}`,
+              backgroundColor: "#ffffff",
               boxShadow: isExpanded
-                ? `0 8px 24px ${alpha(colors.main, 0.15)}`
-                : `0 2px 8px ${alpha(colors.main, 0.08)}`,
-              transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                ? "0 12px 28px rgba(15, 23, 42, 0.12)"
+                : "0 4px 16px rgba(15, 23, 42, 0.06)",
+              transition: "all 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
               "&:before": {
                 display: "none",
               },
@@ -152,19 +154,13 @@ const ReportsList = ({ reports }: ReportsListProps) => {
                 />
               }
               sx={{
-                background: `linear-gradient(135deg, ${alpha(colors.main, 0.05)} 0%, ${alpha(
-                  colors.light,
-                  0.08
-                )} 100%)`,
-                borderLeft: `5px solid ${colors.main}`,
-                minHeight: 72,
-                px: 3,
-                py: 2,
+                backgroundColor: alpha(colors.main, 0.04),
+                borderLeft: `4px solid ${colors.main}`,
+                minHeight: 76,
+                px: 3.5,
+                py: 2.5,
                 "&:hover": {
-                  background: `linear-gradient(135deg, ${alpha(colors.main, 0.08)} 0%, ${alpha(
-                    colors.light,
-                    0.12
-                  )} 100%)`,
+                  backgroundColor: alpha(colors.main, 0.08),
                 },
                 "& .MuiAccordionSummary-content": {
                   margin: "12px 0",
@@ -180,9 +176,10 @@ const ReportsList = ({ reports }: ReportsListProps) => {
                     justifyContent: "center",
                     width: 48,
                     height: 48,
-                    borderRadius: 2,
-                    backgroundColor: alpha(colors.main, 0.1),
-                    transition: "all 0.2s",
+                    borderRadius: 2.5,
+                    backgroundColor: alpha(colors.main, 0.12),
+                    boxShadow: "inset 0 0 0 1px rgba(255, 255, 255, 0.7)",
+                    transition: "all 0.2s ease",
                   }}
                 >
                   {getCategoryIcon(category)}
@@ -193,8 +190,8 @@ const ReportsList = ({ reports }: ReportsListProps) => {
                     className="font-bold"
                     sx={{
                       color: colors.main,
-                      fontSize: "1.125rem",
-                      letterSpacing: "-0.01em",
+                      fontSize: "1.1rem",
+                      letterSpacing: "-0.015em",
                     }}
                   >
                     {t(`reports.categories.${category}.title`) || category}
@@ -203,7 +200,7 @@ const ReportsList = ({ reports }: ReportsListProps) => {
                     variant="body2"
                     sx={{
                       color: "text.secondary",
-                      fontSize: "0.875rem",
+                      fontSize: "0.9rem",
                       mt: 0.5,
                     }}
                   >
@@ -214,14 +211,15 @@ const ReportsList = ({ reports }: ReportsListProps) => {
                   badgeContent={categoryReports.length}
                   sx={{
                     "& .MuiBadge-badge": {
-                      backgroundColor: colors.main,
-                      color: "white",
+                      backgroundColor: alpha(colors.main, 0.15),
+                      color: colors.main,
+                      border: `1px solid ${alpha(colors.main, 0.35)}`,
                       fontSize: "0.875rem",
                       fontWeight: 700,
-                      height: 28,
-                      minWidth: 28,
-                      borderRadius: 14,
-                      padding: "0 8px",
+                      height: 30,
+                      minWidth: 30,
+                      borderRadius: 999,
+                      padding: "0 10px",
                     },
                   }}
                 />
@@ -229,11 +227,11 @@ const ReportsList = ({ reports }: ReportsListProps) => {
             </AccordionSummary>
             <AccordionDetails
               sx={{
-                p: 3,
-                backgroundColor: alpha(colors.lighter, 0.3),
+                p: 3.5,
+                backgroundColor: alpha(colors.lighter, 0.4),
               }}
             >
-              <Box className="grid grid-cols-1 gap-3">
+              <Box className="grid grid-cols-1 gap-4">
                 {categoryReports.map((report) => (
                   <ReportItem
                     key={report.id}
