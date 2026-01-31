@@ -76,6 +76,9 @@ class ClipsService {
       headers: { "Content-Type": "multipart/form-data" },
     });
   }
+  async createBulk(dto: { matchId?: string; clips: { name: string; startTime: number; endTime: number }[] }) {
+    return apiClient.post("api/Clips/bulk", dto);
+  }
 
   async delete(id: string) {
     return apiClient.delete(`api/Clips/${id}`);

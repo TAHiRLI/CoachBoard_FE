@@ -2,10 +2,6 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  Badge,
-  Box,
-  Typography,
-  alpha,
 } from "@mui/material";
 import {
   Assessment as AssessmentIcon,
@@ -62,7 +58,7 @@ const ReportsList = ({ reports }: ReportsListProps) => {
     };
 
   const getCategoryIcon = (category: string) => {
-    const iconProps = { sx: { fontSize: 28 } };
+    const iconProps = { className: "w-5 h-5" };
     
     switch (category) {
       case ReportCategoryEnum.Player:
@@ -78,47 +74,62 @@ const ReportsList = ({ reports }: ReportsListProps) => {
     }
   };
 
-  const getCategoryColor = (category: string) => {
+  const getCategoryStyle = (category: string) => {
     switch (category) {
       case ReportCategoryEnum.Player:
         return {
-          main: "#3b82f6",
-          light: "#60a5fa",
-          lighter: "#dbeafe",
+          bg: "bg-blue-50",
+          border: "border-blue-200",
+          text: "text-blue-700",
+          icon: "bg-blue-100 text-blue-600",
+          badge: "bg-blue-100 text-blue-700",
+          hover: "hover:bg-blue-100",
         };
       case ReportCategoryEnum.Team:
         return {
-          main: "#10b981",
-          light: "#34d399",
-          lighter: "#d1fae5",
+          bg: "bg-emerald-50",
+          border: "border-emerald-200",
+          text: "text-emerald-700",
+          icon: "bg-emerald-100 text-emerald-600",
+          badge: "bg-emerald-100 text-emerald-700",
+          hover: "hover:bg-emerald-100",
         };
       case ReportCategoryEnum.Episode:
         return {
-          main: "#8b5cf6",
-          light: "#a78bfa",
-          lighter: "#ede9fe",
+          bg: "bg-purple-50",
+          border: "border-purple-200",
+          text: "text-purple-700",
+          icon: "bg-purple-100 text-purple-600",
+          badge: "bg-purple-100 text-purple-700",
+          hover: "hover:bg-purple-100",
         };
       case ReportCategoryEnum.Comparative:
         return {
-          main: "#f59e0b",
-          light: "#fbbf24",
-          lighter: "#fef3c7",
+          bg: "bg-amber-50",
+          border: "border-amber-200",
+          text: "text-amber-700",
+          icon: "bg-amber-100 text-amber-600",
+          badge: "bg-amber-100 text-amber-700",
+          hover: "hover:bg-amber-100",
         };
       default:
         return {
-          main: "#6b7280",
-          light: "#9ca3af",
-          lighter: "#f3f4f6",
+          bg: "bg-gray-50",
+          border: "border-gray-200",
+          text: "text-gray-700",
+          icon: "bg-gray-100 text-gray-600",
+          badge: "bg-gray-100 text-gray-700",
+          hover: "hover:bg-gray-100",
         };
     }
   };
 
   return (
-    <Box className="space-y-5">
+    <div className="space-y-4">
       {Object.entries(categorizedReports).map(([category, categoryReports]) => {
         if (categoryReports.length === 0) return null;
 
-        const colors = getCategoryColor(category);
+        const styles = getCategoryStyle(category);
         const isExpanded = expandedCategory === category;
 
         return (
@@ -126,125 +137,68 @@ const ReportsList = ({ reports }: ReportsListProps) => {
             key={category}
             expanded={isExpanded}
             onChange={handleAccordionChange(category)}
+            className="rounded-lg overflow-hidden shadow-sm border"
             sx={{
-              borderRadius: 3,
-              overflow: "hidden",
-              border: `1px solid ${alpha(colors.main, 0.12)}`,
               backgroundColor: "#ffffff",
-              boxShadow: isExpanded
-                ? "0 12px 28px rgba(15, 23, 42, 0.12)"
-                : "0 4px 16px rgba(15, 23, 42, 0.06)",
-              transition: "all 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
               "&:before": {
                 display: "none",
               },
               "&.Mui-expanded": {
                 margin: "0 !important",
-                marginBottom: "16px !important",
               },
             }}
           >
             <AccordionSummary
               expandIcon={
-                <ExpandMoreIcon
-                  sx={{
-                    color: colors.main,
-                    fontSize: 32,
-                  }}
-                />
+                <ExpandMoreIcon className={`${styles.text} text-2xl`} />
               }
+              className={`${styles.bg} ${styles.border} border-l-4 transition-colors ${styles.hover}`}
               sx={{
-                backgroundColor: alpha(colors.main, 0.04),
-                borderLeft: `4px solid ${colors.main}`,
-                minHeight: 76,
-                px: 3.5,
-                py: 2.5,
-                "&:hover": {
-                  backgroundColor: alpha(colors.main, 0.08),
-                },
+                minHeight: 64,
+                px: 2.5,
+                py: 1.5,
                 "& .MuiAccordionSummary-content": {
-                  margin: "12px 0",
+                  margin: "8px 0",
                 },
               }}
             >
-              <Box className="flex items-center gap-4 w-full">
-                <Box
-                  sx={{
-                    color: colors.main,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    width: 48,
-                    height: 48,
-                    borderRadius: 2.5,
-                    backgroundColor: alpha(colors.main, 0.12),
-                    boxShadow: "inset 0 0 0 1px rgba(255, 255, 255, 0.7)",
-                    transition: "all 0.2s ease",
-                  }}
-                >
+              <div className="flex items-center gap-3 w-full">
+                <div className={`flex items-center justify-center w-10 h-10 rounded-lg ${styles.icon}`}>
                   {getCategoryIcon(category)}
-                </Box>
-                <Box className="flex-1">
-                  <Typography
-                    variant="h6"
-                    className="font-bold"
-                    sx={{
-                      color: colors.main,
-                      fontSize: "1.1rem",
-                      letterSpacing: "-0.015em",
-                    }}
-                  >
+                </div>
+                <div className="flex-1">
+                  <h3 className={`text-sm font-semibold ${styles.text}`}>
                     {t(`reports.categories.${category}.title`) || category}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    sx={{
-                      color: "text.secondary",
-                      fontSize: "0.9rem",
-                      mt: 0.5,
-                    }}
-                  >
+                  </h3>
+                  <p className="text-xs text-gray-500 mt-0.5">
                     {t(`reports.categories.${category}.description`)}
-                  </Typography>
-                </Box>
-                <Badge
-                  badgeContent={categoryReports.length}
-                  sx={{
-                    "& .MuiBadge-badge": {
-                      backgroundColor: alpha(colors.main, 0.15),
-                      color: colors.main,
-                      border: `1px solid ${alpha(colors.main, 0.35)}`,
-                      fontSize: "0.875rem",
-                      fontWeight: 700,
-                      height: 30,
-                      minWidth: 30,
-                      borderRadius: 999,
-                      padding: "0 10px",
-                    },
-                  }}
-                />
-              </Box>
+                  </p>
+                </div>
+                <div className={`px-3 py-1 rounded-full text-xs font-semibold ${styles.badge}`}>
+                  {categoryReports.length}
+                </div>
+              </div>
             </AccordionSummary>
             <AccordionDetails
+              className="bg-gray-50"
               sx={{
-                p: 3.5,
-                backgroundColor: alpha(colors.lighter, 0.4),
+                p: 2.5,
               }}
             >
-              <Box className="grid grid-cols-1 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {categoryReports.map((report) => (
                   <ReportItem
                     key={report.id}
                     report={report}
-                    categoryColor={colors.main}
+                    categoryType={category}
                   />
                 ))}
-              </Box>
+              </div>
             </AccordionDetails>
           </Accordion>
         );
       })}
-    </Box>
+    </div>
   );
 };
 

@@ -23,7 +23,7 @@ const CustomModal: FC<CustomModalProps> = ({ open, setOpen, children, onClose })
 
   const theme = useTheme() as Theme;
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
-  const width = isSmallScreen ? "90vw" : "50vw";
+  const width = isSmallScreen ? "90vw" : "70vw";
 
   // Add an explicit assertion for 'position' to avoid TS type conflicts
   const style = {

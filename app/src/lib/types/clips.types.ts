@@ -60,3 +60,9 @@ export interface ClipPutDto {
   isExample: boolean;
   tags: string[]
 }
+
+export interface BulkClipItem {
+  name: string;
+  startTime: string;
+  endTime: string;
+}

@@ -28,7 +28,7 @@ export const fetchClips = createAsyncThunk(
       searchTerm?: string;
       isExample?: boolean;
     },
-    { rejectWithValue }
+    { rejectWithValue },
   ) => {
     try {
       const res = await clipsService.getAll(filter);
@@ -36,7 +36,7 @@ export const fetchClips = createAsyncThunk(
     } catch (err: any) {
       return rejectWithValue(err.response?.data || "Error fetching clips");
     }
-  }
+  },
 );
 export const fetchClipById = createAsyncThunk("clips/fetchClipbyId", async (clipId: string, { rejectWithValue }) => {
   try {
@@ -65,7 +65,7 @@ export const updateClip = createAsyncThunk(
     } catch (err: any) {
       return rejectWithValue(err.response?.data || "Error updating clip");
     }
-  }
+  },
 );
 
 export const deleteClip = createAsyncThunk("clips/deleteClip", async (id: string, { rejectWithValue }) => {
@@ -85,7 +85,24 @@ export const createTrimRequest = createAsyncThunk(
     } catch (err: any) {
       return rejectWithValue(err.response?.data || "Error creating trim request");
     }
-  }
+  },
+);
+
+export const createBulkClips = createAsyncThunk(
+  "clips/createBulkClips",
+  async (
+    dto: {
+      matchId?: string;
+      clips: { name: string; startTime: number; endTime: number }[];
+    },
+    { rejectWithValue },
+  ) => {
+    try {
+      await clipsService.createBulk(dto);
+    } catch (err: any) {
+      return rejectWithValue(err.response?.data || "Error creating bulk clips");
+    }
+  },
 );
 
 const clipsSlice = createSlice({
@@ -169,6 +186,19 @@ const clipsSlice = createSlice({
         state.loading = false;
       })
       .addCase(createTrimRequest.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      
+      // createBulkClips
+      .addCase(createBulkClips.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(createBulkClips.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(createBulkClips.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       });

@@ -1,21 +1,14 @@
 import {
-  Box,
-  Card,
-  CardContent,
-  Chip,
-  IconButton,
-  Stack,
-  Tooltip,
-  Typography,
-  alpha,
-} from "@mui/material";
-import {
   CalendarMonth as CalendarIcon,
   Delete as DeleteIcon,
   Description as DescriptionIcon,
   Download as DownloadIcon,
   Visibility as VisibilityIcon,
 } from "@mui/icons-material";
+import {
+  IconButton,
+  Tooltip,
+} from "@mui/material";
 
 import { ReportGetDto } from "@/lib/types/reports.types";
 import Swal from "sweetalert2";
@@ -26,10 +19,10 @@ import { useTranslation } from "react-i18next";
 
 interface ReportItemProps {
   report: ReportGetDto;
-  categoryColor: string;
+  categoryType: string;
 }
 
-const ReportItem = ({ report, categoryColor }: ReportItemProps) => {
+const ReportItem = ({ report, categoryType }: ReportItemProps) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
 
@@ -72,7 +65,6 @@ const ReportItem = ({ report, categoryColor }: ReportItemProps) => {
           icon: "info",
           title: t("reports.noFileAvailable"),
           text: t("reports.reportHasNoFile"),
-          confirmButtonColor: categoryColor,
         });
         return;
       }
@@ -91,7 +83,6 @@ const ReportItem = ({ report, categoryColor }: ReportItemProps) => {
         icon: "error",
         title: t("common.error"),
         text: t("reports.failedToOpenFile"),
-        confirmButtonColor: categoryColor,
       });
     }
   };
@@ -103,7 +94,6 @@ const ReportItem = ({ report, categoryColor }: ReportItemProps) => {
           icon: "info",
           title: t("reports.noFileAvailable"),
           text: t("reports.reportHasNoFile"),
-          confirmButtonColor: categoryColor,
         });
         return;
       }
@@ -135,7 +125,6 @@ const ReportItem = ({ report, categoryColor }: ReportItemProps) => {
         icon: "error",
         title: t("common.error"),
         text: t("reports.failedToDownloadFile"),
-        confirmButtonColor: categoryColor,
       });
     }
   };
@@ -165,178 +154,136 @@ const ReportItem = ({ report, categoryColor }: ReportItemProps) => {
     }
   };
 
+  const getCategoryStyle = (category: string) => {
+    switch (category) {
+      case "Player":
+        return {
+          accent: "bg-blue-500",
+          iconBg: "bg-blue-50",
+          iconText: "text-blue-600",
+        };
+      case "Team":
+        return {
+          accent: "bg-emerald-500",
+          iconBg: "bg-emerald-50",
+          iconText: "text-emerald-600",
+        };
+      case "Episode":
+        return {
+          accent: "bg-purple-500",
+          iconBg: "bg-purple-50",
+          iconText: "text-purple-600",
+        };
+      case "Comparative":
+        return {
+          accent: "bg-amber-500",
+          iconBg: "bg-amber-50",
+          iconText: "text-amber-600",
+        };
+      default:
+        return {
+          accent: "bg-gray-500",
+          iconBg: "bg-gray-50",
+          iconText: "text-gray-600",
+        };
+    }
+  };
+
   const hasFile = report.fileUrl || report.fileName;
+  const styles = getCategoryStyle(categoryType);
 
   return (
-    <Card
-      sx={{
-        borderRadius: 3,
-        border: `1px solid ${alpha(categoryColor, 0.18)}`,
-        backgroundColor: "#ffffff",
-        boxShadow: "0 6px 16px rgba(15, 23, 42, 0.08)",
-        transition: "all 0.2s ease",
-        position: "relative",
-        overflow: "visible",
-        "&:hover": {
-          boxShadow: "0 12px 28px rgba(15, 23, 42, 0.14)",
-          transform: "translateY(-2px)",
-          borderColor: alpha(categoryColor, 0.35),
-        },
-        "&::before": {
-          content: '""',
-          position: "absolute",
-          top: 12,
-          left: 0,
-          bottom: 12,
-          width: 4,
-          background: `linear-gradient(180deg, ${categoryColor}, ${alpha(categoryColor, 0.35)})`,
-          borderTopRightRadius: 8,
-          borderBottomRightRadius: 8,
-        },
-      }}
-    >
-      <CardContent sx={{ p: 3, pl: 3.5, "&:last-child": { pb: 3 } }}>
-        <Box className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-          {/* Left side - Content */}
-          <Box className="flex-1 min-w-0">
-            <Box className="flex items-start gap-3 mb-2">
-              <Box
-                sx={{
-                  mt: 0.5,
-                  color: categoryColor,
-                  backgroundColor: alpha(categoryColor, 0.12),
-                  borderRadius: 2,
-                  p: 1.1,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  boxShadow: "inset 0 0 0 1px rgba(255, 255, 255, 0.7)",
-                }}
-              >
-                <DescriptionIcon sx={{ fontSize: 20 }} />
-              </Box>
-              <Box className="flex-1 min-w-0">
-                <Typography
-                  variant="h6"
-                  className="font-semibold truncate"
-                  sx={{
-                    fontSize: "1.05rem",
-                    lineHeight: 1.4,
-                    color: "text.primary",
-                    mb: 0.75,
-                  }}
-                >
-                  {report.title}
-                </Typography>
-                <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap">
-                  <Chip
-                    label={report.type}
-                    size="small"
-                    sx={{
-                      backgroundColor: alpha(categoryColor, 0.14),
-                      color: categoryColor,
-                      fontWeight: 600,
-                      fontSize: "0.78rem",
-                      height: 26,
-                      borderRadius: 999,
-                      "& .MuiChip-label": {
-                        px: 1.75,
-                      },
-                    }}
-                  />
-                  <Box className="flex items-center gap-1">
-                    <CalendarIcon
-                      sx={{
-                        fontSize: 14,
-                        color: "text.secondary",
-                      }}
-                    />
-                    <Typography
-                      variant="caption"
-                      sx={{
-                        color: "text.secondary",
-                        fontSize: "0.8rem",
-                      }}
-                    >
-                      {formatDate(report.createdAt)}
-                    </Typography>
-                  </Box>
-                </Stack>
-              </Box>
-            </Box>
-          </Box>
+    <div className="bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden group">
+      {/* Accent line at top */}
+      <div className={`h-1 ${styles.accent}`} />
+      
+      <div className="p-4">
+        {/* Header with icon and title */}
+        <div className="flex items-start gap-3 mb-3">
+          <div className={`flex-shrink-0 w-10 h-10 rounded-lg ${styles.iconBg} flex items-center justify-center ${styles.iconText}`}>
+            <DescriptionIcon className="w-5 h-5" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <h4 className="text-sm font-semibold text-gray-900 truncate mb-1">
+              {report.title}
+            </h4>
+            <div className="flex items-center gap-1.5 text-xs text-gray-500">
+              <CalendarIcon className="w-3.5 h-3.5" />
+              <span>{formatDate(report.createdAt)}</span>
+            </div>
+          </div>
+        </div>
 
-          {/* Right side - Actions */}
-          <Box
-            className="flex gap-1"
-            sx={{
-              backgroundColor: alpha(categoryColor, 0.06),
-              borderRadius: 2.5,
-              p: 0.75,
-              border: `1px solid ${alpha(categoryColor, 0.12)}`,
-            }}
-          >
-            <Tooltip title={t("reports.actions.view")} arrow placement="top">
-              <span>
-                <IconButton
-                  size="small"
-                  onClick={handleViewReport}
-                  disabled={!hasFile}
-                  sx={{
-                    color: hasFile ? categoryColor : "text.disabled",
-                    borderRadius: 2,
-                    "&:hover": {
-                      backgroundColor: alpha(categoryColor, 0.14),
-                    },
-                    "&.Mui-disabled": {
-                      color: "text.disabled",
-                    },
-                  }}
-                >
-                  <VisibilityIcon sx={{ fontSize: 20 }} />
-                </IconButton>
-              </span>
-            </Tooltip>
-            <Tooltip title={t("reports.actions.download")} arrow placement="top">
-              <span>
-                <IconButton
-                  size="small"
-                  onClick={handleDownloadReport}
-                  disabled={!report.fileUrl}
-                  sx={{
-                    color: report.fileUrl ? "#10b981" : "text.disabled",
-                    borderRadius: 2,
-                    "&:hover": {
-                      backgroundColor: alpha("#10b981", 0.14),
-                    },
-                    "&.Mui-disabled": {
-                      color: "text.disabled",
-                    },
-                  }}
-                >
-                  <DownloadIcon sx={{ fontSize: 20 }} />
-                </IconButton>
-              </span>
-            </Tooltip>
-            <Tooltip title={t("reports.actions.delete")} arrow placement="top">
+        {/* Category badge */}
+        <div className="mb-4">
+          <span className="inline-block px-2.5 py-1 bg-gray-100 text-gray-700 text-xs font-medium rounded-md">
+            {report.type}
+          </span>
+        </div>
+
+        {/* Actions */}
+        <div className="flex items-center gap-1 pt-3 border-t border-gray-100">
+          <Tooltip title={t("reports.actions.view")} arrow>
+            <span>
               <IconButton
                 size="small"
-                onClick={handleDeleteReport}
+                onClick={handleViewReport}
+                disabled={!hasFile}
+                className="hover:bg-blue-50"
                 sx={{
-                  color: "#ef4444",
-                  borderRadius: 2,
+                  color: hasFile ? "#2563eb" : "#d1d5db",
                   "&:hover": {
-                    backgroundColor: alpha("#ef4444", 0.14),
+                    backgroundColor: hasFile ? "#eff6ff" : "transparent",
+                  },
+                  "&.Mui-disabled": {
+                    color: "#d1d5db",
                   },
                 }}
               >
-                <DeleteIcon sx={{ fontSize: 20 }} />
+                <VisibilityIcon className="w-4 h-4" />
               </IconButton>
-            </Tooltip>
-          </Box>
-        </Box>
-      </CardContent>
-    </Card>
+            </span>
+          </Tooltip>
+          <Tooltip title={t("reports.actions.download")} arrow>
+            <span>
+              <IconButton
+                size="small"
+                onClick={handleDownloadReport}
+                disabled={!report.fileUrl}
+                className="hover:bg-emerald-50"
+                sx={{
+                  color: report.fileUrl ? "#10b981" : "#d1d5db",
+                  "&:hover": {
+                    backgroundColor: report.fileUrl ? "#d1fae5" : "transparent",
+                  },
+                  "&.Mui-disabled": {
+                    color: "#d1d5db",
+                  },
+                }}
+              >
+                <DownloadIcon className="w-4 h-4" />
+              </IconButton>
+            </span>
+          </Tooltip>
+          <div className="flex-1" />
+          <Tooltip title={t("reports.actions.delete")} arrow>
+            <IconButton
+              size="small"
+              onClick={handleDeleteReport}
+              className="hover:bg-red-50"
+              sx={{
+                color: "#ef4444",
+                "&:hover": {
+                  backgroundColor: "#fee2e2",
+                },
+              }}
+            >
+              <DeleteIcon className="w-4 h-4" />
+            </IconButton>
+          </Tooltip>
+        </div>
+      </div>
+    </div>
   );
 };
 

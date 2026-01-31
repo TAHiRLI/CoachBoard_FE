@@ -157,7 +157,6 @@ const AddClip: React.FC<AddClipProps> = ({ onSuccess, onCancel, matchId, matchUr
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <h2 className="text-xl font-bold text-center mb-4">{t("static.createClip")}</h2>
 
       <div className="flex flex-col gap-3">
         <TextField
