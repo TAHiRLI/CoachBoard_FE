@@ -211,7 +211,8 @@ const ClipItem: React.FC<ClipItemProps> = ({ clip, expanded }) => {
             clip={selectedClip}
             onCancel={() => setIsOpen(false)}
             onSuccess={() => {
-              dispatch(fetchClips({ matchId: clip.matchId }));
+              if(clip.matchId)
+              dispatch(fetchClips({ matchIds: [clip.matchId] }));
               setIsOpen(false);
             }}
           />

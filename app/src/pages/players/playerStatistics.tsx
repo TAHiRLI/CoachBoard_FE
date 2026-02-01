@@ -94,7 +94,7 @@ const PlayerStatistics = () => {
 
             {/* Episode Statistics Table */}
             <EpisodeStatisticsTable
-              data={playerOverview.episodeStatistics}
+              data={playerOverview}
               title={t("statistics.episodeTableTitle")}
               columns={{
                 episode: t("static.episode"),

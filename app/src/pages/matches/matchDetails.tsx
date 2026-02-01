@@ -45,19 +45,13 @@ const MatchDetailsPage = () => {
       </h1>
       <p className="page-subtitle">{t("static.matchAnalysisSubtitle")}</p>
 
-      <div className="my-4">
-        {selectedMatch && <MatchInfoCard match={selectedMatch} />}
-      </div>
+      <div className="my-4">{selectedMatch && <MatchInfoCard match={selectedMatch} />}</div>
 
       <div className="my-4">
         {selectedMatch && (
           <>
             <div className="my-3 justify-end flex">
-              <Button
-                onClick={() => setIsOpen(true)}
-                variant="contained"
-                startIcon={<Add />}
-              >
+              <Button onClick={() => setIsOpen(true)} variant="contained" startIcon={<Add />}>
                 {t("static.addClip")}
               </Button>
             </div>
@@ -67,44 +61,37 @@ const MatchDetailsPage = () => {
         )}
       </div>
 
-      <div className="my-4">
-        {selectedMatch && <MatchParticipations match={selectedMatch} />}
-      </div>
+      <div className="my-4">{selectedMatch && <MatchParticipations match={selectedMatch} />}</div>
 
       <CustomModal open={isOpen} setOpen={setIsOpen}>
         <Box sx={{ width: "100%" }}>
           {isBulkClipCreationEnabled && (
-            <Tabs
-              value={tab}
-              onChange={(_, value) => setTab(value)}
-              centered
-              sx={{ mb: 2 }}
-            >
+            <Tabs value={tab} onChange={(_, value) => setTab(value)} centered sx={{ mb: 2 }}>
               <Tab label={t("static.singleClip")} />
               <Tab label={t("static.bulkClips")} />
             </Tabs>
           )}
 
           {/* SINGLE CLIP */}
-          {(tab === 0 || !isBulkClipCreationEnabled) && (
+          {(tab === 0 || !isBulkClipCreationEnabled) && selectedMatch && (
             <AddClip
               matchUrl={selectedMatch?.gameUrl}
               matchId={selectedMatch?.id}
               onCancel={() => setIsOpen(false)}
               onSuccess={() => {
-                dispatch(fetchClips({ matchId: selectedMatch?.id }));
+                dispatch(fetchClips({ matchIds: [selectedMatch.id] }));
                 setIsOpen(false);
               }}
             />
           )}
 
           {/* BULK CLIP */}
-          {isBulkClipCreationEnabled && tab === 1 && (
+          {isBulkClipCreationEnabled && selectedMatch &&  tab === 1 && (
             <AddBulkClips
               matchId={selectedMatch?.id}
               onCancel={() => setIsOpen(false)}
               onSuccess={() => {
-                dispatch(fetchClips({ matchId: selectedMatch?.id }));
+                dispatch(fetchClips({ matchIds: [selectedMatch?.id] }));
                 setIsOpen(false);
               }}
             />

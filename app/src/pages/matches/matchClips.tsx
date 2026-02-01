@@ -16,7 +16,7 @@ const MatchClips: FC<MatchClipsProps> = ({ match }) => {
 
   useEffect(() => {
     if (!match.id) return;
-    dispatch(fetchClips({ matchId: match.id }));
+    dispatch(fetchClips({ matchIds: [match.id] }));
   }, [match]);
 
   if (loading) return <LinearProgress />;

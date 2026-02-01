@@ -27,7 +27,8 @@ export const ClipTrimJobCard: React.FC<ClipTrimJobCardProps> = ({ clip }) => {
     try {
       await dispatch(createTrimRequest(clip.id)).unwrap();
       Swal.fire("🎬 Trim job created!", "", "success");
-      dispatch(fetchClips({ matchId: clip.matchId }));
+      if(clip.matchId)
+      dispatch(fetchClips({ matchIds: [clip.matchId] }));
     } catch (err: any) {
       Swal.fire("❌ Failed", err || "Error creating trim request", "error");
     }

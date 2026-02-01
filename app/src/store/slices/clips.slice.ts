@@ -21,12 +21,13 @@ export const fetchClips = createAsyncThunk(
   "clips/fetchClips",
   async (
     filter: {
-      matchId?: string;
+      matchIds?: string[];
       playerId?: string;
-      episodeId?: string;
+      episodeIds?: string[];
       tagId?: string;
       searchTerm?: string;
       isExample?: boolean;
+      isCritical?: boolean;
     },
     { rejectWithValue },
   ) => {
@@ -189,7 +190,7 @@ const clipsSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-      
+
       // createBulkClips
       .addCase(createBulkClips.pending, (state) => {
         state.loading = true;

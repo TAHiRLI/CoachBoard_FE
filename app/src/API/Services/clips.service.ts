@@ -1,25 +1,32 @@
 import { Clip, ClipPostDto, ClipPutDto } from "@/lib/types/clips.types";
 
 import { apiClient } from "../apiClient";
+import qs from "qs";
 
 class ClipsService {
   async getAll(filter: {
-    matchId?: string;
+    matchIds?: string[];
     playerId?: string;
-    episodeId?: string;
+    episodeIds?: string[];
     tagId?: string;
     searchTerm?: string;
     isExample?: boolean;
+    isCritical?: boolean;
   }) {
     const params: any = {};
-    if (filter.matchId) params.matchId = filter.matchId;
+
+    if (filter.matchIds?.length) params.matchIds = filter.matchIds;
+    if (filter.episodeIds?.length) params.episodeIds = filter.episodeIds;
     if (filter.playerId) params.playerId = filter.playerId;
-    if (filter.episodeId) params.episodeId = filter.episodeId;
     if (filter.tagId) params.tagId = filter.tagId;
     if (filter.searchTerm) params.searchTerm = filter.searchTerm;
     if (filter.isExample) params.isExample = filter.isExample;
+    if (filter.isCritical) params.isCritical = filter.isCritical;
 
-    return apiClient.get<Clip[]>("api/Clips", { params });
+    return apiClient.get<Clip[]>("api/Clips", {
+      params,
+      paramsSerializer: (params) => qs.stringify(params, { arrayFormat: "repeat" }),
+    });
   }
 
   async getById(id: string) {

@@ -1,4 +1,5 @@
 import { FilterFieldConfig, FilterValues } from "@/lib/types/dynamicFilter.types";
+import { useAppDispatch, useAppSelector } from "@/store/store";
 import { useEffect, useState } from "react";
 
 import { Button } from "@mui/material";
@@ -11,26 +12,24 @@ import { fetchEpisodes } from "@/store/slices/episodes.slice";
 import { fetchMatches } from "@/store/slices/matches.slice";
 import { fetchPlayers } from "@/store/slices/players.slice";
 import { fetchTags } from "@/store/slices/tags.slice";
-import { useAppDispatch } from "@/store/store";
-import { useAppSelector } from "@/store/store";
+import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 const ClipsPage = () => {
-  const [statsOpen, setStatsOpen] = useState(false);
-  const [filterValues, setFilterValues] = useState<FilterValues>({});
+  const [searchParams] = useSearchParams();
   const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(fetchClips({}));
-  }, []);
-
   const { t } = useTranslation();
+
+  const [filterValues, setFilterValues] = useState<FilterValues>({});
+  const [statsOpen, setStatsOpen] = useState(false);
+
   const { clips } = useAppSelector((x) => x.clipData);
   const { players } = useAppSelector((x) => x.playerData);
   const { episodes } = useAppSelector((x) => x.episodeData);
   const { tags } = useAppSelector((x) => x.tagData);
   const { matches } = useAppSelector((x) => x.matchData);
 
+  // 🔹 Load reference data first
   useEffect(() => {
     dispatch(fetchEpisodes());
     dispatch(fetchTags());
@@ -38,69 +37,70 @@ const ClipsPage = () => {
     dispatch(fetchMatches({}));
   }, [dispatch]);
 
+  // 🔹 Apply URL params AFTER data is ready
+  useEffect(() => {
+    if (!players.length || !episodes.length || !tags.length || !matches.length) return;
+
+    const playerId = searchParams.get("playerId");
+    const tagId = searchParams.get("tagId");
+    const episodeIds = searchParams.getAll("episodeIds");
+    const matchIds = searchParams.getAll("matchIds");
+    const searchTerm = searchParams.get("searchTerm");
+
+    dispatch(
+      fetchClips({
+        searchTerm: searchTerm ?? undefined,
+        playerId: playerId ?? undefined,
+        episodeIds: episodeIds ?? undefined,
+        tagId: tagId ?? undefined,
+        matchIds: matchIds ?? undefined,
+      }),
+    );
+  }, [players, episodes, tags, matches, searchParams, dispatch]);
+
   const filterFields: FilterFieldConfig[] = [
-    {
-      key: "searchTerm",
-      label: t("static.search"),
-      type: "text",
-      options: [],
-      placeholder: t("static.search"),
-      required: false,
-    },
+    { key: "searchTerm", label: t("static.search"), type: "text", options: [] },
     {
       key: "player",
       label: t("static.player"),
       type: "select",
       options: players.map((p) => ({ id: p.id, label: p.fullName })),
-      placeholder: t("static.selectPlayer"),
-      required: false,
     },
     {
       key: "episode",
       label: t("static.episodes"),
       type: "select",
       options: episodes.map((e) => ({ id: e.id, label: e.name })),
-      placeholder: t("static.selectEpisodes"),
     },
-    {
-      key: "tag",
-      label: t("static.tags"),
-      type: "select",
-      options: tags.map((e) => ({ id: e.id, label: e.name })),
-      placeholder: t("static.selectTags"),
-    },
+    { key: "tag", label: t("static.tags"), type: "select", options: tags.map((t) => ({ id: t.id, label: t.name })) },
     {
       key: "match",
       label: t("static.matches"),
       type: "select",
       options: matches.map((m) => ({ id: m.id, label: m.name })),
-      placeholder: t("static.selectMatches"),
     },
-    {
-      key: "isExample",
-      label: t("static.isExample"),
-      type: "checkbox",
-      placeholder: t("static.isExample"),
-    },
+    { key: "isExample", label: t("static.isExample"), type: "checkbox" },
   ];
 
   const handleFilterChange = (values: FilterValues) => {
-    setFilterValues(values); // save!
+    setFilterValues(values);
 
-    const dto = {
-      searchTerm: values.searchTerm ?? undefined,
-      playerId: values.player?.id ?? undefined,
-      episodeId: values.episode?.id ?? undefined,
-      tagId: values.tag?.id ?? undefined,
-      matchId: values.match?.id ?? undefined,
-      isExample: values.isExample ?? undefined,
-    };
-    dispatch(fetchClips(dto));
+    dispatch(
+      fetchClips({
+        searchTerm: values.searchTerm ?? undefined,
+        playerId: values.player?.id,
+        episodeIds: [values.episode?.id],
+        tagId: values.tag?.id,
+        matchIds: [values.match?.id],
+        isExample: values.isExample ?? undefined,
+      }),
+    );
 
     setStatsOpen(false);
   };
 
   const handleReset = () => {
+    setFilterValues({});
     dispatch(fetchClips({}));
     setStatsOpen(false);
   };
@@ -112,27 +112,21 @@ const ClipsPage = () => {
           {clips.length} {t("static.clips")}
         </div>
         <Button onClick={() => setStatsOpen(true)} variant="contained" startIcon={<FilterAlt />}>
-          {t("static.openFilters") || "Open Filters"}
+          {t("static.openFilters")}
         </Button>
       </div>
 
-      <div className="grid grid-cols-12 gap-8">
-        <div className="col-span-12">
-          <ClipsList />
-        </div>
-      </div>
+      <ClipsList />
 
       <CustomModal open={statsOpen} setOpen={setStatsOpen}>
-        <div className="p-4 w-full">
-          <DynamicFilter
-            fields={filterFields}
-            initialValues={filterValues}
-            onChange={handleFilterChange}
-            onReset={handleReset}
-            showResetButton={true}
-            showFilterCount={true}
-          />
-        </div>
+        <DynamicFilter
+          fields={filterFields}
+          initialValues={filterValues}
+          onChange={handleFilterChange}
+          onReset={handleReset}
+          showResetButton
+          showFilterCount
+        />
       </CustomModal>
     </div>
   );

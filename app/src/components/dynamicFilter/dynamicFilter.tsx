@@ -11,7 +11,7 @@ import {
   Radio,
   RadioGroup,
   TextField,
-  Typography
+  Typography,
 } from "@mui/material";
 import { Close, FilterList, RestartAlt, Save } from "@mui/icons-material";
 import { FilterFieldConfig, FilterOption, FilterValues } from "@/lib/types/dynamicFilter.types";
@@ -47,6 +47,8 @@ const DynamicFilter: React.FC<DynamicFilterProps> = ({
 }) => {
   const { t } = useTranslation();
   const [filterValues, setFilterValues] = useState<FilterValues>(initialValues);
+ 
+
   const [fieldOptions, setFieldOptions] = useState<Record<string, FilterOption[]>>({});
   const [expanded, setExpanded] = useState(!collapsible);
   const [loading, setLoading] = useState<Record<string, boolean>>({});

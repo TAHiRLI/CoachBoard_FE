@@ -53,7 +53,7 @@ export const initializeKeycloak = createAsyncThunk("keycloak/init", async (_, { 
       onLoad: "login-required",
       checkLoginIframe: false,
       pkceMethod: "S256",
-      redirectUri: window.location.origin + window.location.pathname,
+      redirectUri: window.location.origin + window.location.pathname + window.location.search,
     });
 
     let userInfo = null;

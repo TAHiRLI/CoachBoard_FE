@@ -101,11 +101,11 @@ const PlayerOverviewPage = () => {
 
   return (
     <div className="max-w-screen-2xl mx-auto">
-      <div className=" mx-auto mb-6 flex gap-3 justify-end" >
+      <div className=" mx-auto mb-6 flex gap-3 justify-end">
         <Button onClick={() => setStatsOpen(true)} variant="contained" startIcon={<FilterAlt />}>
           {t("static.openFilters") || "Open Filters"}
         </Button>
-        {Object.keys(filterValues).length > 0 && isPDFGenerateEnabled &&  (
+        {Object.keys(filterValues).length > 0 && isPDFGenerateEnabled && (
           <Button onClick={() => handleGeneratePdf()} variant="contained" startIcon={<PictureAsPdf />}>
             {t("static.generatePdf")}
           </Button>

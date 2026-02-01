@@ -10,6 +10,7 @@ export type PlayerStatisticsRequestDto = {
 
 export interface PlayerEpisodeStatistic {
   episode: string;
+  episodeId: string;
   totalOccurrences: number;
   successfulOccurrences: number;
   unsuccessfulOccurrences: number;
@@ -31,6 +32,9 @@ export interface MonthlyPlayerStatistic {
 }
 
 export interface PlayerStatisticsResponseDto {
+  playerId: string;
+  episodeIds: string[];
+  matchIds: string[];
   totalEpisodes: number;
   successfulEpisodes: number;
   unsuccessfulEpisodes: number;
