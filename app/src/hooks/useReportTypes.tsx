@@ -27,6 +27,16 @@ export const REPORT_TYPES: Record<string, ReportType> = {
     canCompare: true,
     canSchedule: true,
   },
+  playerBmi: {
+    id: "player-bmi",
+    url: Routes.Reports.PlayerBmi,
+    name: "reportTypes.playerBmi.name",
+    description: "reportTypes.playerBmi.description",
+    category: "player",
+    icon: "📈",
+    canCompare: false,
+    canSchedule: false,
+  },
   // teamPerformance: {
   //   id: "team-performance",
   //   url: Routes.Reports.PlayerOverview,

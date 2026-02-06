@@ -10,6 +10,7 @@ export interface ReportGetDto {
 
 export enum ReportTypeEnum {
   PlayerOverview = "PlayerOverview",
+  PlayerBmi = "PlayerBmi",
   TeamPerformance = "TeamPerformance",
   EpisodeAnalysis = "EpisodeAnalysis",
   ComparativeAnalysis = "ComparativeAnalysis",

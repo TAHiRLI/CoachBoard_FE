@@ -23,6 +23,7 @@
     "season": "Mövsüm",
     "newMatch": "Yeni oyun",
     "reports": "Hesabatlar",
+    "info": "Məlumat",
     "users": "İstifadəçilər",
     "coachBoard": "CoachBoard",
     "logout": "Çıxış",
@@ -82,6 +83,13 @@
     "date": "Tarix",
     "time": "Vaxt",
     "location": "Məkan",
+    "bmi": "Bədən-Çəki indeksi",
+    "measuredAt": "Ölçmə tarixi",
+    "weightKg": "Çəki (kq)",
+    "addBmiRecord": "Əlavə et",
+    "editBmiRecord": "Redaktə et",
+    "mustBeGreaterThanZero": "0-dan böyük olmalıdır",
+    "noData": "Məlumat yoxdur",
     "note": "Qeyd",
     "link": "Keçid",
     "finalScore": "Yekun Hesab",
@@ -240,6 +248,10 @@
     "playerOverview": {
       "name": "Oyunçu İcmalı",
       "description": "Oyunçunun performansının ətraflı analizi"
+    },
+    "playerBmi": {
+      "name": "Oyunçunun Bədən-Çəki indeksi",
+      "description": "Bədən-Çəki indeksi ölçmələrinin zaman üzrə izlənməsi"
     },
     "teamPerformance": {
       "name": "Komanda Performansı",

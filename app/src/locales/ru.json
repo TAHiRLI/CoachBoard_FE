@@ -21,6 +21,7 @@
     "players": "Игроки",
     "episodes": "Эпизоды",
     "reports": "Отчёты",
+    "info": "Информация",
     "users": "Пользователи",
     "coachBoard": "CoachBoard",
     "logout": "Выйти",
@@ -57,6 +58,13 @@
     "create": "Создать",
     "time": "Время",
     "location": "Локация",
+    "bmi": "BMI",
+    "measuredAt": "Дата измерения",
+    "weightKg": "Вес (кг)",
+    "addBmiRecord": "Добавить запись BMI",
+    "editBmiRecord": "Редактировать запись BMI",
+    "mustBeGreaterThanZero": "Должно быть больше 0",
+    "noData": "Нет данных",
     "static.matchParticipations": "Участники матча",
     "areYouSure": "Вы уверены?",
     "cannotBeUndone": "Это действие нельзя отменить",
@@ -190,6 +198,10 @@
     "playerOverview": {
       "name": "Обзор игрока",
       "description": "Подробный анализ эффективности игрока"
+    },
+    "playerBmi": {
+      "name": "BMI игрока",
+      "description": "Динамика измерений BMI"
     },
     "teamPerformance": {
       "name": "Эффективность команды",

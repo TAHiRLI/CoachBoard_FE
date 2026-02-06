@@ -20,6 +20,7 @@
     "players": "Players",
     "episodes": "Episodes",
     "reports": "Reports",
+    "info": "Info",
     "generateAnalyze": "Generate and analyze performance reports",
     "browseSaved": "Browse saved reports",
     "liveReports": "Live Reports",
@@ -67,6 +68,13 @@
     "date": "Date",
     "time": "Time",
     "location": "Location",
+    "bmi": "BMI",
+    "measuredAt": "Measured At",
+    "weightKg": "Weight (kg)",
+    "addBmiRecord": "Add BMI record",
+    "editBmiRecord": "Edit BMI record",
+    "mustBeGreaterThanZero": "Must be greater than 0",
+    "noData": "No data",
     "note": "Note",
     "link": "Link",
     "finalScore": "Final Score",
@@ -256,6 +264,10 @@
     "playerOverview": {
       "name": "Player Overview",
       "description": "Comprehensive player performance analysis"
+    },
+    "playerBmi": {
+      "name": "Player BMI",
+      "description": "Track BMI measurements over time"
     },
     "teamPerformance": {
       "name": "Team Performance",

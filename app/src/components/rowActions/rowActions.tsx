@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 
 import { MoreVert as MoreVertIcon } from '@mui/icons-material';
 
-interface ActionItem {
+export interface ActionItem {
   icon: React.ReactNode;
   label: string;
   onClick: () => void;

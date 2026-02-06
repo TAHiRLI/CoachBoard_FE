@@ -11,6 +11,7 @@ import MatchDetailsPage from "@/pages/matches/matchDetails";
 import MatchesPage from "@/pages/matches/matchesPage";
 import NotFoundPage from "@/pages/notFoundPage/notFoundPage";
 import PlayerDetailsPage from "@/pages/players/PlayerDetailsPage";
+import PlayerBmiPage from "@/pages/reportsPage/playerBmiPage";
 import PlayerOverviewPage from "@/pages/reportsPage/playerOverviewPage";
 import PlayersPage from "@/pages/players/PlayersPage";
 import PrivateRoute from "@/components/auth/PrivateRoute/v2/privateRoute";
@@ -189,6 +190,18 @@ export const router = createBrowserRouter([
         <PrivateRoute>
           <Layout>
             <PlayerOverviewPage />
+          </Layout>
+        </PrivateRoute>
+      </>
+    ),
+  },
+  {
+    path: Routes.Reports.PlayerBmi,
+    element: (
+      <>
+        <PrivateRoute>
+          <Layout>
+            <PlayerBmiPage />
           </Layout>
         </PrivateRoute>
       </>
