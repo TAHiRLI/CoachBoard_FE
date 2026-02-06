@@ -35,7 +35,10 @@ export interface PlayerOverviewReportRequestDto {
 
 export interface GeneratePlayerOverviewReport_DataResponse {
   reportId?: string;
-  success: boolean;
+  success?: boolean;
   message?: string;
   data?: any;
+  id?: number;
+  fileUrl?: string;
+  fileName?: string;
 }

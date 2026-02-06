@@ -24,6 +24,7 @@ const PlayerOverviewPage = () => {
   const dispatch = useAppDispatch();
   const [statsOpen, setStatsOpen] = useState(false);
   const [filterValues, setFilterValues] = useState<FilterValues>({});
+  const [isGenerating, setIsGenerating] = useState(false);
   const isPDFGenerateEnabled = useFlag("FE_reports_generatePdf");
 
   useEffect(() => {
@@ -84,7 +85,7 @@ const PlayerOverviewPage = () => {
     clearPlayerOverview();
   };
 
-  const handleGeneratePdf = () => {
+  const handleGeneratePdf = async () => {
     if (!filterValues) return;
 
     const dto = {
@@ -96,7 +97,12 @@ const PlayerOverviewPage = () => {
         to: filterValues.dateRange_to || undefined,
       },
     };
-    reportsService.generatePlayerOverview(dto);
+    setIsGenerating(true);
+    try {
+      await reportsService.generatePlayerOverview(dto);
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   return (
@@ -106,7 +112,12 @@ const PlayerOverviewPage = () => {
           {t("static.openFilters") || "Open Filters"}
         </Button>
         {Object.keys(filterValues).length > 0 && isPDFGenerateEnabled && (
-          <Button onClick={() => handleGeneratePdf()} variant="contained" startIcon={<PictureAsPdf />}>
+          <Button
+            onClick={() => handleGeneratePdf()}
+            variant="contained"
+            startIcon={<PictureAsPdf />}
+            disabled={isGenerating}
+          >
             {t("static.generatePdf")}
           </Button>
         )}
@@ -118,7 +129,6 @@ const PlayerOverviewPage = () => {
           <PlayerStatistics />
         </div>
       </div>
-
       {/* FILTER POPUP */}
       <CustomModal open={statsOpen} setOpen={setStatsOpen}>
         <div className="p-4 w-full">
