@@ -20,6 +20,7 @@ import { useEffect, useState } from "react";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import dayjs from "dayjs";
 import { useTranslation } from "react-i18next";
 
 export interface DynamicFilterProps {
@@ -203,6 +204,8 @@ const DynamicFilter: React.FC<DynamicFilterProps> = ({
           <Autocomplete
             key={field.key}
             multiple
+            disableCloseOnSelect
+            filterSelectedOptions
             options={options}
             loading={isLoading}
             disabled={field.disabled}
@@ -240,6 +243,7 @@ const DynamicFilter: React.FC<DynamicFilterProps> = ({
             value={filterValues[field.key] || null}
             onChange={(newValue) => handleFilterChange(field.key, newValue)}
             disabled={field.disabled}
+            format="DD.MM.YYYY"
             slotProps={{
               textField: {
                 size: compact ? "small" : "medium",
@@ -258,6 +262,7 @@ const DynamicFilter: React.FC<DynamicFilterProps> = ({
               value={filterValues[`${field.key}_from`] || null}
               onChange={(newValue) => handleFilterChange(`${field.key}_from`, newValue)}
               disabled={field.disabled}
+              format="DD.MM.YYYY"
               slotProps={{
                 textField: {
                   size: compact ? "small" : "medium",
@@ -271,6 +276,7 @@ const DynamicFilter: React.FC<DynamicFilterProps> = ({
               value={filterValues[`${field.key}_to`] || null}
               onChange={(newValue) => handleFilterChange(`${field.key}_to`, newValue)}
               disabled={field.disabled}
+              format="DD.MM.YYYY"
               slotProps={{
                 textField: {
                   size: compact ? "small" : "medium",
@@ -358,8 +364,10 @@ const DynamicFilter: React.FC<DynamicFilterProps> = ({
                   }
                   // Handle other values
                   else if (value && !Array.isArray(value)) {
-                    if (value instanceof Date) {
-                      displayValue = value.toLocaleDateString();
+                    if (dayjs.isDayjs(value)) {
+                      displayValue = value.format("DD.MM.YYYY");
+                    } else if (value instanceof Date) {
+                      displayValue = dayjs(value).format("DD.MM.YYYY");
                     } else if (typeof value === "object" && value.label) {
                       displayValue = value.label;
                     } else if (typeof value === "string" || typeof value === "number") {
