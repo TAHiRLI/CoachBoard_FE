@@ -8,6 +8,7 @@ import ForgotPasswordPage from "@/pages/login/forgotPassword";
 import Layout from "@/components/layout/layout";
 import LoginPage from "@/pages/login/v2/loginPage";
 import MatchDetailsPage from "@/pages/matches/matchDetails";
+import ClipEditorPage from "@/pages/matches/clipEditor";
 import MatchesPage from "@/pages/matches/matchesPage";
 import NotFoundPage from "@/pages/notFoundPage/notFoundPage";
 import PlayerDetailsPage from "@/pages/players/PlayerDetailsPage";
@@ -61,6 +62,14 @@ export const router = createBrowserRouter([
           </Layout>
         </PrivateRoute>
       </>
+    ),
+  },
+  {
+    path: Routes.Matches.ClipEditor,
+    element: (
+      <PrivateRoute>
+        <ClipEditorPage />
+      </PrivateRoute>
     ),
   },
   {

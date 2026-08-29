@@ -9,6 +9,7 @@ export const Routes = {
   Matches: {
     Base: "/Matches",
     Details: "/Matches/:id",
+    ClipEditor: "/Matches/:id/clip-editor",
   },
   Seasons: {
     Base: "/Seasons",

@@ -17,11 +17,12 @@ import { useTranslation } from "react-i18next";
 
 interface props {
   clipId: string;
+  initialPlayerId?: string;
   onSuccess?: () => void;
   onCancel?: () => void;
 }
 
-const AddEvaluation = ({ clipId, onSuccess, onCancel }: props) => {
+const AddEvaluation = ({ clipId, initialPlayerId = "", onSuccess, onCancel }: props) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
@@ -32,7 +33,7 @@ const AddEvaluation = ({ clipId, onSuccess, onCancel }: props) => {
   useEffect(() => {
     dispatch(fetchPlayers());
     dispatch(fetchEpisodes());
-  }, []);
+  }, [dispatch]);
   const schema = yup.object({
     clipId: yup.string().required(),
     playerId: yup.string().required(),
@@ -42,7 +43,7 @@ const AddEvaluation = ({ clipId, onSuccess, onCancel }: props) => {
   const formik = useFormik<EvaluationPostDto>({
     initialValues: {
       clipId: clipId,
-      playerId: "",
+      playerId: initialPlayerId,
       episodeId: "",
       notes: "",
       occurrenceCount: 1,

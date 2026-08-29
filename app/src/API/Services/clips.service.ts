@@ -54,7 +54,7 @@ class ClipsService {
       formData.append("videoUrl", dto.videoUrl);
     }
 
-    return apiClient.post("api/Clips", formData, {
+    return apiClient.post<Clip>("api/Clips", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
   }

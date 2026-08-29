@@ -14,7 +14,7 @@ import {
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { useEffect, useMemo, useState } from "react";
 
-import { ClipPostDto } from "@/lib/types/clips.types";
+import { Clip, ClipPostDto } from "@/lib/types/clips.types";
 import { Save } from "@mui/icons-material";
 import { createClip } from "@/store/slices/clips.slice";
 import { fetchTags } from "@/store/slices/tags.slice";
@@ -47,20 +47,33 @@ const calculateOffset = (liveStart: string, time: string): number => {
 };
 
 interface AddClipProps {
-  onSuccess?: () => void;
+  onSuccess?: (clip: Clip) => void;
   onCancel?: () => void;
   matchId?: string;
   matchUrl?: string;
+  initialStartTime?: string;
+  initialEndTime?: string;
+  sourceType?: "youtube" | "native";
 }
 
-const AddClip: React.FC<AddClipProps> = ({ onSuccess, onCancel, matchId, matchUrl }) => {
+const AddClip: React.FC<AddClipProps> = ({
+  onSuccess,
+  onCancel,
+  matchId,
+  matchUrl,
+  initialStartTime = "",
+  initialEndTime = "0",
+  sourceType,
+}) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { loading } = useAppSelector((s) => s.clipData);
   const { user } = useAppSelector((s) => s.auth);
   const { tags } = useAppSelector((s) => s.tagData);
 
-  const [mode, setMode] = useState<"external" | "upload">("external");
+  const [mode, setMode] = useState<"external" | "upload" | "match">(
+    sourceType === "native" ? "match" : "external",
+  );
   const [isLive, setIsLive] = useState(false);
   const [liveStartTime, setLiveStartTime] = useState<string>("");
   const [iframeSrc, setIframeSrc] = useState<string>("");
@@ -80,8 +93,8 @@ const AddClip: React.FC<AddClipProps> = ({ onSuccess, onCancel, matchId, matchUr
       name: "",
       matchId: matchId,
       createdByCoachId: user?.coachId ?? "",
-      startTime: "",
-      endTime: "0",
+      startTime: initialStartTime,
+      endTime: initialEndTime,
       videoUrl: matchUrl ?? "",
       videoFile: undefined,
       isExternal: mode === "external",
@@ -105,9 +118,9 @@ const AddClip: React.FC<AddClipProps> = ({ onSuccess, onCancel, matchId, matchUr
         })
       )
         .unwrap()
-        .then(() => {
+        .then((clip) => {
           formik.resetForm();
-          onSuccess?.();
+          onSuccess?.(clip);
         });
     },
   });
@@ -186,16 +199,25 @@ const AddClip: React.FC<AddClipProps> = ({ onSuccess, onCancel, matchId, matchUr
           slotProps={{ chip: { size: "small" } }}
         />
 
-        <TextField
-          select
-          label={t("static.clipSource")}
-          fullWidth
-          value={mode}
-          onChange={(e) => setMode(e.target.value as "external" | "upload")}
-        >
-          <MenuItem value="upload">{t("static.uploadVideo")}</MenuItem>
-          <MenuItem value="external">{t("static.youtubeExternalUrl")}</MenuItem>
-        </TextField>
+        {sourceType ? (
+          <TextField
+            label={t("static.clipSource")}
+            value={t(sourceType === "youtube" ? "clipEditor.youtubeMatchVideo" : "clipEditor.nativeMatchVideo")}
+            fullWidth
+            disabled
+          />
+        ) : (
+          <TextField
+            select
+            label={t("static.clipSource")}
+            fullWidth
+            value={mode}
+            onChange={(e) => setMode(e.target.value as "external" | "upload")}
+          >
+            <MenuItem value="upload">{t("static.uploadVideo")}</MenuItem>
+            <MenuItem value="external">{t("static.youtubeExternalUrl")}</MenuItem>
+          </TextField>
+        )}
 
         <div className="flex">
           <FormControlLabel
@@ -273,6 +295,16 @@ const AddClip: React.FC<AddClipProps> = ({ onSuccess, onCancel, matchId, matchUr
             accept="video/*"
             onChange={(e) => e.currentTarget.files && formik.setFieldValue("videoFile", e.currentTarget.files[0])}
           />
+        )}
+
+        {mode === "match" && (
+          <>
+            <TextField label={t("clipEditor.matchVideo")} value={formik.values.videoUrl} fullWidth disabled />
+            <div className="flex gap-3">
+              <TextField label={t("static.startTimeSeconds")} fullWidth {...formik.getFieldProps("startTime")} />
+              <TextField label={t("static.endTimeSeconds")} fullWidth {...formik.getFieldProps("endTime")} />
+            </div>
+          </>
         )}
 
         <div className="flex justify-end gap-3 mt-3">

@@ -4,7 +4,7 @@ import { Box, Button, Tab, Tabs } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { useEffect, useState } from "react";
 
-import { Add } from "@mui/icons-material";
+import { Add, MovieCreationOutlined } from "@mui/icons-material";
 import AddBulkClips from "@/components/clips/AddBulkClips";
 import AddClip from "@/components/clips/AddClip";
 import CustomModal from "@/components/customModal/customModal";
@@ -15,6 +15,7 @@ import { fetchClips } from "@/store/slices/clips.slice";
 import { fetchMatchById } from "@/store/slices/matches.slice";
 import { useFlag } from "@unleash/proxy-client-react";
 import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 const MatchDetailsPage = () => {
@@ -51,6 +52,15 @@ const MatchDetailsPage = () => {
         {selectedMatch && (
           <>
             <div className="my-3 justify-end flex">
+              <Button
+                component={Link}
+                to={`/Matches/${selectedMatch.id}/clip-editor`}
+                variant="contained"
+                startIcon={<MovieCreationOutlined />}
+                sx={{ mr: 1 }}
+              >
+                {t("clipEditor.openEditor")}
+              </Button>
               <Button onClick={() => setIsOpen(true)} variant="contained" startIcon={<Add />}>
                 {t("static.addClip")}
               </Button>

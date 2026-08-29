@@ -29,7 +29,7 @@ export const formatSeconds = (seconds: number): string => {
   return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
 };
 
-const EditClip: React.FC<EditClipProps> = ({ clip, onCancel }) => {
+const EditClip: React.FC<EditClipProps> = ({ clip, onSuccess, onCancel }) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { loading } = useAppSelector((s) => s.clipData);
@@ -98,6 +98,7 @@ const EditClip: React.FC<EditClipProps> = ({ clip, onCancel }) => {
       )
         .unwrap()
         .then(() => {
+          onSuccess?.();
           Swal.fire(t("static.success"), "", "success");
         });
     },
