@@ -218,6 +218,12 @@ const ClipEditorPage = () => {
     setModalOpen(true);
   };
 
+  const closeClipModal = () => {
+    setModalOpen(false);
+    setClipStart(null);
+    setClipEnd(null);
+  };
+
   const handleClipClick = (clip: Clip) => {
     seekTo(Number(clip.startTime) || 0);
   };
@@ -476,7 +482,7 @@ const ClipEditorPage = () => {
         </Box>
       </Box>
 
-      <CustomModal open={modalOpen} setOpen={setModalOpen} onClose={() => setClipEnd(null)}>
+      <CustomModal open={modalOpen} setOpen={setModalOpen} onClose={closeClipModal}>
         <Box>
           <Typography variant="h6" fontWeight={800} sx={{ mb: 2 }}>{t("clipEditor.createClip")}</Typography>
           {selectedPlayer && clipStart !== null && clipEnd !== null && (
@@ -486,10 +492,10 @@ const ClipEditorPage = () => {
               initialStartTime={formatTime(clipStart)}
               initialEndTime={formatTime(clipEnd)}
               sourceType={sourceType}
-              onCancel={() => setModalOpen(false)}
+              onCancel={closeClipModal}
               onSuccess={(clip) => {
                 dispatch(fetchClips({ matchIds: [selectedMatch.id] }));
-                setModalOpen(false);
+                closeClipModal();
                 setCreatedClipId(clip.id);
                 setEvaluationOpen(true);
               }}
