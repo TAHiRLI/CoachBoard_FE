@@ -9,6 +9,9 @@
     "openEditor": "Klip redaktorunu aç",
     "youtubeSource": "YouTube mənbəyi",
     "nativeSource": "Yerli MP4 mənbəyi",
+    "localSource": "Lokal video fayl",
+    "loadLocalVideo": "Lokal video yüklə",
+    "loadLocalVideoHint": "Kompüterinizdən video fayl seçin və bütün faylı əvvəlcədən yükləmədən ondan klip kəsin",
     "youtubeMatchVideo": "YouTube oyun videosu",
     "nativeMatchVideo": "Yerli oyun videosu",
     "matchVideo": "Oyun videosu",
@@ -38,7 +41,15 @@
     "selectPlayer": "Oyunçu seçin",
     "startClipping": "Klipə başla",
     "finishClip": "Klipi bitir",
-    "createClip": "Klip yarat"
+    "createClip": "Klip yarat",
+    "trimmingProgress": "Video brauzerinizdə kəsilir… {{percent}}%",
+    "uploadingProgress": "Klip yüklənir… {{percent}}%",
+    "doNotClosePage": "Klip emal olunub bitənə qədər zəhmət olmasa bu səhifəni açıq saxlayın.",
+    "trimFailedTitle": "Video kəsilmədi",
+    "trimFailedText": "Video brauzerinizdə kəsilə bilmədi. Zəhmət olmasa yenidən cəhd edin.",
+    "clipCreateFailedTitle": "Klip yüklənmədi",
+    "evaluationSaveFailedTitle": "Qiymətləndirmə saxlanmadı",
+    "evaluationWillAttachLater": "Klip yüklənməsi bitdikdən sonra bu qiymətləndirmə avtomatik olaraq ona əlavə ediləcək."
   },
   "static": {
     "createClub": "Klub yarat",

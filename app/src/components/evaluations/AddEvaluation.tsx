@@ -20,9 +20,16 @@ interface props {
   initialPlayerId?: string;
   onSuccess?: () => void;
   onCancel?: () => void;
+  /**
+   * When true, the clip this evaluation belongs to doesn't exist yet (e.g. it's
+   * still being trimmed/uploaded in the background). Submitting hands the
+   * values to `onDeferredSubmit` instead of saving to the backend right away.
+   */
+  deferred?: boolean;
+  onDeferredSubmit?: (values: EvaluationPostDto) => void;
 }
 
-const AddEvaluation = ({ clipId, initialPlayerId = "", onSuccess, onCancel }: props) => {
+const AddEvaluation = ({ clipId, initialPlayerId = "", onSuccess, onCancel, deferred = false, onDeferredSubmit }: props) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { user } = useAppSelector((state) => state.auth);
@@ -35,7 +42,7 @@ const AddEvaluation = ({ clipId, initialPlayerId = "", onSuccess, onCancel }: pr
     dispatch(fetchEpisodes());
   }, [dispatch]);
   const schema = yup.object({
-    clipId: yup.string().required(),
+    clipId: deferred ? yup.string() : yup.string().required(),
     playerId: yup.string().required(),
     episodeId: yup.string().required(),
   });
@@ -54,6 +61,10 @@ const AddEvaluation = ({ clipId, initialPlayerId = "", onSuccess, onCancel }: pr
     },
     validationSchema: schema,
     onSubmit: async (values) => {
+      if (deferred) {
+        onDeferredSubmit?.(values);
+        return;
+      }
       dispatch(createEvaluation(values))
         .unwrap()
         .then(() => onSuccess && onSuccess());
@@ -63,6 +74,9 @@ const AddEvaluation = ({ clipId, initialPlayerId = "", onSuccess, onCancel }: pr
   return (
     <form onSubmit={formik.handleSubmit} className="flex flex-col gap-4">
       <h1 className="text-xl font-bold text-center">{t("static.addEvaluation")}</h1>
+      {deferred && (
+        <p className="text-sm text-gray-500 text-center">{t("clipEditor.evaluationWillAttachLater")}</p>
+      )}
       <AutocompleteWithAdd
         options={players}
         value={players.find((p) => p.id === formik.values.playerId) || null}

@@ -47,6 +47,7 @@ export interface ClipPostDto {
   isExternal: boolean;
   isExample: boolean;
   tags?: string[];
+  onUploadProgress?: (percent: number) => void;
 }
 
 export interface ClipPutDto {

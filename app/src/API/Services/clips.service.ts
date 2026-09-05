@@ -56,6 +56,9 @@ class ClipsService {
 
     return apiClient.post<Clip>("api/Clips", formData, {
       headers: { "Content-Type": "multipart/form-data" },
+      onUploadProgress: dto.onUploadProgress
+        ? (event) => dto.onUploadProgress!(event.total ? Math.round((event.loaded / event.total) * 100) : 0)
+        : undefined,
     });
   }
 

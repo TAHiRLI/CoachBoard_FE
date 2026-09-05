@@ -11,7 +11,12 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
-      
+
     },
+  },
+  optimizeDeps: {
+    // ffmpeg.wasm ships its own worker script; letting Vite pre-bundle it
+    // races with the worker's dynamic import and the worker request hangs forever.
+    exclude: ["@ffmpeg/ffmpeg", "@ffmpeg/util"],
   },
 })

@@ -51,9 +51,16 @@ interface AddClipProps {
   onCancel?: () => void;
   matchId?: string;
   matchUrl?: string;
+  localFile?: File | null;
   initialStartTime?: string;
   initialEndTime?: string;
-  sourceType?: "youtube" | "native";
+  sourceType?: "youtube" | "native" | "local";
+  /**
+   * When set, submitting a "local" clip hands the trimming + upload off to the
+   * caller instead of running it inline, so the caller can close this form
+   * right away and track progress in a background indicator.
+   */
+  onQueueLocalUpload?: (params: { dto: ClipPostDto; file: File }) => void;
 }
 
 const AddClip: React.FC<AddClipProps> = ({
@@ -61,9 +68,11 @@ const AddClip: React.FC<AddClipProps> = ({
   onCancel,
   matchId,
   matchUrl,
+  localFile,
   initialStartTime = "",
   initialEndTime = "0",
   sourceType,
+  onQueueLocalUpload,
 }) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
@@ -71,8 +80,8 @@ const AddClip: React.FC<AddClipProps> = ({
   const { user } = useAppSelector((s) => s.auth);
   const { tags } = useAppSelector((s) => s.tagData);
 
-  const [mode, setMode] = useState<"external" | "upload" | "match">(
-    sourceType === "native" ? "match" : "external",
+  const [mode, setMode] = useState<"external" | "upload" | "match" | "local">(
+    sourceType === "local" ? "local" : sourceType === "native" ? "match" : "external",
   );
   const [isLive, setIsLive] = useState(false);
   const [liveStartTime, setLiveStartTime] = useState<string>("");
@@ -109,14 +118,22 @@ const AddClip: React.FC<AddClipProps> = ({
         startSeconds = calculateOffset(liveStartTime, values.startTime);
         endSeconds = calculateOffset(liveStartTime, values.endTime);
       }
-      dispatch(
-        createClip({
-          ...values,
-          isExternal: mode === "external",
-          startTime: startSeconds.toString(),
-          endTime: endSeconds.toString(),
-        })
-      )
+
+      const dto: ClipPostDto = {
+        ...values,
+        isExternal: mode === "external",
+        startTime: startSeconds.toString(),
+        endTime: endSeconds.toString(),
+      };
+
+      if (mode === "local" && localFile && onQueueLocalUpload) {
+        formik.resetForm();
+        onQueueLocalUpload({ dto: { ...dto, videoFile: undefined, videoUrl: "" }, file: localFile });
+        onCancel?.();
+        return;
+      }
+
+      dispatch(createClip(dto))
         .unwrap()
         .then((clip) => {
           formik.resetForm();
@@ -202,7 +219,13 @@ const AddClip: React.FC<AddClipProps> = ({
         {sourceType ? (
           <TextField
             label={t("static.clipSource")}
-            value={t(sourceType === "youtube" ? "clipEditor.youtubeMatchVideo" : "clipEditor.nativeMatchVideo")}
+            value={t(
+              sourceType === "youtube"
+                ? "clipEditor.youtubeMatchVideo"
+                : sourceType === "local"
+                  ? "clipEditor.localSource"
+                  : "clipEditor.nativeMatchVideo",
+            )}
             fullWidth
             disabled
           />
@@ -300,6 +323,21 @@ const AddClip: React.FC<AddClipProps> = ({
         {mode === "match" && (
           <>
             <TextField label={t("clipEditor.matchVideo")} value={formik.values.videoUrl} fullWidth disabled />
+            <div className="flex gap-3">
+              <TextField label={t("static.startTimeSeconds")} fullWidth {...formik.getFieldProps("startTime")} />
+              <TextField label={t("static.endTimeSeconds")} fullWidth {...formik.getFieldProps("endTime")} />
+            </div>
+          </>
+        )}
+
+        {mode === "local" && (
+          <>
+            <TextField
+              label={t("clipEditor.matchVideo")}
+              value={localFile?.name ?? ""}
+              fullWidth
+              disabled
+            />
             <div className="flex gap-3">
               <TextField label={t("static.startTimeSeconds")} fullWidth {...formik.getFieldProps("startTime")} />
               <TextField label={t("static.endTimeSeconds")} fullWidth {...formik.getFieldProps("endTime")} />

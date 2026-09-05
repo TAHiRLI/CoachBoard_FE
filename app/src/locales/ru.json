@@ -9,6 +9,9 @@
     "openEditor": "Открыть редактор клипов",
     "youtubeSource": "Источник YouTube",
     "nativeSource": "Локальный источник MP4",
+    "localSource": "Локальный видеофайл",
+    "loadLocalVideo": "Загрузить локальное видео",
+    "loadLocalVideoHint": "Выберите видеофайл на вашем компьютере, чтобы вырезать из него клипы без загрузки всего файла целиком",
     "youtubeMatchVideo": "Видео матча на YouTube",
     "nativeMatchVideo": "Локальное видео матча",
     "matchVideo": "Видео матча",
@@ -42,7 +45,15 @@
     "selectPlayer": "Выберите игрока",
     "startClipping": "Начать клип",
     "finishClip": "Завершить клип",
-    "createClip": "Создать клип"
+    "createClip": "Создать клип",
+    "trimmingProgress": "Обрезка видео в браузере… {{percent}}%",
+    "uploadingProgress": "Загрузка клипа… {{percent}}%",
+    "doNotClosePage": "Пожалуйста, не закрывайте эту страницу, пока клип обрабатывается.",
+    "trimFailedTitle": "Не удалось обрезать видео",
+    "trimFailedText": "Не удалось обрезать видео в браузере. Попробуйте ещё раз.",
+    "clipCreateFailedTitle": "Не удалось загрузить клип",
+    "evaluationSaveFailedTitle": "Не удалось сохранить оценку",
+    "evaluationWillAttachLater": "Эта оценка будет автоматически привязана к клипу после завершения загрузки."
   },
 
   "static": {

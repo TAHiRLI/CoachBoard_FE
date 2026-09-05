@@ -9,6 +9,9 @@
     "openEditor": "Open clip editor",
     "youtubeSource": "YouTube source",
     "nativeSource": "Native MP4 source",
+    "localSource": "Local video file",
+    "loadLocalVideo": "Load local video",
+    "loadLocalVideoHint": "Pick a video file from your computer to cut clips from, without uploading the whole file first",
     "youtubeMatchVideo": "YouTube match video",
     "nativeMatchVideo": "Native match video",
     "matchVideo": "Match video",
@@ -38,7 +41,15 @@
     "selectPlayer": "Select a player",
     "startClipping": "Start clipping",
     "finishClip": "Finish clip",
-    "createClip": "Create clip"
+    "createClip": "Create clip",
+    "trimmingProgress": "Trimming video in your browser… {{percent}}%",
+    "uploadingProgress": "Uploading clip… {{percent}}%",
+    "doNotClosePage": "Please keep this page open until the clip finishes processing.",
+    "trimFailedTitle": "Trimming failed",
+    "trimFailedText": "The video could not be trimmed in your browser. Please try again.",
+    "clipCreateFailedTitle": "Clip upload failed",
+    "evaluationSaveFailedTitle": "Evaluation could not be saved",
+    "evaluationWillAttachLater": "This evaluation will be attached automatically once the clip finishes uploading."
   },
   "static": {
     "createClub": "Create Club",

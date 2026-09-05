@@ -31,6 +31,7 @@ import {
   PlayArrow,
   Replay,
   Stop,
+  UploadFile,
 } from "@mui/icons-material";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -41,15 +42,16 @@ import AddEvaluation from "@/components/evaluations/AddEvaluation";
 import CustomModal from "@/components/customModal/customModal";
 import EditClip from "@/components/clips/EditClip";
 import EditEvaluation from "@/components/evaluations/EditEvaluation";
-import { Clip } from "@/lib/types/clips.types";
-import { Evaluation } from "@/lib/types/evaluation.types";
+import { Clip, ClipPostDto } from "@/lib/types/clips.types";
+import { Evaluation, EvaluationPostDto } from "@/lib/types/evaluation.types";
 import { Player } from "@/lib/types/players.types";
 import { minioUrl } from "@/lib/constants/constants";
-import { deleteClip, fetchClips } from "@/store/slices/clips.slice";
-import { deleteEvaluation, fetchEvaluations } from "@/store/slices/evaluations.slice";
+import { createClip, deleteClip, fetchClips } from "@/store/slices/clips.slice";
+import { createEvaluation, deleteEvaluation, fetchEvaluations } from "@/store/slices/evaluations.slice";
 import { fetchMatchById } from "@/store/slices/matches.slice";
 import { fetchPlayers } from "@/store/slices/players.slice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
+import { trimVideoFile } from "@/lib/video/ffmpegTrimmer";
 import Swal from "sweetalert2";
 
 interface YouTubePlayer {
@@ -102,6 +104,7 @@ const ClipEditorPage = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [evaluationOpen, setEvaluationOpen] = useState(false);
   const [createdClipId, setCreatedClipId] = useState<string | null>(null);
+  const [isDeferredEvaluation, setIsDeferredEvaluation] = useState(false);
   const [expandedClipId, setExpandedClipId] = useState<string | null>(null);
   const [actionClip, setActionClip] = useState<Clip | null>(null);
   const [editClipOpen, setEditClipOpen] = useState(false);
@@ -109,13 +112,22 @@ const ClipEditorPage = () => {
   const [editingEvaluation, setEditingEvaluation] = useState<Evaluation | null>(null);
   const [editEvaluationOpen, setEditEvaluationOpen] = useState(false);
   const [playerReady, setPlayerReady] = useState(false);
+  const [localFile, setLocalFile] = useState<File | null>(null);
+  const [localVideoUrl, setLocalVideoUrl] = useState<string>("");
+  const [clipJob, setClipJob] = useState<{ name: string; phase: "trimming" | "uploading"; progress: number } | null>(
+    null,
+  );
   const youtubeContainerRef = useRef<HTMLDivElement | null>(null);
   const youtubePlayerRef = useRef<YouTubePlayer | null>(null);
   const nativeVideoRef = useRef<HTMLVideoElement | null>(null);
+  const localFileInputRef = useRef<HTMLInputElement | null>(null);
+  const clipJobActiveRef = useRef(false);
+  const pendingEvaluationRef = useRef<EvaluationPostDto | null>(null);
+  const resolvedLocalClipIdRef = useRef<string | null>(null);
 
   const sourceUrl = selectedMatch?.gameUrl ?? "";
-  const youtubeId = useMemo(() => extractYouTubeVideoId(sourceUrl), [sourceUrl]);
-  const sourceType = youtubeId ? "youtube" : "native";
+  const youtubeId = useMemo(() => (localFile ? null : extractYouTubeVideoId(sourceUrl)), [sourceUrl, localFile]);
+  const sourceType = localFile ? "local" : youtubeId ? "youtube" : "native";
   const evaluationsByClip = useMemo(
     () =>
       evaluations.reduce<Record<string, Evaluation[]>>((grouped, evaluation) => {
@@ -134,6 +146,85 @@ const ClipEditorPage = () => {
   }, [dispatch, id]);
 
   useEffect(() => {
+    clipJobActiveRef.current = clipJob !== null;
+  }, [clipJob]);
+
+  useEffect(() => {
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      if (!clipJobActiveRef.current) return;
+      event.preventDefault();
+      event.returnValue = "";
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, []);
+
+  // Submits the queued evaluation once BOTH pieces are ready: the user has
+  // filled in the evaluation form AND the clip has actually finished
+  // uploading and has a real id. Whichever finishes second triggers the save.
+  const trySubmitDeferredEvaluation = (evaluationValues?: EvaluationPostDto, resolvedClipId?: string) => {
+    if (evaluationValues) pendingEvaluationRef.current = evaluationValues;
+    if (resolvedClipId) resolvedLocalClipIdRef.current = resolvedClipId;
+
+    const values = pendingEvaluationRef.current;
+    const clipId = resolvedLocalClipIdRef.current;
+    if (!values || !clipId || !selectedMatch) return;
+
+    dispatch(createEvaluation({ ...values, clipId }))
+      .unwrap()
+      .then(() => dispatch(fetchEvaluations({ matchId: selectedMatch.id })))
+      .catch(() => Swal.fire({ icon: "error", title: t("clipEditor.evaluationSaveFailedTitle") }))
+      .finally(() => {
+        pendingEvaluationRef.current = null;
+        resolvedLocalClipIdRef.current = null;
+      });
+  };
+
+  const handleQueueLocalUpload = (params: { dto: ClipPostDto; file: File }) => {
+    pendingEvaluationRef.current = null;
+    resolvedLocalClipIdRef.current = null;
+    setCreatedClipId(null);
+    setIsDeferredEvaluation(true);
+    setEvaluationOpen(true);
+    runLocalClipJob(params);
+  };
+
+  const runLocalClipJob = async ({ dto, file }: { dto: ClipPostDto; file: File }) => {
+    if (!selectedMatch) return;
+    let videoFile: File;
+
+    try {
+      setClipJob({ name: dto.name, phase: "trimming", progress: 0 });
+      const trimmedBlob = await trimVideoFile(file, Number(dto.startTime), Number(dto.endTime), (ratio) =>
+        setClipJob((job) => (job ? { ...job, progress: Math.round(ratio * 100) } : job)),
+      );
+      videoFile = new File([trimmedBlob], `${dto.name || "clip"}.mp4`, { type: "video/mp4" });
+    } catch {
+      setClipJob(null);
+      Swal.fire({ icon: "error", title: t("clipEditor.trimFailedTitle"), text: t("clipEditor.trimFailedText") });
+      return;
+    }
+
+    try {
+      setClipJob({ name: dto.name, phase: "uploading", progress: 0 });
+      const clip = await dispatch(
+        createClip({
+          ...dto,
+          videoFile,
+          videoUrl: "",
+          onUploadProgress: (percent) => setClipJob((job) => (job ? { ...job, progress: percent } : job)),
+        }),
+      ).unwrap();
+      dispatch(fetchClips({ matchIds: [selectedMatch.id] }));
+      trySubmitDeferredEvaluation(undefined, clip.id);
+    } catch {
+      Swal.fire({ icon: "error", title: t("clipEditor.clipCreateFailedTitle") });
+    } finally {
+      setClipJob(null);
+    }
+  };
+
+  useEffect(() => {
     if (!youtubeId || !youtubeContainerRef.current) return;
 
     if (!document.getElementById("youtube-iframe-api")) {
@@ -144,10 +235,17 @@ const ClipEditorPage = () => {
     }
 
     let cancelled = false;
+    // YouTube's IFrame API replaces the exact element it's given with its own
+    // <iframe>, so we hand it a plain child div instead of the React-owned
+    // container — otherwise React can later try to remove a node that YouTube
+    // has already swapped out from under it.
+    const playerMount = document.createElement("div");
+    youtubeContainerRef.current.appendChild(playerMount);
+
     const timer = window.setInterval(() => {
-      if (cancelled || !window.YT?.Player || !youtubeContainerRef.current || youtubePlayerRef.current) return;
+      if (cancelled || !window.YT?.Player || youtubePlayerRef.current) return;
       window.clearInterval(timer);
-      youtubePlayerRef.current = new window.YT.Player(youtubeContainerRef.current, {
+      youtubePlayerRef.current = new window.YT.Player(playerMount, {
         videoId: youtubeId,
         playerVars: { controls: 0, rel: 0, modestbranding: 1 },
         events: {
@@ -167,6 +265,7 @@ const ClipEditorPage = () => {
       window.clearInterval(timer);
       youtubePlayerRef.current?.destroy?.();
       youtubePlayerRef.current = null;
+      playerMount.remove();
     };
   }, [youtubeId]);
 
@@ -182,6 +281,25 @@ const ClipEditorPage = () => {
     }, 250);
     return () => window.clearInterval(timer);
   }, []);
+
+  useEffect(() => {
+    return () => {
+      if (localVideoUrl) URL.revokeObjectURL(localVideoUrl);
+    };
+  }, [localVideoUrl]);
+
+  const handleLocalFileSelected = (file: File | null) => {
+    if (!file) return;
+    if (localVideoUrl) URL.revokeObjectURL(localVideoUrl);
+    setLocalFile(file);
+    setLocalVideoUrl(URL.createObjectURL(file));
+    setPlayerReady(false);
+    setIsPlaying(false);
+    setCurrentTime(0);
+    setDuration(0);
+    setClipStart(null);
+    setClipEnd(null);
+  };
 
   const seekTo = useCallback(
     (seconds: number) => {
@@ -284,7 +402,37 @@ const ClipEditorPage = () => {
             </Typography>
           </Box>
         </Box>
-        <Chip label={t(sourceType === "youtube" ? "clipEditor.youtubeSource" : "clipEditor.nativeSource")} size="small" sx={{ bgcolor: "#1e293b", color: "#cbd5e1" }} />
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+          <Chip
+            label={t(
+              sourceType === "local"
+                ? "clipEditor.localSource"
+                : sourceType === "youtube"
+                  ? "clipEditor.youtubeSource"
+                  : "clipEditor.nativeSource",
+            )}
+            size="small"
+            sx={{ bgcolor: "#1e293b", color: "#cbd5e1" }}
+          />
+          <Tooltip title={t("clipEditor.loadLocalVideoHint")}>
+            <Button
+              size="small"
+              variant="outlined"
+              startIcon={<UploadFile fontSize="small" />}
+              onClick={() => localFileInputRef.current?.click()}
+              sx={{ color: "#cbd5e1", borderColor: "#334155", textTransform: "none" }}
+            >
+              {t("clipEditor.loadLocalVideo")}
+            </Button>
+          </Tooltip>
+          <input
+            ref={localFileInputRef}
+            type="file"
+            accept="video/*"
+            hidden
+            onChange={(event) => handleLocalFileSelected(event.currentTarget.files?.[0] ?? null)}
+          />
+        </Box>
       </Box>
 
       <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", lg: "320px minmax(0, 1fr)" }, flex: { lg: 1 }, minHeight: { lg: 0 } }}>
@@ -403,9 +551,18 @@ const ClipEditorPage = () => {
         </Box>
 
         <Box sx={{ p: { xs: 1.5, md: 2 }, minWidth: 0, height: { lg: "100%" }, minHeight: 0, display: "flex", flexDirection: "column", overflow: "hidden" }}>
-          {!sourceUrl && <Alert severity="warning" sx={{ mb: 2 }}>{t("clipEditor.missingVideo")}</Alert>}
+          {!sourceUrl && !localFile && <Alert severity="warning" sx={{ mb: 2 }}>{t("clipEditor.missingVideo")}</Alert>}
           <Box sx={{ position: "relative", bgcolor: "#000", borderRadius: 2, overflow: "hidden", flex: "1 1 auto", minHeight: 0, width: "100%", boxShadow: "0 18px 45px rgba(0,0,0,.35)" }}>
-            {youtubeId ? (
+            {localFile ? (
+              <video
+                ref={nativeVideoRef}
+                src={localVideoUrl}
+                style={{ width: "100%", height: "100%", objectFit: "contain" }}
+                onLoadedMetadata={(event) => { setDuration(event.currentTarget.duration); setPlayerReady(true); }}
+                onPlay={() => setIsPlaying(true)}
+                onPause={() => setIsPlaying(false)}
+              />
+            ) : youtubeId ? (
               <Box ref={youtubeContainerRef} sx={{ width: "100%", height: "100%", "& iframe": { width: "100%", height: "100%" } }} />
             ) : sourceUrl ? (
               <video
@@ -417,7 +574,7 @@ const ClipEditorPage = () => {
                 onPause={() => setIsPlaying(false)}
               />
             ) : null}
-            {!playerReady && sourceUrl && <CircularProgress sx={{ position: "absolute", left: "50%", top: "50%", mt: -2, ml: -2, color: "white" }} />}
+            {!playerReady && (sourceUrl || localFile) && <CircularProgress sx={{ position: "absolute", left: "50%", top: "50%", mt: -2, ml: -2, color: "white" }} />}
           </Box>
 
           <Box sx={{ mt: 1.5, p: 1.5, flex: "0 0 auto", width: "100%", bgcolor: "#111a2c", border: "1px solid #263349", borderRadius: 2 }}>
@@ -489,10 +646,12 @@ const ClipEditorPage = () => {
             <AddClip
               matchId={selectedMatch.id}
               matchUrl={sourceUrl}
+              localFile={localFile}
               initialStartTime={formatTime(clipStart)}
               initialEndTime={formatTime(clipEnd)}
               sourceType={sourceType}
               onCancel={closeClipModal}
+              onQueueLocalUpload={handleQueueLocalUpload}
               onSuccess={(clip) => {
                 dispatch(fetchClips({ matchIds: [selectedMatch.id] }));
                 closeClipModal();
@@ -570,14 +729,16 @@ const ClipEditorPage = () => {
       </CustomModal>
 
       <CustomModal open={evaluationOpen} setOpen={setEvaluationOpen}>
-        {createdClipId && selectedPlayer && (
+        {selectedPlayer && (createdClipId || isDeferredEvaluation) && (
           <AddEvaluation
-            clipId={createdClipId}
+            clipId={createdClipId ?? ""}
             initialPlayerId={selectedPlayer.id}
+            deferred={isDeferredEvaluation}
             onCancel={() => {
               setEvaluationOpen(false);
               setClipStart(null);
               setClipEnd(null);
+              setIsDeferredEvaluation(false);
             }}
             onSuccess={() => {
               dispatch(fetchEvaluations({ matchId: selectedMatch.id }));
@@ -586,9 +747,46 @@ const ClipEditorPage = () => {
               setClipEnd(null);
               setCreatedClipId(null);
             }}
+            onDeferredSubmit={(values) => {
+              setEvaluationOpen(false);
+              setClipStart(null);
+              setClipEnd(null);
+              setIsDeferredEvaluation(false);
+              trySubmitDeferredEvaluation(values);
+            }}
           />
         )}
       </CustomModal>
+
+      {clipJob && (
+        <Paper
+          elevation={8}
+          sx={{
+            position: "fixed",
+            left: 16,
+            bottom: 16,
+            zIndex: 1400,
+            width: 300,
+            p: 2,
+            bgcolor: "#111c2f",
+            color: "#e2e8f0",
+            border: "1px solid #263349",
+          }}
+        >
+          <Typography variant="body2" fontWeight={700} noWrap sx={{ mb: 0.5 }}>
+            {clipJob.name || t("clipEditor.createClip")}
+          </Typography>
+          <Typography variant="caption" sx={{ color: "#94a3b8" }}>
+            {t(clipJob.phase === "trimming" ? "clipEditor.trimmingProgress" : "clipEditor.uploadingProgress", {
+              percent: clipJob.progress,
+            })}
+          </Typography>
+          <LinearProgress variant="determinate" value={clipJob.progress} sx={{ mt: 1, mb: 1 }} />
+          <Typography variant="caption" sx={{ color: "#64748b" }}>
+            {t("clipEditor.doNotClosePage")}
+          </Typography>
+        </Paper>
+      )}
     </Box>
   );
 };
