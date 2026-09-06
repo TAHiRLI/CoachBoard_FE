@@ -71,7 +71,7 @@ const ReportItem = ({ report, categoryType }: ReportItemProps) => {
 
       const response = await reportsService.getReportFile(report.id);
       const blob = new Blob([response.data], {
-        type: response.headers["content-type"] ?? "application/octet-stream",
+        type: String(response.headers["content-type"] ?? "application/octet-stream"),
       });
 
       const url = window.URL.createObjectURL(blob);
@@ -100,7 +100,7 @@ const ReportItem = ({ report, categoryType }: ReportItemProps) => {
 
       const response = await reportsService.getReportFile(report.id);
       const blob = new Blob([response.data], {
-        type: response.headers["content-type"] ?? "application/octet-stream",
+        type: String(response.headers["content-type"] ?? "application/octet-stream"),
       });
 
       const url = window.URL.createObjectURL(blob);
