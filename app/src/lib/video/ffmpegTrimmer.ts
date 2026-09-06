@@ -10,6 +10,18 @@ const CORE_BASE_URL = `https://unpkg.com/@ffmpeg/core@${FFMPEG_CORE_VERSION}/dis
 
 let ffmpegPromise: Promise<FFmpeg> | null = null;
 
+/**
+ * Kicks off the ffmpeg.wasm core download/init ahead of time (e.g. as soon as
+ * the clip editor opens or a local file is picked) so that cold-load latency
+ * overlaps with the user setting trim points instead of stacking on top of
+ * the trim + upload time when they submit.
+ */
+export const preloadFFmpeg = () => {
+  void getFFmpeg().catch(() => {
+    // Swallow here — trimVideoFile will surface the real error on submit.
+  });
+};
+
 const getFFmpeg = async () => {
   if (!ffmpegPromise) {
     ffmpegPromise = (async () => {

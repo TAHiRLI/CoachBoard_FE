@@ -51,7 +51,7 @@ import { createEvaluation, deleteEvaluation, fetchEvaluations } from "@/store/sl
 import { fetchMatchById } from "@/store/slices/matches.slice";
 import { fetchPlayers } from "@/store/slices/players.slice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
-import { trimVideoFile } from "@/lib/video/ffmpegTrimmer";
+import { preloadFFmpeg, trimVideoFile } from "@/lib/video/ffmpegTrimmer";
 import Swal from "sweetalert2";
 
 interface YouTubePlayer {
@@ -144,6 +144,13 @@ const ClipEditorPage = () => {
     dispatch(fetchEvaluations({ matchId: id }));
     dispatch(fetchPlayers());
   }, [dispatch, id]);
+
+  useEffect(() => {
+    // Warm up ffmpeg.wasm as soon as the editor opens so its cold-load time
+    // overlaps with the user browsing/selecting a clip instead of adding to
+    // the wait after they submit a trim.
+    preloadFFmpeg();
+  }, []);
 
   useEffect(() => {
     clipJobActiveRef.current = clipJob !== null;
