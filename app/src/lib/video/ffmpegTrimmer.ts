@@ -1,5 +1,5 @@
-import { FFmpeg } from "@ffmpeg/ffmpeg";
-import { fetchFile, toBlobURL } from "@ffmpeg/util";
+import { FFFSType, FFmpeg } from "@ffmpeg/ffmpeg";
+import { toBlobURL } from "@ffmpeg/util";
 
 // Single-threaded core: no SharedArrayBuffer / COOP-COEP headers required.
 // @ffmpeg/ffmpeg runs the core inside a module Worker that `import()`s this
@@ -51,9 +51,13 @@ export const trimVideoFile = async (
 ): Promise<Blob> => {
   const ffmpeg = await getFFmpeg();
   const duration = Math.max(0.1, endSeconds - startSeconds);
-  const extension = file.name.split(".").pop() || "mp4";
-  const inputName = `input.${extension}`;
   const outputName = "output.mp4";
+  // WORKERFS mounts the browser File directly so ffmpeg reads it lazily in
+  // chunks as it decodes, instead of us loading the entire source (which can
+  // be several GB for a full match recording) into one in-memory ArrayBuffer
+  // first — that whole-file read is what was failing on lower-memory machines.
+  const mountPoint = "/input";
+  const inputName = `${mountPoint}/${file.name}`;
 
   const handleProgress = ({ progress }: { progress: number }) => {
     onProgress?.(Math.min(1, Math.max(0, progress)));
@@ -61,7 +65,8 @@ export const trimVideoFile = async (
   ffmpeg.on("progress", handleProgress);
 
   try {
-    await ffmpeg.writeFile(inputName, await fetchFile(file));
+    await ffmpeg.createDir(mountPoint);
+    await ffmpeg.mount(FFFSType.WORKERFS, { files: [file] }, mountPoint);
     // -ss before -i seeks at the input level, so ffmpeg only decodes/encodes the
     // requested segment instead of the entire source video.
     await ffmpeg.exec([
@@ -77,7 +82,8 @@ export const trimVideoFile = async (
     return new Blob([data as Uint8Array], { type: "video/mp4" });
   } finally {
     ffmpeg.off("progress", handleProgress);
-    await ffmpeg.deleteFile(inputName).catch(() => {});
+    await ffmpeg.unmount(mountPoint).catch(() => {});
+    await ffmpeg.deleteDir(mountPoint).catch(() => {});
     await ffmpeg.deleteFile(outputName).catch(() => {});
   }
 };
