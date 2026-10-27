@@ -1,6 +1,7 @@
 import Cookies from "universal-cookie";
 import { apiUrl } from "@/lib/constants/constants";
 import axios from "axios";
+import { errorMessage } from "@/lib/utils/apiError";
 import keycloak from "@/API/Services/keycloak.service";
 
 const cookies = new Cookies();
@@ -85,6 +86,10 @@ apiClient.interceptors.response.use(
       console.error("❌ Access denied - insufficient permissions");
       // You can redirect to an unauthorized page or show a message
     }
+
+    // Surface the server's explanation (ProblemDetails.detail) instead of
+    // "Request failed with status code 400", including for thunks without rejectWithValue.
+    if (error?.response) error.message = errorMessage(error, error.message);
 
     return Promise.reject(error);
   }

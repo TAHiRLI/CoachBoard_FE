@@ -1,6 +1,5 @@
 {
   "current": "Azerbaijan",
-
   "app": {
     "name": "CoachBoard"
   },
@@ -84,7 +83,6 @@
     "scoreSeparator": "-",
     "score0to100": "Qiymət (0–100)",
     "isExample": "Nümunəvi",
-
     "editMatch": "Oyunu redaktə et",
     "stadium": "Stadion",
     "matchDate": "Oyun tarixi",
@@ -170,7 +168,6 @@
     "incorrectUsername": "Incorrect Username",
     "createTeam": "Komanda yarat",
     "editTeam": "Komandanı redaktə et",
-
     "createCoach": "Məşqçi yarat",
     "editCoach": "Məşqçini redaktə et",
     "fullName": "Ad Soyad",
@@ -180,7 +177,6 @@
     "editCompany": "Edit Company",
     "photo": "Şəkil",
     "age": "Yaş",
-
     "createPlayer": "Oyunçu yarat",
     "editPlayer": "Oyuncunu redaktə et",
     "heightCm": "Boy (sm)",
@@ -190,7 +186,6 @@
     "none": "Yoxdur",
     "heightMin": "Minimal boy 100 sm-dir",
     "heightMax": "Maksimal boy 250 sm-dir",
-
     "goalkeeper": "Qapıçı",
     "centerBack": "Mərkəz müdafiəçi",
     "leftBack": "Sol müdafiəçi",
@@ -206,7 +201,6 @@
     "centerForward": "Mərkəz hücumçu",
     "leftWinger": "Sol cinah hücumçu",
     "rightWinger": "Sağ cinah hücumçu",
-
     "addEpisode": "Epizod əlavə et",
     "description": "Ətraflı",
     "evaluationsCount": "Rəy sayı",
@@ -241,7 +235,7 @@
     "selectMatches": "Oyunları seçin",
     "dateRange": "Tarix aralığı",
     "placeholder_default": "Seçin",
-        "createBulkClips": "Kütləvi kliplər yarat",
+    "createBulkClips": "Kütləvi kliplər yarat",
     "processing": "Emal olunur...",
     "viewTrimmedVideo": "Kəsilmiş videoya bax",
     "createTrimJob": "Trim tapşırığı yarat",
@@ -260,7 +254,43 @@
     "selectOrCreateTags": "Etiket seçin və ya yenisini yazın",
     "typeToCreateNewTag": "Yeni etiket yaratmaq üçün yazın və Enter basın",
     "selectTags": "Etiket Seçin",
-    "generatePdf": "PDF yarat"
+    "generatePdf": "PDF yarat",
+    "navAnalysis": "Analiz",
+    "navSquad": "Heyət",
+    "navSetup": "Tənzimləmələr",
+    "darkMode": "Qaranlıq rejim",
+    "lightMode": "İşıqlı rejim",
+    "openNavigation": "Menyunu aç",
+    "somethingWentWrong": "Xəta baş verdi. Yenidən cəhd edin.",
+    "confirm": "Təsdiqlə",
+    "deletedSuccessfully": "Silindi",
+    "savedSuccessfully": "Dəyişikliklər yadda saxlanıldı",
+    "trimJobCreated": "Kəsmə tapşırığı başladı",
+    "reportHasNoFile": "Bu hesabatın hələ faylı yoxdur.",
+    "reportOpenFailed": "Hesabat faylı açıla bilmədi.",
+    "reportDownloadFailed": "Hesabat faylı yüklənə bilmədi.",
+    "reportDeleteWarning": "Hesabat və onun faylı silinəcək.",
+    "close": "Bağla",
+    "searchMatches": "Komanda və ya stadiona görə axtar",
+    "noMatchesTitle": "Bu mövsümdə oyun yoxdur",
+    "noMatchesText": "Klip hazırlamaq və oyunçuları qiymətləndirmək üçün ilk oyunu əlavə edin.",
+    "noMatchingRecords": "Axtarışa uyğun nəticə yoxdur",
+    "tryAnotherSearch": "Başqa ad yoxlayın və ya axtarışı təmizləyin.",
+    "noRecordsYet": "Hələ qeyd yoxdur",
+    "clipCount_one": "{{count}} klip",
+    "clipCount_other": "{{count}} klip",
+    "clipCount_few": "{{count}} klip",
+    "clipCount_many": "{{count}} klip",
+    "watchVideo": "Videoya bax",
+    "noClipsTitle": "Bu oyun üçün hələ klip yoxdur",
+    "noClipsText": "Oyun videosundan anları kəsmək üçün klip redaktorunu açın və ya klipi əl ilə əlavə edin.",
+    "matchNotFound": "Bu oyun tapılmadı",
+    "deleteUndoHint": "Siyahılardan silinəcək. Silindikdən dərhal sonra geri qaytara bilərsiniz.",
+    "undo": "Geri qaytar",
+    "restored": "Bərpa edildi",
+    "result_win": "Qələbə",
+    "result_draw": "Heç-heçə",
+    "result_loss": "Məğlubiyyət"
   },
   "user": {
     "username": "Username",
@@ -284,7 +314,6 @@
     "invitationSentToUserEmail": "Invitation Sent to User's Email",
     "sendNotification": "Send Notification?",
     "useDifferentPassword": "New Password is Required",
-
     "reminderOffAlert": "By disabling this future you won't get reminders when new file is uploaded by you",
     "revieceReminderOffAlert": "By disabling this future you won't get reminders when new file is uploaded by admin",
     "sendNotificationDesc": "Users in this workspace will get email about file upload",
@@ -313,26 +342,20 @@
     "noDataTitle": "Statistika mövcud deyil",
     "noDataSubtitle": "Filter tətbiq edərək statistikanı əldə edə bilərsiniz",
     "pageTitle": "Oyunçu Performans Statistikası",
-
     "totalEpisodes": "Ümumi Epizodlar",
     "successRate": "Uğur Nisbəti",
     "criticalSaves": "Kritik Qurtarışlar",
     "unsuccessfulEpisodes": "Uğursuz Epizodlar",
-
     "tabEpisodes": "Epizod Statistikası",
     "tabMonthly": "Aylıq Trend",
-
     "distributionTitle": "Ümumi Bölgü",
     "successful": "Uğurlu",
     "unsuccessful": "Uğursuz",
-
     "reports": "Hesabatlar",
     "generateAnalyze": "Performans hesabatları yaradın və analiz edin",
     "browseSaved": "Saxlanılmış hesabatlara baxın",
-
     "episodeSuccessTitle": "Epizod üzrə Uğur Nisbəti",
     "episodeBarLabel": "Uğur Nisbəti %",
-
     "episodeTableTitle": "Detallı Epizod Statistikası",
     "episodeColumnEpisode": "Epizod",
     "episodeColumnTotal": "Ümumi",
@@ -341,11 +364,9 @@
     "episodeColumnCritical": "Kritik",
     "episodeColumnSuccessRate": "Uğur %",
     "episodeColumnProgress": "Progress",
-
     "monthlyTrendTitle": "Aylıq Performans Trendi",
     "monthlySuccessRateLabel": "Uğur Nisbəti %",
     "monthlyAverageScoreLabel": "Orta bal",
-
     "monthlyTableTitle": "Aylıq Detallı Statistika",
     "monthlyColumnMonth": "Ay",
     "monthlyColumnMatchCount": "Oyun Sayı",

@@ -1,6 +1,5 @@
 {
   "current": "English",
-
   "app": {
     "name": "CoachBoard"
   },
@@ -126,7 +125,6 @@
     "link": "Link",
     "finalScore": "Final Score",
     "addParticipation": "Add Participation",
-
     "clip": "Clip",
     "duration": "Duration",
     "match": "Match",
@@ -176,20 +174,16 @@
     "end": "End",
     "generatePdf": "Generate PDF",
     "createSeason": "Create Season",
-
     "editSeason": "Edit Season",
     "editClub": "Edit Club",
     "logo": "Logo",
     "league": "League",
     "club": "Club",
-
     "createTeam": "Create Team",
     "editTeam": "Edit Team",
     "invalidEmail": "Invalid email format",
-
     "total": "Total",
     "successRate": "Success Rate",
-
     "createCoach": "Create Coach",
     "editCoach": "Edit Coach",
     "fullName": "Full Name",
@@ -205,7 +199,6 @@
     "heightMin": "Minimum height is 100 cm",
     "heightMax": "Maximum height is 250 cm",
     "age": "Age",
-
     "goalkeeper": "Goalkeeper",
     "centerBack": "Center Back",
     "leftBack": "Left Back",
@@ -221,7 +214,6 @@
     "centerForward": "Center Forward",
     "leftWinger": "Left Winger",
     "rightWinger": "Right Winger",
-
     "addEpisode": "Add Episode",
     "description": "Description",
     "evaluationsCount": "Evaluations Count",
@@ -244,7 +236,6 @@
     "activeFilters": "Active Filters:",
     "apply": "Apply",
     "search": "Search",
-
     "selected": "selected",
     "from": "From",
     "to": "To",
@@ -268,7 +259,43 @@
     "tags": "Tags",
     "selectOrCreateTags": "Select a tag or create a new one",
     "typeToCreateNewTag": "Type to create a new tag and press Enter",
-    "selectTags": "Select tag"
+    "selectTags": "Select tag",
+    "navAnalysis": "Analysis",
+    "navSquad": "Squad",
+    "navSetup": "Setup",
+    "darkMode": "Dark mode",
+    "lightMode": "Light mode",
+    "openNavigation": "Open navigation",
+    "somethingWentWrong": "Something went wrong. Please try again.",
+    "confirm": "Confirm",
+    "deletedSuccessfully": "Deleted",
+    "savedSuccessfully": "Changes saved",
+    "trimJobCreated": "Trim job started",
+    "reportHasNoFile": "This report has no file yet.",
+    "reportOpenFailed": "The report file could not be opened.",
+    "reportDownloadFailed": "The report file could not be downloaded.",
+    "reportDeleteWarning": "The report and its file will be removed.",
+    "close": "Close",
+    "searchMatches": "Search by team or stadium",
+    "noMatchesTitle": "No matches in this season",
+    "noMatchesText": "Add the first match to start cutting clips and evaluating players.",
+    "noMatchingRecords": "Nothing matches your search",
+    "tryAnotherSearch": "Try a different name or clear the search.",
+    "noRecordsYet": "No records yet",
+    "clipCount_one": "{{count}} clip",
+    "clipCount_other": "{{count}} clips",
+    "clipCount_few": "{{count}} clips",
+    "clipCount_many": "{{count}} clips",
+    "watchVideo": "Watch video",
+    "noClipsTitle": "No clips for this match yet",
+    "noClipsText": "Open the clip editor to cut moments from the match video, or add a clip manually.",
+    "matchNotFound": "This match could not be found",
+    "deleteUndoHint": "It will be removed from your lists. You can undo this right after deleting.",
+    "undo": "Undo",
+    "restored": "Restored",
+    "result_win": "Win",
+    "result_draw": "Draw",
+    "result_loss": "Loss"
   },
   "user": {
     "username": "Username",
@@ -292,7 +319,6 @@
     "invitationSentToUserEmail": "Invitation Sent to User's Email",
     "sendNotification": "Send Notification?",
     "useDifferentPassword": "New Password is Required",
-
     "reminderOffAlert": "By disabling this future you won't get reminders when new file is uploaded by you",
     "revieceReminderOffAlert": "By disabling this future you won't get reminders when new file is uploaded by admin",
     "sendNotificationDesc": "Users in this workspace will get email about file upload",
@@ -341,22 +367,17 @@
     "noDataTitle": "No statistics available",
     "noDataSubtitle": "Apply filters to view player statistics",
     "pageTitle": "Player Performance Statistics",
-
     "totalEpisodes": "Total Episodes",
     "successRate": "Success Rate",
     "criticalSaves": "Critical Saves",
     "unsuccessfulEpisodes": "Unsuccessful Episodes",
-
     "tabEpisodes": "Episode Statistics",
     "tabMonthly": "Monthly Trend",
-
     "distributionTitle": "Overall Distribution",
     "successful": "Successful",
     "unsuccessful": "Unsuccessful",
-
     "episodeSuccessTitle": "Episode Success Rate",
     "episodeBarLabel": "Success Rate %",
-
     "episodeTableTitle": "Detailed Episode Statistics",
     "episodeColumnEpisode": "Episode",
     "episodeColumnTotal": "Total",
@@ -365,11 +386,9 @@
     "episodeColumnCritical": "Critical",
     "episodeColumnSuccessRate": "Success %",
     "episodeColumnProgress": "Progress",
-
     "monthlyTrendTitle": "Monthly Performance Trend",
     "monthlySuccessRateLabel": "Success Rate %",
     "monthlyAverageScoreLabel": "Average Score",
-
     "monthlyTableTitle": "Detailed Monthly Statistics",
     "monthlyColumnMonth": "Month",
     "monthlyColumnMatchCount": "Match Count",

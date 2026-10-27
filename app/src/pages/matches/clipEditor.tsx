@@ -1,3 +1,4 @@
+import { confirmDelete, notify } from "@/components/feedback/feedback";
 import {
   Alert,
   Autocomplete,
@@ -52,7 +53,6 @@ import { fetchMatchById } from "@/store/slices/matches.slice";
 import { fetchPlayers } from "@/store/slices/players.slice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { preloadFFmpeg, trimVideoFile } from "@/lib/video/ffmpegTrimmer";
-import Swal from "sweetalert2";
 
 interface YouTubePlayer {
   destroy: () => void;
@@ -180,7 +180,9 @@ const ClipEditorPage = () => {
     dispatch(createEvaluation({ ...values, clipId }))
       .unwrap()
       .then(() => dispatch(fetchEvaluations({ matchId: selectedMatch.id })))
-      .catch(() => Swal.fire({ icon: "error", title: t("clipEditor.evaluationSaveFailedTitle") }))
+      .catch(() => {
+        // The failure is reported by the global feedback middleware.
+      })
       .finally(() => {
         pendingEvaluationRef.current = null;
         resolvedLocalClipIdRef.current = null;
@@ -208,7 +210,7 @@ const ClipEditorPage = () => {
       videoFile = new File([trimmedBlob], `${dto.name || "clip"}.mp4`, { type: "video/mp4" });
     } catch {
       setClipJob(null);
-      Swal.fire({ icon: "error", title: t("clipEditor.trimFailedTitle"), text: t("clipEditor.trimFailedText") });
+      notify("error", `${t("clipEditor.trimFailedTitle")}. ${t("clipEditor.trimFailedText")}`);
       return;
     }
 
@@ -225,7 +227,7 @@ const ClipEditorPage = () => {
       dispatch(fetchClips({ matchIds: [selectedMatch.id] }));
       trySubmitDeferredEvaluation(undefined, clip.id);
     } catch {
-      Swal.fire({ icon: "error", title: t("clipEditor.clipCreateFailedTitle") });
+      // createClip failures are reported by the global feedback middleware.
     } finally {
       setClipJob(null);
     }
@@ -354,37 +356,27 @@ const ClipEditorPage = () => {
   };
 
   const handleDeleteClip = async (clip: Clip) => {
-    const result = await Swal.fire({
+    const confirmed = await confirmDelete({
       title: t("clipEditor.deleteClipTitle"),
       text: t("clipEditor.deleteClipText", { name: clip.name }),
-      icon: "warning",
-      showCancelButton: true,
-      cancelButtonText: t("static.cancel"),
-      confirmButtonColor: "#dc2626",
-      confirmButtonText: t("clipEditor.confirmDeleteClip"),
+      confirmLabel: t("clipEditor.confirmDeleteClip"),
     });
-
-    if (!result.isConfirmed) return;
+    if (!confirmed) return;
     await dispatch(deleteClip(clip.id)).unwrap();
     if (expandedClipId === clip.id) setExpandedClipId(null);
     dispatch(fetchEvaluations({ matchId: selectedMatch?.id }));
   };
 
   const handleDeleteEvaluation = async (evaluation: Evaluation) => {
-    const result = await Swal.fire({
+    const confirmed = await confirmDelete({
       title: t("clipEditor.deleteEvaluationTitle"),
       text: t("clipEditor.deleteEvaluationText", {
         player: evaluation.playerName,
         episode: evaluation.episodeName,
       }),
-      icon: "warning",
-      showCancelButton: true,
-      cancelButtonText: t("static.cancel"),
-      confirmButtonColor: "#dc2626",
-      confirmButtonText: t("clipEditor.confirmDeleteEvaluation"),
+      confirmLabel: t("clipEditor.confirmDeleteEvaluation"),
     });
-
-    if (!result.isConfirmed) return;
+    if (!confirmed) return;
     await dispatch(deleteEvaluation(evaluation.id)).unwrap();
     dispatch(fetchEvaluations({ matchId: selectedMatch?.id }));
   };

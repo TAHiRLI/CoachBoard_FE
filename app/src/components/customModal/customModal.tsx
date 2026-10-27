@@ -5,9 +5,9 @@ import Box from "@mui/material/Box";
 import { Close } from "@mui/icons-material";
 import Modal from "@mui/material/Modal";
 import ReactDOM from "react-dom";
-import { useTheme } from "@emotion/react";
+import { useTheme } from "@mui/material/styles";
+import { useTranslation } from "react-i18next";
 
-// Define the props type (or use an interface)
 type CustomModalProps = {
   open: boolean;
   setOpen: (value: boolean) => void;
@@ -16,6 +16,7 @@ type CustomModalProps = {
 };
 
 const CustomModal: FC<CustomModalProps> = ({ open, setOpen, children, onClose }) => {
+  const { t } = useTranslation();
   const handleClose = () => {
     if (onClose) onClose();
     setOpen(false);
@@ -23,45 +24,37 @@ const CustomModal: FC<CustomModalProps> = ({ open, setOpen, children, onClose })
 
   const theme = useTheme() as Theme;
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
-  const width = isSmallScreen ? "90vw" : "70vw";
 
-  // Add an explicit assertion for 'position' to avoid TS type conflicts
   const style = {
     position: "absolute" as const,
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width,
-    bgcolor: "background.default",
-    boxShadow: 4,
-    p: 2,
-    maxHeight: "90vh",
+    width: isSmallScreen ? "calc(100vw - 32px)" : "70vw",
+    maxWidth: 1080,
+    bgcolor: "background.paper",
+    border: 1,
+    borderColor: "divider",
+    boxShadow: "0 24px 64px rgba(15, 23, 42, 0.24)",
+    maxHeight: "90dvh",
     borderRadius: "14px",
     overflow: "auto",
+    outline: "none",
   };
 
   return ReactDOM.createPortal(
-    <div>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style} className="modalBox">
-          <div className="overflow-auto h-full p-4">{children}</div>
-          <IconButton
-            color="error"
-            aria-label="close"
-            onClick={handleClose}
-            sx={{ position: "absolute", top: 2, right: 2 }}
-          >
-            <Close />
-          </IconButton>
-        </Box>
-      </Modal>
-    </div>,
-    // Make sure to assert the type for the portal's container element
+    <Modal open={open} onClose={handleClose}>
+      <Box sx={style} className="modalBox">
+        <Box sx={{ p: { xs: 2.5, md: 3.5 } }}>{children}</Box>
+        <IconButton
+          aria-label={t("static.close")}
+          onClick={handleClose}
+          sx={{ position: "absolute", top: 12, right: 12, color: "text.secondary" }}
+        >
+          <Close />
+        </IconButton>
+      </Box>
+    </Modal>,
     document.getElementById("modal-root") as HTMLElement
   );
 };

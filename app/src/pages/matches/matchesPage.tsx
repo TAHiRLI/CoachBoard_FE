@@ -2,27 +2,21 @@ import MatchesFilter from "./matchesFilter";
 import MatchesList from "./matchesList";
 import { fetchSeasons } from "@/store/slices/seasons.slice";
 import { useAppDispatch } from "@/store/store";
-import { useEffect } from "react";
-import { useTranslation } from "react-i18next";
+import { useEffect, useState } from "react";
 
 const MatchesPage = () => {
-  const { t } = useTranslation();
   const dispatch = useAppDispatch();
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     dispatch(fetchSeasons());
-  }, []);
+  }, [dispatch]);
 
   return (
-    <div>
-      <p className="page-subtitle"> {t("static.manageMatchesSubtitle")}</p>
-
-      <MatchesFilter />
-
-      <div>
-        <MatchesList />
-      </div>
-    </div>
+    <>
+      <MatchesFilter searchTerm={searchTerm} onSearchChange={setSearchTerm} />
+      <MatchesList searchTerm={searchTerm} />
+    </>
   );
 };
 

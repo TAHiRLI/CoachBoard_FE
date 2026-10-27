@@ -1,4 +1,5 @@
 import { Add, Delete, Edit, PictureAsPdf } from "@mui/icons-material";
+import { confirmDelete, errorMessage, notify } from "@/components/feedback/feedback";
 import { Box, Button, Card, CardContent, LinearProgress, Typography } from "@mui/material";
 import {
   CartesianGrid,
@@ -18,7 +19,6 @@ import EditPlayerBmiRecord from "@/components/players/EditPlayerBmiRecord";
 import { GridColDef } from "@mui/x-data-grid";
 import { PlayerBmiRecordDto } from "@/lib/types/playerBmi.types";
 import StyledDataGrid from "@/components/styledDatagrid/styledDatagrid";
-import Swal from "sweetalert2";
 import { UserRole } from "@/lib/types/permissionTypes";
 import { playerBmiRecordsService } from "@/API/Services/playerBmiRecords.service";
 import { usePermissions } from "@/hooks/usePermissions";
@@ -67,18 +67,15 @@ const PlayerBmiRecordsManager: React.FC<Props> = ({ playerId }) => {
   };
 
   const handleDelete = (id: number) => {
-    Swal.fire({
-      title: t("static.areYouSure"),
-      text: t("static.cannotBeUndone"),
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: t("static.yesDeleteIt"),
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        await playerBmiRecordsService.delete(id);
-        loadRecords();
+    confirmDelete({ text: t("static.cannotBeUndone") }).then(async (confirmed) => {
+      if (confirmed) {
+        try {
+          await playerBmiRecordsService.delete(id);
+          notify("success", t("static.deletedSuccessfully"));
+          loadRecords();
+        } catch (error) {
+          notify("error", errorMessage(error));
+        }
       }
     });
   };

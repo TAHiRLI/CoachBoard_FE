@@ -1,4 +1,5 @@
 import { Box, LinearProgress, Tooltip, Typography } from "@mui/material";
+import { confirmDelete } from "@/components/feedback/feedback";
 import { Cancel, CheckCircle, Delete, Edit } from "@mui/icons-material";
 import { deleteEvaluation, selectEvaluation } from "@/store/slices/evaluations.slice";
 import { green, red } from "@mui/material/colors";
@@ -11,7 +12,6 @@ import { GridColDef } from "@mui/x-data-grid";
 import { Link } from "react-router-dom";
 import RowActions from "@/components/rowActions/rowActions";
 import StyledDataGrid from "@/components/styledDatagrid/styledDatagrid";
-import Swal from "sweetalert2";
 import { useTranslation } from "react-i18next";
 
 const EvaluationsList = () => {
@@ -27,16 +27,8 @@ const EvaluationsList = () => {
   };
 
   const handleDelete = (id: string) => {
-    Swal.fire({
-      title: t("static.areYouSure"),
-      text: t("static.cannotBeUndone"),
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: t("static.yesDeleteIt"),
-    }).then((result) => {
-      if (result.isConfirmed) {
+    confirmDelete().then((confirmed) => {
+      if (confirmed) {
         dispatch(deleteEvaluation(id));
       }
     });
@@ -157,7 +149,6 @@ const EvaluationsList = () => {
       {loading && <LinearProgress />}
       <Box sx={{ display: "grid", gridTemplateColumns: "1fr" }}>
         <StyledDataGrid
-          rowHeight={30}
           rows={evaluations}
           columns={columns}
           disableRowSelectionOnClick

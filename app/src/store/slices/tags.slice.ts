@@ -1,3 +1,4 @@
+import { errorMessage } from "@/lib/utils/apiError";
 import { Tag, TagState } from "@/lib/types/tag.types";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
@@ -17,7 +18,7 @@ export const fetchTags = createAsyncThunk("tags/fetchAll", async (_, { rejectWit
     const response = await tagsService.getAll();
     return response.data as Tag[];
   } catch (error: any) {
-    return rejectWithValue(error.response?.data?.message || "Failed to fetch tags");
+    return rejectWithValue(errorMessage(error, "Failed to fetch tags"));
   }
 });
 
@@ -26,7 +27,7 @@ export const createTag = createAsyncThunk("tags/create", async (name: string, { 
     const response = await tagsService.create(name);
     return response.data as Tag;
   } catch (error: any) {
-    return rejectWithValue(error.response?.data?.message || "Failed to create team");
+    return rejectWithValue(errorMessage(error, "Failed to create team"));
   }
 });
 
@@ -35,7 +36,7 @@ export const deleteTag = createAsyncThunk("tags/delete", async (id: string, { re
     await tagsService.delete(id);
     return id;
   } catch (error: any) {
-    return rejectWithValue(error.response?.data?.message || "Failed to delete team");
+    return rejectWithValue(errorMessage(error, "Failed to delete team"));
   }
 });
 

@@ -116,7 +116,7 @@ const AddUser: React.FC<AddUserProps> = ({ onSuccess, onCancel }) => {
         {formik.touched.roles && formik.errors.roles && <p className="text-red-600 text-sm">{formik.errors.roles}</p>}
       </FormControl>
       <div className="flex justify-end gap-3 mt-3">
-        <Button onClick={onCancel} color="warning" variant="contained">
+        <Button onClick={onCancel} color="inherit" variant="text">
           {t("static.cancel")}
         </Button>
         <Button type="submit" variant="contained" startIcon={<Save />} disabled={loading}>

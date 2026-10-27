@@ -1,3 +1,4 @@
+import { errorMessage } from "@/lib/utils/apiError";
 import { Episode, EpisodePostDto, EpisodePutDto, EpisodeState } from "@/lib/types/episodes.types";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
@@ -15,7 +16,7 @@ export const fetchEpisodes = createAsyncThunk("episodes/fetchAll", async (_, { r
     const response = await episodesService.getAll();
     return response.data as Episode[];
   } catch (err: any) {
-    return rejectWithValue(err.response?.data?.message || "Failed to fetch episodes");
+    return rejectWithValue(errorMessage(err, "Failed to fetch episodes"));
   }
 });
 
@@ -24,7 +25,7 @@ export const createEpisode = createAsyncThunk("episodes/create", async (dto: Epi
     const response = await episodesService.create(dto);
     return response.data as Episode;
   } catch (err: any) {
-    return rejectWithValue(err.response?.data?.message || "Failed to create episode");
+    return rejectWithValue(errorMessage(err, "Failed to create episode"));
   }
 });
 
@@ -35,7 +36,7 @@ export const updateEpisode = createAsyncThunk(
       await episodesService.update(id, dto);
       return { id, dto };
     } catch (err: any) {
-      return rejectWithValue(err.response?.data?.message || "Failed to update episode");
+      return rejectWithValue(errorMessage(err, "Failed to update episode"));
     }
   }
 );
@@ -45,7 +46,7 @@ export const deleteEpisode = createAsyncThunk("episodes/delete", async (id: stri
     await episodesService.delete(id);
     return id;
   } catch (err: any) {
-    return rejectWithValue(err.response?.data?.message || "Failed to delete episode");
+    return rejectWithValue(errorMessage(err, "Failed to delete episode"));
   }
 });
 

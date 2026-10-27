@@ -51,7 +51,7 @@ const EditSeason: React.FC<EditEditSeasonProps> = ({ season, onSuccess, onCancel
 
   return (
     <form onSubmit={handleSubmit}>
-      <h1 className="text-2xl my-2 text-center font-bold">{t("static.editSeason")}</h1>
+      <h2 className="form-title">{t("static.editSeason")}</h2>
       <div className="flex flex-col gap-3">
         <TextField
           fullWidth
@@ -105,8 +105,8 @@ const EditSeason: React.FC<EditEditSeasonProps> = ({ season, onSuccess, onCancel
         <div className="flex justify-end gap-3">
           <Button
             onClick={onCancel}
-            color="warning"
-            variant="contained"
+            color="inherit"
+            variant="text"
             sx={{ whiteSpace: "nowrap", borderRadius: "8px" }}
           >
             {t("static.cancel")}

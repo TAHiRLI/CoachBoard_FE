@@ -1,3 +1,4 @@
+import { confirmDelete, notify } from "@/components/feedback/feedback";
 import {
   CalendarMonth as CalendarIcon,
   Delete as DeleteIcon,
@@ -11,7 +12,6 @@ import {
 } from "@mui/material";
 
 import { ReportGetDto } from "@/lib/types/reports.types";
-import Swal from "sweetalert2";
 import { deleteReport } from "@/store/slices/reports.slice";
 import { reportsService } from "@/API/Services/reports.service";
 import { useAppDispatch } from "@/store/store";
@@ -61,11 +61,7 @@ const ReportItem = ({ report, categoryType }: ReportItemProps) => {
   const handleViewReport = async () => {
     try {
       if (!report.id) {
-        Swal.fire({
-          icon: "info",
-          title: t("reports.noFileAvailable"),
-          text: t("reports.reportHasNoFile"),
-        });
+        notify("info", t("static.reportHasNoFile"));
         return;
       }
 
@@ -78,23 +74,15 @@ const ReportItem = ({ report, categoryType }: ReportItemProps) => {
       window.open(url, "_blank");
 
       setTimeout(() => URL.revokeObjectURL(url), 60_000);
-    } catch (e) {
-      Swal.fire({
-        icon: "error",
-        title: t("common.error"),
-        text: t("reports.failedToOpenFile"),
-      });
+    } catch {
+      notify("error", t("static.reportOpenFailed"));
     }
   };
 
   const handleDownloadReport = async () => {
     try {
       if (!report.id) {
-        Swal.fire({
-          icon: "info",
-          title: t("reports.noFileAvailable"),
-          text: t("reports.reportHasNoFile"),
-        });
+        notify("info", t("static.reportHasNoFile"));
         return;
       }
 
@@ -113,45 +101,14 @@ const ReportItem = ({ report, categoryType }: ReportItemProps) => {
 
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
-
-      Swal.fire({
-        icon: "success",
-        title: t("reports.downloadSuccess"),
-        timer: 1500,
-        showConfirmButton: false,
-      });
-    } catch (e) {
-      Swal.fire({
-        icon: "error",
-        title: t("common.error"),
-        text: t("reports.failedToDownloadFile"),
-      });
+    } catch {
+      notify("error", t("static.reportDownloadFailed"));
     }
   };
 
   const handleDeleteReport = async () => {
-    const result = await Swal.fire({
-      title: t("common.areYouSure"),
-      text: t("reports.deleteWarning"),
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#ef4444",
-      cancelButtonColor: "#6b7280",
-      confirmButtonText: t("common.yesDeleteIt"),
-      cancelButtonText: t("common.cancel"),
-      reverseButtons: true,
-    });
-
-    if (result.isConfirmed) {
-      await dispatch(deleteReport(report.id));
-      Swal.fire({
-        title: t("common.deleted"),
-        text: t("reports.reportDeleted"),
-        icon: "success",
-        timer: 2000,
-        showConfirmButton: false,
-      });
-    }
+    const confirmed = await confirmDelete({ text: t("static.reportDeleteWarning") });
+    if (confirmed) await dispatch(deleteReport(report.id));
   };
 
   const getCategoryStyle = (category: string) => {

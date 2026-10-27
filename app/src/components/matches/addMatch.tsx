@@ -77,7 +77,7 @@ const AddMatch: React.FC<AddMatchProps> = ({ onSuccess, onCancel }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <h1 className="text-2xl my-2 text-center font-bold">{t("static.createMatch")}</h1>
+      <h2 className="form-title">{t("static.createMatch")}</h2>
       <div className="flex flex-col gap-3">
         <TextField
           label={t("static.stadium")}
@@ -163,7 +163,7 @@ const AddMatch: React.FC<AddMatchProps> = ({ onSuccess, onCancel }) => {
         <TextField label={t("static.gameUrl")} fullWidth {...getFieldProps("gameUrl")} />
 
         <div className="flex justify-end gap-3">
-          <Button onClick={onCancel} color="warning" variant="contained" sx={{ borderRadius: "8px" }}>
+          <Button onClick={onCancel} color="inherit" variant="text" sx={{ borderRadius: "8px" }}>
             {t("static.cancel")}
           </Button>
           <Button

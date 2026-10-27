@@ -128,7 +128,6 @@ const ClipsList = () => {
           <StyledDataGrid
             rows={clips}
             columns={columns}
-            rowHeight={35}
             disableRowSelectionOnClick
             getRowId={(row) => row.id}
           />

@@ -1,3 +1,4 @@
+import { errorMessage } from "@/lib/utils/apiError";
 import { Coach, CoachPostDto, CoachPutDto, CoachState } from "@/lib/types/coach.types";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
@@ -15,7 +16,7 @@ export const fetchCoaches = createAsyncThunk("coaches/fetchAll", async (_, { rej
     const res = await coachesService.getAll();
     return res.data as Coach[];
   } catch (error: any) {
-    return rejectWithValue(error.response?.data?.message || "Failed to fetch coaches");
+    return rejectWithValue(errorMessage(error, "Failed to fetch coaches"));
   }
 });
 
@@ -24,7 +25,7 @@ export const createCoach = createAsyncThunk("coaches/create", async (dto: CoachP
     const res = await coachesService.create(dto);
     return res.data as Coach;
   } catch (error: any) {
-    return rejectWithValue(error.response?.data?.message || "Failed to create coach");
+    return rejectWithValue(errorMessage(error, "Failed to create coach"));
   }
 });
 
@@ -35,7 +36,7 @@ export const updateCoach = createAsyncThunk(
       await coachesService.update(id, dto);
       return { id, dto };
     } catch (error: any) {
-      return rejectWithValue(error.response?.data?.message || "Failed to update coach");
+      return rejectWithValue(errorMessage(error, "Failed to update coach"));
     }
   }
 );
@@ -45,7 +46,7 @@ export const deleteCoach = createAsyncThunk("coaches/delete", async (id: string,
     await coachesService.delete(id);
     return id;
   } catch (error: any) {
-    return rejectWithValue(error.response?.data?.message || "Failed to delete coach");
+    return rejectWithValue(errorMessage(error, "Failed to delete coach"));
   }
 });
 

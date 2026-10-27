@@ -5,6 +5,7 @@ import CustomModal from "@/components/customModal/customModal";
 import SeasonsList from "@/components/seasons/seasonsList";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import PageActions from "@/components/layout/pageActions";
 
 const SeasonsPage = () => {
     
@@ -12,7 +13,7 @@ const SeasonsPage = () => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <div>
-      <div className="flex justify-end mb-3">
+      <PageActions>
         <Button
           data-testid="btn-ship-create"
           variant="contained"
@@ -22,7 +23,7 @@ const SeasonsPage = () => {
         >
           {t("static.create")}
         </Button>
-      </div>
+      </PageActions>
       <SeasonsList />
 
       <CustomModal setOpen={setIsOpen} open={isOpen}>

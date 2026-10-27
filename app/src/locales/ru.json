@@ -1,6 +1,5 @@
 {
   "current": "Russian",
-
   "app": {
     "name": "CoachBoard"
   },
@@ -55,7 +54,6 @@
     "evaluationSaveFailedTitle": "Не удалось сохранить оценку",
     "evaluationWillAttachLater": "Эта оценка будет автоматически привязана к клипу после завершения загрузки."
   },
-
   "static": {
     "createClub": "Создать клуб",
     "name": "Название",
@@ -138,7 +136,6 @@
     "end": "Конец",
     "clip": "Клип",
     "duration": "Длительность",
-
     "createSeason": "Создать сезон",
     "editSeason": "Редактировать сезон",
     "editClub": "Редактировать клуб",
@@ -148,7 +145,6 @@
     "match": "Матч",
     "coach": "Тренер",
     "notAvailable": "Нет данных",
-
     "generateAnalyze": "Создавайте и анализируйте отчёты о производительности",
     "browseSaved": "Просматривайте сохранённые отчёты",
     "createTeam": "Создать команду",
@@ -169,7 +165,6 @@
     "youtubeExternalUrl": "YouTube / Внешняя ссылка",
     "startTimeSeconds": "Начало (с)",
     "endTimeSeconds": "Конец (с)",
-
     "goalkeeper": "Вратарь",
     "centerBack": "Центральный защитник",
     "leftBack": "Левый защитник",
@@ -187,7 +182,6 @@
     "rightWinger": "Правый вингер",
     "photo": "Фото",
     "age": "Возраст",
-
     "addEpisode": "Добавить эпизод",
     "description": "Описание",
     "evaluationsCount": "Количество оценок",
@@ -243,7 +237,43 @@
     "selectOrCreateTags": "Выберите тег или создайте новый",
     "typeToCreateNewTag": "Введите, чтобы создать новый тег, и нажмите Enter",
     "selectTags": "Выберите теги",
-    "generatePdf": "Создать PDF"
+    "generatePdf": "Создать PDF",
+    "navAnalysis": "Анализ",
+    "navSquad": "Состав",
+    "navSetup": "Настройки",
+    "darkMode": "Тёмная тема",
+    "lightMode": "Светлая тема",
+    "openNavigation": "Открыть меню",
+    "somethingWentWrong": "Что-то пошло не так. Попробуйте ещё раз.",
+    "confirm": "Подтвердить",
+    "deletedSuccessfully": "Удалено",
+    "savedSuccessfully": "Изменения сохранены",
+    "trimJobCreated": "Задача обрезки запущена",
+    "reportHasNoFile": "У этого отчёта пока нет файла.",
+    "reportOpenFailed": "Не удалось открыть файл отчёта.",
+    "reportDownloadFailed": "Не удалось скачать файл отчёта.",
+    "reportDeleteWarning": "Отчёт и его файл будут удалены.",
+    "close": "Закрыть",
+    "searchMatches": "Поиск по команде или стадиону",
+    "noMatchesTitle": "В этом сезоне нет матчей",
+    "noMatchesText": "Добавьте первый матч, чтобы нарезать клипы и оценивать игроков.",
+    "noMatchingRecords": "Ничего не найдено",
+    "tryAnotherSearch": "Попробуйте другое название или очистите поиск.",
+    "noRecordsYet": "Записей пока нет",
+    "clipCount_one": "{{count}} клип",
+    "clipCount_other": "{{count}} клипов",
+    "clipCount_few": "{{count}} клипа",
+    "clipCount_many": "{{count}} клипов",
+    "watchVideo": "Смотреть видео",
+    "noClipsTitle": "Для этого матча пока нет клипов",
+    "noClipsText": "Откройте редактор клипов, чтобы вырезать моменты из видео матча, или добавьте клип вручную.",
+    "matchNotFound": "Матч не найден",
+    "deleteUndoHint": "Запись исчезнет из списков. Сразу после удаления это можно отменить.",
+    "undo": "Отменить",
+    "restored": "Восстановлено",
+    "result_win": "Победа",
+    "result_draw": "Ничья",
+    "result_loss": "Поражение"
   },
   "reportTypes": {
     "playerOverview": {
@@ -267,22 +297,17 @@
     "noDataTitle": "Статистика недоступна",
     "noDataSubtitle": "Примените фильтр, чтобы получить статистику",
     "pageTitle": "Статистика эффективности игрока",
-
     "totalEpisodes": "Общее количество эпизодов",
     "successRate": "Процент успеха",
     "criticalSaves": "Критические спасения",
     "unsuccessfulEpisodes": "Неуспешные эпизоды",
-
     "tabEpisodes": "Статистика по эпизодам",
     "tabMonthly": "Месячный тренд",
-
     "distributionTitle": "Общее распределение",
     "successful": "Успешно",
     "unsuccessful": "Неуспешно",
-
     "episodeSuccessTitle": "Процент успеха по эпизодам",
     "episodeBarLabel": "Процент успеха %",
-
     "episodeTableTitle": "Подробная статистика эпизодов",
     "episodeColumnEpisode": "Эпизод",
     "episodeColumnTotal": "Всего",
@@ -291,11 +316,9 @@
     "episodeColumnCritical": "Критические",
     "episodeColumnSuccessRate": "Успех %",
     "episodeColumnProgress": "Прогресс",
-
     "monthlyTrendTitle": "Месячный тренд эффективности",
     "monthlySuccessRateLabel": "Процент успеха %",
     "monthlyAverageScoreLabel": "Средний балл",
-
     "monthlyTableTitle": "Подробная месячная статистика",
     "monthlyColumnMonth": "Месяц",
     "monthlyColumnMatchCount": "Количество матчей",

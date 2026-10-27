@@ -1,3 +1,4 @@
+import { errorMessage } from "@/lib/utils/apiError";
 import {
   PlayerMatchParticipation,
   PlayerMatchParticipationPostDto,
@@ -22,7 +23,7 @@ export const fetchParticipations = createAsyncThunk(
       const response = await playerMatchParticipationService.getAll(filter?.matchId, filter?.playerId);
       return response.data as PlayerMatchParticipation[];
     } catch (error: any) {
-      return rejectWithValue(error.response?.data?.message || "Failed to fetch participations");
+      return rejectWithValue(errorMessage(error, "Failed to fetch participations"));
     }
   }
 );
@@ -34,7 +35,7 @@ export const createParticipation = createAsyncThunk(
       const response = await playerMatchParticipationService.create(dto);
       return response.data as PlayerMatchParticipation;
     } catch (error: any) {
-      return rejectWithValue(error.response?.data?.message || "Failed to create participation");
+      return rejectWithValue(errorMessage(error, "Failed to create participation"));
     }
   }
 );
@@ -46,7 +47,7 @@ export const updateParticipation = createAsyncThunk(
       await playerMatchParticipationService.update(id, dto);
       return { id, dto };
     } catch (error: any) {
-      return rejectWithValue(error.response?.data?.message || "Failed to update participation");
+      return rejectWithValue(errorMessage(error, "Failed to update participation"));
     }
   }
 );
@@ -58,7 +59,7 @@ export const deleteParticipation = createAsyncThunk(
       await playerMatchParticipationService.delete(id);
       return id;
     } catch (error: any) {
-      return rejectWithValue(error.response?.data?.message || "Failed to delete participation");
+      return rejectWithValue(errorMessage(error, "Failed to delete participation"));
     }
   }
 );

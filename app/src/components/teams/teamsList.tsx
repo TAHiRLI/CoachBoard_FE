@@ -1,6 +1,7 @@
-import { Alert, Box, LinearProgress, Snackbar } from "@mui/material";
+import { Box, LinearProgress } from "@mui/material";
+import { confirmDelete } from "@/components/feedback/feedback";
 import { Delete, Edit } from "@mui/icons-material";
-import { clearTeamError, deleteTeam, fetchTeams, selectTeam } from "@/store/slices/teams.slice";
+import { deleteTeam, fetchTeams, selectTeam } from "@/store/slices/teams.slice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
@@ -9,14 +10,13 @@ import EditTeam from "./editTeam";
 import { GridColDef } from "@mui/x-data-grid";
 import RowActions from "../rowActions/rowActions";
 import StyledDataGrid from "../styledDatagrid/styledDatagrid";
-import Swal from "sweetalert2";
 import { Team } from "@/lib/types/teams.types";
 import { useTranslation } from "react-i18next";
 
 const TeamsList = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  const { teams, selectedTeam, loading, error } = useAppSelector((s) => s.teamData);
+  const { teams, selectedTeam, loading } = useAppSelector((s) => s.teamData);
   const [editOpen, setEditOpen] = useState(false);
 
   useEffect(() => {
@@ -30,26 +30,14 @@ const TeamsList = () => {
 
   const handleDelete = useCallback(
     (id: string) => {
-      Swal.fire({
-        title: t("static.areYouSure"),
-        text: t("static.cannotBeUndone"),
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: t("static.yesDeleteIt"),
-      }).then((result) => {
-        if (result.isConfirmed) {
+      confirmDelete().then((confirmed) => {
+        if (confirmed) {
           dispatch(deleteTeam(id));
         }
       });
     },
     [dispatch]
   );
-
-  const handleCloseSnackbar = () => {
-    if (error) dispatch(clearTeamError());
-  };
 
   const columns = useMemo<GridColDef[]>(
     () => [
@@ -99,12 +87,6 @@ const TeamsList = () => {
           />
         </CustomModal>
       )}
-
-      <Snackbar open={!!error} autoHideDuration={6000} onClose={handleCloseSnackbar}>
-        <Alert onClose={handleCloseSnackbar} severity="error">
-          {error}
-        </Alert>
-      </Snackbar>
     </>
   );
 };

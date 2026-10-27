@@ -1,3 +1,4 @@
+import { errorMessage } from "@/lib/utils/apiError";
 import { Match, MatchPostDto, MatchPutDto, MatchState } from "@/lib/types/matches.types";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
@@ -19,7 +20,7 @@ export const fetchMatches = createAsyncThunk(
       const response = await matchesService.getAll(filters);
       return response.data as Match[];
     } catch (error: any) {
-      return rejectWithValue(error.response?.data?.message || "Failed to fetch matches");
+      return rejectWithValue(errorMessage(error, "Failed to fetch matches"));
     }
   }
 );
@@ -29,7 +30,7 @@ export const fetchMatchById = createAsyncThunk("matches/fetchById", async (id: s
     const response = await matchesService.getById(id);
     return response.data as Match;
   } catch (error: any) {
-    return rejectWithValue(error.response?.data?.message || "Failed to fetch match");
+    return rejectWithValue(errorMessage(error, "Failed to fetch match"));
   }
 });
 
@@ -38,7 +39,7 @@ export const createMatch = createAsyncThunk("matches/create", async (dto: MatchP
     const response = await matchesService.create(dto);
     return response.data as Match;
   } catch (error: any) {
-    return rejectWithValue(error.response?.data?.message || "Failed to create match");
+    return rejectWithValue(errorMessage(error, "Failed to create match"));
   }
 });
 
@@ -49,7 +50,7 @@ export const updateMatch = createAsyncThunk(
       await matchesService.update(id, dto);
       return { id, dto };
     } catch (error: any) {
-      return rejectWithValue(error.response?.data?.message || "Failed to update match");
+      return rejectWithValue(errorMessage(error, "Failed to update match"));
     }
   }
 );
@@ -59,7 +60,7 @@ export const deleteMatch = createAsyncThunk("matches/delete", async (id: string,
     await matchesService.delete(id);
     return id;
   } catch (error: any) {
-    return rejectWithValue(error.response?.data?.message || "Failed to delete match");
+    return rejectWithValue(errorMessage(error, "Failed to delete match"));
   }
 });
 

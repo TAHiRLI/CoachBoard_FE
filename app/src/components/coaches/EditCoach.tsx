@@ -51,7 +51,7 @@ const EditCoach = ({ coach, onSuccess, onCancel }: Props) => {
 
   return (
     <form onSubmit={formik.handleSubmit} className="flex flex-col gap-4">
-      <h1 className="text-2xl my-2 text-center font-bold">{t("static.editCoach")}</h1>
+      <h2 className="form-title">{t("static.editCoach")}</h2>
 
       <TextField
         fullWidth

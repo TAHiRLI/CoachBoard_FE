@@ -1,3 +1,4 @@
+import { notify } from "@/components/feedback/feedback";
 // src/components/Clips/ClipTrimJobCard.tsx
 import { Button, CircularProgress, Typography } from "@mui/material";
 import { createTrimRequest, fetchClips } from "@/store/slices/clips.slice";
@@ -8,7 +9,6 @@ import { Clip } from "@/lib/types/clips.types";
 import { Link } from "react-router-dom";
 import { Movie } from "@mui/icons-material";
 import { Permission } from "@/lib/types/permissionTypes";
-import Swal from "sweetalert2";
 import { minioUrl } from "@/lib/constants/constants";
 import { useTranslation } from "react-i18next";
 
@@ -26,11 +26,11 @@ export const ClipTrimJobCard: React.FC<ClipTrimJobCardProps> = ({ clip }) => {
 
     try {
       await dispatch(createTrimRequest(clip.id)).unwrap();
-      Swal.fire("🎬 Trim job created!", "", "success");
+      notify("success", t("static.trimJobCreated"));
       if(clip.matchId)
       dispatch(fetchClips({ matchIds: [clip.matchId] }));
-    } catch (err: any) {
-      Swal.fire("❌ Failed", err || "Error creating trim request", "error");
+    } catch {
+      // The failure is already reported by the global feedback middleware.
     }
   };
 

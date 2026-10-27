@@ -1,3 +1,4 @@
+import { errorMessage } from "@/lib/utils/apiError";
 import { Season, SeasonPostDto, SeasonPutDto, SeasonState } from "@/lib/types/seasons.types";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
@@ -17,7 +18,7 @@ export const fetchSeasons = createAsyncThunk("seasons/fetchAll", async (_, { rej
     const response = await seasonsService.getAll();
     return response.data as Season[];
   } catch (error: any) {
-    return rejectWithValue(error.response?.data?.message || "Failed to fetch seasons");
+    return rejectWithValue(errorMessage(error, "Failed to fetch seasons"));
   }
 });
 
@@ -26,7 +27,7 @@ export const fetchSeasonById = createAsyncThunk("seasons/fetchById", async (id: 
     const response = await seasonsService.getById(id);
     return response.data as Season;
   } catch (error: any) {
-    return rejectWithValue(error.response?.data?.message || "Failed to fetch season");
+    return rejectWithValue(errorMessage(error, "Failed to fetch season"));
   }
 });
 
@@ -35,7 +36,7 @@ export const createSeason = createAsyncThunk("seasons/create", async (dto: Seaso
     const response = await seasonsService.create(dto);
     return response.data as Season;
   } catch (error: any) {
-    return rejectWithValue(error.response?.data?.message || "Failed to create season");
+    return rejectWithValue(errorMessage(error, "Failed to create season"));
   }
 });
 
@@ -46,7 +47,7 @@ export const updateSeason = createAsyncThunk(
       await seasonsService.update(id, dto);
       return { id, dto };
     } catch (error: any) {
-      return rejectWithValue(error.response?.data?.message || "Failed to update season");
+      return rejectWithValue(errorMessage(error, "Failed to update season"));
     }
   }
 );
@@ -56,7 +57,7 @@ export const deleteSeason = createAsyncThunk("seasons/delete", async (id: string
     await seasonsService.delete(id);
     return id;
   } catch (error: any) {
-    return rejectWithValue(error.response?.data?.message || "Failed to delete season");
+    return rejectWithValue(errorMessage(error, "Failed to delete season"));
   }
 });
 

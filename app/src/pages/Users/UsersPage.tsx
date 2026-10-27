@@ -8,6 +8,7 @@ import UsersList from "@/components/Users/UsersList";
 import { fetchAppUsers } from "@/store/slices/appUsers.slice";
 import { useAppDispatch } from "@/store/store";
 import { useTranslation } from "react-i18next";
+import PageActions from "@/components/layout/pageActions";
 
 const UsersPage = () => {
   const { t } = useTranslation();
@@ -19,12 +20,12 @@ const UsersPage = () => {
   }, [dispatch]);
 
   return (
-    <div className="p-4">
-      <div className="flex justify-end mb-3">
+    <div>
+      <PageActions>
         <Button variant="contained" startIcon={<Add />} onClick={() => setIsAddOpen(true)} title="Create">
           {t("static.createUser")}
         </Button>
-      </div>
+      </PageActions>
 
       <UsersList />
 

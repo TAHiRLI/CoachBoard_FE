@@ -14,6 +14,7 @@ interface LangOption {
   image: string;
   value: string;
   text: string;
+  code: string;
 }
 const LangSelect = () => {
   const { i18n } = useTranslation(); // Only get translation function, not i18n
@@ -21,9 +22,9 @@ const LangSelect = () => {
 
   // Define available languages
   const options: LangOption[] = [
-    { image: aze, value: "aze", text: "Azerbaijan" },
-    { image: ru, value: "ru", text: "Russian" },
-    { image: en, value: "en", text: "English" },
+    { image: aze, value: "aze", text: "Azərbaycan", code: "AZ" },
+    { image: ru, value: "ru", text: "Русский", code: "RU" },
+    { image: en, value: "en", text: "English", code: "EN" },
   ];
 
   // Default language with safety check
@@ -127,12 +128,14 @@ const LangSelect = () => {
         value={i18n.language || getStoredLang()}
         onChange={handleChange}
         className="lang-select"
+        inputProps={{ "aria-label": getCurrentLangOption().text }}
+        sx={{ "& .MuiSelect-select": { py: 0.75 } }}
         renderValue={() => {
           const selectedOption = getCurrentLangOption();
           return (
-            <div className="flex items-center">
-              <img src={selectedOption.image} alt={selectedOption.text} width={25} />
-              <span className="ms-3 text-sm">{selectedOption.text}</span>
+            <div className="flex items-center gap-2">
+              <img src={selectedOption.image} alt="" width={20} />
+              <span className="text-sm font-semibold">{selectedOption.code}</span>
             </div>
           );
         }}
@@ -140,7 +143,7 @@ const LangSelect = () => {
         {options.map((option) => (
           <MenuItem key={option.value} value={option.value}>
             <div className="flex items-center">
-              <img src={option.image} alt={option.text} width={25} />
+              <img src={option.image} alt="" width={20} />
               <span className="ms-3 text-sm">{option.text}</span>
             </div>
           </MenuItem>

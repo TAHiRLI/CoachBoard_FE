@@ -73,7 +73,7 @@ const AddEvaluation = ({ clipId, initialPlayerId = "", onSuccess, onCancel, defe
 
   return (
     <form onSubmit={formik.handleSubmit} className="flex flex-col gap-4">
-      <h1 className="text-xl font-bold text-center">{t("static.addEvaluation")}</h1>
+      <h2 className="form-title">{t("static.addEvaluation")}</h2>
       {deferred && (
         <p className="text-sm text-gray-500 text-center">{t("clipEditor.evaluationWillAttachLater")}</p>
       )}

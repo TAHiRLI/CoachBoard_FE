@@ -5,6 +5,7 @@ import CustomModal from "@/components/customModal/customModal";
 import TeamsList from "@/components/teams/teamsList";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import PageActions from "@/components/layout/pageActions";
 
 const TeamsPage = () => {
   const { t } = useTranslation();
@@ -12,11 +13,11 @@ const TeamsPage = () => {
 
   return (
     <div>
-      <div className="flex justify-end mb-3">
+      <PageActions>
         <Button variant="contained" startIcon={<Add />} onClick={() => setIsOpen(true)}>
           {t("static.createTeam")}
         </Button>
-      </div>
+      </PageActions>
 
       <TeamsList />
 

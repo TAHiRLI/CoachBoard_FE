@@ -3,6 +3,7 @@ import "../i18n";
 
 import { ColorModeProvider } from "./context/colorMode.context";
 import { FeatureFlagsProvider } from "./context/FeatureFlagsProvider";
+import { FeedbackHost } from "./components/feedback/FeedbackHost";
 import { KeycloakProvider } from "./context/KeycloakProvider";
 import { PersistGate } from "redux-persist/integration/react";
 import { Provider } from "react-redux";
@@ -33,6 +34,7 @@ function App() {
             <KeycloakProvider>
               <RouterProvider router={router} />
             </KeycloakProvider>
+            <FeedbackHost />
           </ColorModeProvider>
         </PersistGate>
       </Provider>

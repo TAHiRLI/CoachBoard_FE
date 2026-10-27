@@ -45,7 +45,7 @@ const EditEvaluation = ({
 
   return (
     <form onSubmit={formik.handleSubmit} className="flex flex-col gap-4">
-      <h1 className="text-xl font-bold text-center">{t("static.editEvaluation")}</h1>
+      <h2 className="form-title">{t("static.editEvaluation")}</h2>
         <TextField fullWidth label={t("static.occurrenceCount")} type="number" {...formik.getFieldProps("occurrenceCount")} />
       <TextField fullWidth label={t("static.note")} multiline rows={3} {...formik.getFieldProps("notes")} />
       <div className="grid grid-cols-3">

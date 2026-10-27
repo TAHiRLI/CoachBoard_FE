@@ -1,3 +1,4 @@
+import { errorMessage } from "@/lib/utils/apiError";
 import { Evaluation, EvaluationPostDto, EvaluationPutDto } from "@/lib/types/evaluation.types";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
@@ -24,7 +25,7 @@ export const fetchEvaluations = createAsyncThunk(
       const res = await evaluationsService.getAll(params);
       return res.data;
     } catch (err: any) {
-      return rejectWithValue(err.response?.data || "Error fetching evaluations");
+      return rejectWithValue(errorMessage(err, "Error fetching evaluations"));
     }
   }
 );
@@ -36,7 +37,7 @@ export const createEvaluation = createAsyncThunk(
       const res = await evaluationsService.create(dto);
       return res.data;
     } catch (err: any) {
-      return rejectWithValue(err.response?.data || "Error creating evaluation");
+      return rejectWithValue(errorMessage(err, "Error creating evaluation"));
     }
   }
 );
@@ -48,7 +49,7 @@ export const updateEvaluation = createAsyncThunk(
       await evaluationsService.update(id, dto);
       return { id, dto };
     } catch (err: any) {
-      return rejectWithValue(err.response?.data || "Error updating evaluation");
+      return rejectWithValue(errorMessage(err, "Error updating evaluation"));
     }
   }
 );
@@ -58,7 +59,7 @@ export const deleteEvaluation = createAsyncThunk("evaluations/delete", async (id
     await evaluationsService.delete(id);
     return id;
   } catch (err: any) {
-    return rejectWithValue(err.response?.data || "Error deleting evaluation");
+    return rejectWithValue(errorMessage(err, "Error deleting evaluation"));
   }
 });
 

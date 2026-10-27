@@ -1,4 +1,5 @@
 import { Card, CardContent, CardMedia, IconButton } from "@mui/material";
+import { confirmDelete } from "@/components/feedback/feedback";
 import { Delete, Edit, SkipNext, SkipPrevious } from "@mui/icons-material";
 import EditClip, { formatSeconds } from "./EditClip";
 import { deleteClip, fetchClips, selectClip } from "@/store/slices/clips.slice";
@@ -10,7 +11,6 @@ import { ClipInfoCard } from "./ClipInfoCard";
 import CustomModal from "../customModal/customModal";
 import { Link } from "react-router-dom";
 import RowActions from "../rowActions/rowActions";
-import Swal from "sweetalert2";
 import { minioUrl } from "@/lib/constants/constants";
 import { useTranslation } from "react-i18next";
 
@@ -55,19 +55,10 @@ const ClipItem: React.FC<ClipItemProps> = ({ clip, expanded }) => {
   const handleDelete = useCallback(
     (id: string) => {
       if (!id) return;
-      Swal.fire({
-        title: t("static.areYouSure"),
-        text: t("static.cannotBeUndone"),
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: t("static.yesDeleteIt"),
-      }).then(async (result) => {
-        if (result.isConfirmed) {
+      confirmDelete().then(async (confirmed) => {
+        if (confirmed) {
           dispatch(deleteClip(id))
-            .unwrap()
-            .then(() => Swal.fire(t("static.success"), "", "success"));
+            .unwrap();
         }
       });
     },

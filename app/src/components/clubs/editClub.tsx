@@ -43,7 +43,7 @@ const EditClub: React.FC<EditClubProps> = ({ club, onSuccess, onCancel }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <h1 className="text-2xl my-2 text-center font-bold">{t("static.editClub")}</h1>
+      <h2 className="form-title">{t("static.editClub")}</h2>
       <div className="flex flex-col gap-3">
         <TextField
           fullWidth
@@ -70,7 +70,7 @@ const EditClub: React.FC<EditClubProps> = ({ club, onSuccess, onCancel }) => {
         </Button>
 
         <div className="flex justify-end gap-3">
-          <Button onClick={onCancel} color="warning" variant="contained">
+          <Button onClick={onCancel} color="inherit" variant="text">
             {t("static.cancel")}
           </Button>
           <Button type="submit" variant="contained" startIcon={<Edit />} disabled={loading || isSubmitting}>

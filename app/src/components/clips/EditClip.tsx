@@ -6,7 +6,6 @@ import { useAppDispatch, useAppSelector } from "@/store/store";
 import { useEffect, useMemo, useState } from "react";
 
 import { Edit } from "@mui/icons-material";
-import Swal from "sweetalert2";
 import { fetchTags } from "@/store/slices/tags.slice";
 import { parseTimeToSeconds } from "./AddClip";
 import { updateClip } from "@/store/slices/clips.slice";
@@ -99,7 +98,6 @@ const EditClip: React.FC<EditClipProps> = ({ clip, onSuccess, onCancel }) => {
         .unwrap()
         .then(() => {
           onSuccess?.();
-          Swal.fire(t("static.success"), "", "success");
         });
     },
   });
@@ -188,7 +186,7 @@ const EditClip: React.FC<EditClipProps> = ({ clip, onSuccess, onCancel }) => {
         )}
 
         <div className="flex justify-end gap-3 mt-3">
-          <Button onClick={onCancel} color="warning" variant="contained">
+          <Button onClick={onCancel} color="inherit" variant="text">
             {t("static.cancel")}
           </Button>
           <Button type="submit" variant="contained" startIcon={<Edit />} disabled={loading}>

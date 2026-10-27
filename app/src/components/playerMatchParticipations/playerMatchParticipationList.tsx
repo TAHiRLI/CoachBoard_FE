@@ -1,7 +1,7 @@
-import { Alert, Box, LinearProgress, Snackbar } from "@mui/material";
+import { Box, LinearProgress } from "@mui/material";
+import { confirmDelete } from "@/components/feedback/feedback";
 import { Cancel, CheckCircle, Delete, Edit } from "@mui/icons-material";
 import {
-  clearParticipationError,
   deleteParticipation,
   selectParticipation
 } from "@/store/slices/playerMatchParticipation.slice";
@@ -15,7 +15,6 @@ import { GridColDef } from "@mui/x-data-grid";
 import { PlayerMatchParticipation } from "@/lib/types/playerMatchParticipation.types";
 import RowActions from "@/components/rowActions/rowActions";
 import StyledDataGrid from "@/components/styledDatagrid/styledDatagrid";
-import Swal from "sweetalert2";
 import dayjs from "dayjs";
 import { useTranslation } from "react-i18next";
 
@@ -23,7 +22,7 @@ const PlayerMatchParticipationsList = () => {
     
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  const { participations, loading, error, selectedParticipation } = useAppSelector((state) => state.participationData);
+  const { participations, loading, selectedParticipation } = useAppSelector((state) => state.participationData);
   const [editOpen, setEditOpen] = useState(false);
 
 
@@ -34,23 +33,11 @@ const PlayerMatchParticipationsList = () => {
   };
 
   const handleDelete = (id: string) => {
-    Swal.fire({
-      title: t("static.areYouSure"),
-      text: t("static.cannotBeUndone"),
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: t("static.yesDeleteIt"),
-    }).then((result) => {
-      if (result.isConfirmed) {
+    confirmDelete().then((confirmed) => {
+      if (confirmed) {
         dispatch(deleteParticipation(id));
       }
     });
-  };
-
-  const handleCloseSnackbar = () => {
-    if (error) dispatch(clearParticipationError());
   };
 
   const columns: GridColDef[] = useMemo(
@@ -109,7 +96,6 @@ const PlayerMatchParticipationsList = () => {
         <StyledDataGrid
           rows={participations}
           columns={columns}
-          rowHeight={40}
           initialState={{
             columns: {
               columnVisibilityModel: {
@@ -133,17 +119,6 @@ const PlayerMatchParticipationsList = () => {
           />
         </CustomModal>
       )}
-
-      <Snackbar
-        open={!!error}
-        autoHideDuration={5000}
-        onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-      >
-        <Alert onClose={handleCloseSnackbar} severity="error" variant="filled">
-          {error}
-        </Alert>
-      </Snackbar>
     </>
   );
 };

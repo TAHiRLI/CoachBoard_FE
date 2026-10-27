@@ -25,3 +25,14 @@ export interface UpdateUserDto {
 }
 
 export type UserRole = { id: string; name: string };
+
+// GET api/users/me: who is signed in and which club's data they are working with.
+export interface CurrentUserDto {
+  id: string;
+  userName: string;
+  fullName: string;
+  email: string;
+  roles: string[];
+  club?: { id: number; name: string; logo?: string } | null;
+  team?: { id: number; name: string } | null;
+}

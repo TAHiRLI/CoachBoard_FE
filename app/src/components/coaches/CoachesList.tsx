@@ -1,6 +1,7 @@
-import { Alert, Box, LinearProgress, Snackbar } from "@mui/material";
+import { Box, LinearProgress } from "@mui/material";
+import { confirmDelete } from "@/components/feedback/feedback";
 import { Delete, Edit } from "@mui/icons-material";
-import { clearCoachError, deleteCoach, fetchCoaches, selectCoach } from "@/store/slices/coaches.slice";
+import { deleteCoach, fetchCoaches, selectCoach } from "@/store/slices/coaches.slice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { useEffect, useMemo, useState } from "react";
 
@@ -10,15 +11,13 @@ import EditCoach from "./EditCoach";
 import { GridColDef } from "@mui/x-data-grid";
 import RowActions from "@/components/rowActions/rowActions";
 import StyledDataGrid from "@/components/styledDatagrid/styledDatagrid";
-import Swal from "sweetalert2";
 import { useTranslation } from "react-i18next";
 
 const CoachesList = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  const { coaches, loading, error, selectedCoach } = useAppSelector((s) => s.coachData);
+  const { coaches, loading, selectedCoach } = useAppSelector((s) => s.coachData);
   const [editOpen, setEditOpen] = useState(false);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   useEffect(() => {
     dispatch(fetchCoaches());
@@ -30,24 +29,11 @@ const CoachesList = () => {
   };
 
   const handleDelete = (id: string) => {
-    Swal.fire({
-      title: t("static.areYouSure"),
-      text: t("static.cannotBeUndone"),
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: t("static.yesDeleteIt"),
-    }).then((result) => {
-      if (result.isConfirmed) {
+    confirmDelete().then((confirmed) => {
+      if (confirmed) {
         dispatch(deleteCoach(id));
       }
     });
-  };
-
-  const handleCloseSnackbar = () => {
-    setSnackbarOpen(false);
-    dispatch(clearCoachError());
   };
 
   const columns = useMemo<GridColDef[]>(
@@ -88,7 +74,6 @@ const CoachesList = () => {
       {loading && <LinearProgress />}
       <Box sx={{ display: "grid", gridTemplateColumns: "1fr" }}>
         <StyledDataGrid
-          rowHeight={30}
           rows={coaches}
           columns={columns}
           disableRowSelectionOnClick
@@ -107,16 +92,6 @@ const CoachesList = () => {
           />
         </CustomModal>
       )}
-      <Snackbar
-        open={!!error && snackbarOpen}
-        autoHideDuration={6000}
-        onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-      >
-        <Alert onClose={handleCloseSnackbar} severity="error" variant="filled">
-          {error}
-        </Alert>
-      </Snackbar>
     </>
   );
 };

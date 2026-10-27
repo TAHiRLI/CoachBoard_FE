@@ -45,7 +45,7 @@ export const router = createBrowserRouter([
     element: (
       <>
         <PrivateRoute>
-          <Layout pageTitle="static.matches">
+          <Layout pageTitle="static.matches" subtitle="static.manageMatchesSubtitle">
             <MatchesPage />
           </Layout>
         </PrivateRoute>
@@ -249,7 +249,7 @@ export const router = createBrowserRouter([
     element: (
       <>
         <PrivateRoute>
-          <Layout pageTitle="static.matches">
+          <Layout pageTitle="static.matches" subtitle="static.manageMatchesSubtitle">
             {/* <HomePage /> */}
             <MatchesPage />
           </Layout>

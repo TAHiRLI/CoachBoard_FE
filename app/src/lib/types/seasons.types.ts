@@ -4,6 +4,8 @@ export type Season = {
   startDate: string;
   endDate: string;
   createdBy?: string;
+  /** Set by the API when today falls within the season. */
+  isCurrent?: boolean;
 };
 
 export type SeasonPostDto = {

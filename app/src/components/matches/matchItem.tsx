@@ -1,5 +1,5 @@
-import { Button, Tooltip } from "@mui/material";
-import { Delete, Edit, Loop, Movie, Place } from "@mui/icons-material";
+import { Avatar, Box, Card, Typography } from "@mui/material";
+import { Delete, Edit, MovieOutlined, PlaceOutlined } from "@mui/icons-material";
 import { deleteMatch, fetchMatches, selectMatch } from "@/store/slices/matches.slice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { useCallback, useState } from "react";
@@ -7,139 +7,130 @@ import { useCallback, useState } from "react";
 import CustomModal from "../customModal/customModal";
 import EditMatch from "./EditMatch";
 import { Link } from "react-router-dom";
-import { Match } from "@/lib/types/matches.types";
+import { Match, TeamMatch } from "@/lib/types/matches.types";
+import MatchResultChip from "./matchResultChip";
 import MatchStatusChip from "./matchStatusChip";
 import RowActions from "../rowActions/rowActions";
-import Swal from "sweetalert2";
+import { confirmDelete } from "@/components/feedback/feedback";
 import { minioUrl } from "@/lib/constants/constants";
 import { useTranslation } from "react-i18next";
 
+const TeamRow = ({ team, score, winner, own }: { team: TeamMatch; score?: number; winner: boolean; own?: boolean }) => (
+  <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, minWidth: 0 }}>
+    <Avatar
+      src={team.logo ? minioUrl + team.logo : undefined}
+      alt=""
+      variant="rounded"
+      sx={{ width: 28, height: 28, bgcolor: "action.hover", color: "text.secondary", fontSize: 13, "& img": { objectFit: "contain" } }}
+    >
+      {team.teamName?.[0]}
+    </Avatar>
+    <Box sx={{ minWidth: 0, flex: 1 }}>
+      <Typography noWrap fontWeight={winner ? 700 : 500} title={team.clubName} color={own ? "primary" : undefined}>
+        {team.teamName}
+      </Typography>
+    </Box>
+    {score !== undefined && (
+      <Typography fontWeight={700} fontSize="1.125rem" color={winner ? "text.primary" : "text.secondary"}>
+        {score}
+      </Typography>
+    )}
+  </Box>
+);
+
 const MatchItem = ({ match }: { match: Match }) => {
   const { selectedSeason } = useAppSelector((x) => x.seasonData);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
-
   const dispatch = useAppDispatch();
+
   const date = new Date(match.date);
+  const played = date.getTime() <= Date.now();
+  const home = match.homeTeam.score;
+  const away = match.awayTeam.score;
+  const locale = i18n.language === "aze" ? "az" : i18n.language;
 
-  const handleEdit = () => {
-    dispatch(selectMatch(match));
-    setIsOpen(true);
-  };
+  const handleDelete = useCallback(() => {
+    confirmDelete().then((confirmed) => {
+      if (confirmed) dispatch(deleteMatch(match.id));
+    });
+  }, [dispatch, match.id]);
 
-  const handleDelete = useCallback(
-    (id: string) => {
-      if (!id) {
-        return;
-      }
-
-      Swal.fire({
-        title: t("static.areYouSure"),
-        text: t("static.cannotBeUndone"),
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: t("static.yesDeleteIt"),
-      }).then(async (result) => {
-        if (result.isConfirmed && id) {
-          dispatch(deleteMatch(id))
-            .unwrap()
-            .then(() => {
-              Swal.fire(t("static.success"), "", "success");
-            });
-        }
-      });
-    },
-    [dispatch, t],
-  );
   return (
-    <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-6 relative">
-      <div className="absolute right-4 top-4">
-        <MatchStatusChip date={match.date} />
-      </div>
+    <Card
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        transition: "border-color 150ms ease, box-shadow 150ms ease",
+        "&:hover": { borderColor: "primary.main", boxShadow: "0 6px 20px var(--cb-shadow)" },
+      }}
+    >
+      <Box
+        component={Link}
+        to={`/matches/${match.id}`}
+        sx={{ p: 2.5, display: "flex", flexDirection: "column", gap: 1.5, color: "inherit", flex: 1 }}
+      >
+        <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 1 }}>
+          <Typography variant="body2" color="text.secondary">
+            {date.toLocaleDateString(locale, { day: "numeric", month: "short", year: "numeric" })}
+            {", "}
+            {date.toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit" })}
+          </Typography>
+          <MatchStatusChip date={match.date} />
+          <MatchResultChip result={match.result} />
+        </Box>
 
-      <div className="text-slate-700 text-sm mb-1">
-        {date.toLocaleDateString(undefined, {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        })}
-      </div>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+          <TeamRow team={match.homeTeam} score={played ? home : undefined} winner={played && home > away} own={match.ownSide === "home"} />
+          <TeamRow team={match.awayTeam} score={played ? away : undefined} winner={played && away > home} own={match.ownSide === "away"} />
+        </Box>
+      </Box>
 
-      <div className="text-slate-500 text-xs mb-3">
-        {date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-      </div>
-
-      <div className="font-semibold text-lg text-slate-800 mb-1 flex items-center gap-2">
-        <Tooltip title={match.homeTeam.clubName}>
-          <div className="flex items-center gap-1">
-            {match.homeTeam.logo && (
-              <img
-                src={minioUrl + match.homeTeam.logo}
-                alt={match.awayTeam.teamName}
-                style={{ width: 24, height: 24, objectFit: "contain" }}
-              />
-            )}
-          </div>
-        </Tooltip>
-        <span>{match.name}</span>
-        <Tooltip title={match.awayTeam.clubName}>
-          <div className="flex items-center gap-1">
-            {match.awayTeam.logo && (
-              <img
-                src={minioUrl + match.awayTeam.logo}
-                alt={match.awayTeam.teamName}
-                style={{ width: 24, height: 24, objectFit: "contain" }}
-              />
-            )}
-          </div>
-        </Tooltip>
-      </div>
-
-      <div className="flex items-center text-sm text-slate-500 mb-3">
-        <Place fontSize="small" className="mr-1 text-red-500" />
-        {match.stadium}
-      </div>
-
-      <div className="flex items-center justify-between text-slate-500 text-sm border-t pt-3 mt-3">
-        <div className="flex items-center gap-1">
-          <Movie fontSize="small" /> {match.clipCount} {t("static.clips")}
-        </div>
-        <div className="flex items-center gap-1">
-          <Loop fontSize="small" /> {match.seasonName}
-        </div>
-      </div>
-
-      <div className="mt-4 flex justify-between items-center">
-        <Link to={`/matches/${match.id}`}>
-          <Button variant="contained" color="success" className="rounded-lg px-6">
-            {t("static.viewDetails")}
-          </Button>
-        </Link>
-
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          gap: 2,
+          px: 2.5,
+          py: 1,
+          borderTop: 1,
+          borderColor: "divider",
+          color: "text.secondary",
+        }}
+      >
+        <Box sx={{ display: "flex", alignItems: "center", gap: 0.5, minWidth: 0, flex: 1 }}>
+          <PlaceOutlined sx={{ fontSize: 18 }} />
+          <Typography variant="body2" noWrap>
+            {match.stadium || "-"}
+          </Typography>
+        </Box>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+          <MovieOutlined sx={{ fontSize: 18 }} />
+          <Typography variant="body2">{t("static.clipCount", { count: match.clipCount })}</Typography>
+        </Box>
         <RowActions
           actions={[
             {
               icon: <Edit fontSize="small" />,
               label: t("static.edit"),
-              onClick: () => handleEdit(),
-              color: "warning",
+              onClick: () => {
+                dispatch(selectMatch(match));
+                setIsOpen(true);
+              },
             },
             {
               icon: <Delete fontSize="small" />,
               label: t("static.delete"),
-              onClick: () => handleDelete(match.id),
+              onClick: handleDelete,
               color: "error",
             },
           ]}
         />
-      </div>
+      </Box>
+
       <CustomModal open={isOpen} setOpen={setIsOpen}>
         <EditMatch
-          onCancel={() => {
-            setIsOpen(false);
-          }}
+          onCancel={() => setIsOpen(false)}
           match={match}
           onSuccess={() => {
             dispatch(fetchMatches({ seasonId: selectedSeason?.id }));
@@ -147,7 +138,7 @@ const MatchItem = ({ match }: { match: Match }) => {
           }}
         />
       </CustomModal>
-    </div>
+    </Card>
   );
 };
 

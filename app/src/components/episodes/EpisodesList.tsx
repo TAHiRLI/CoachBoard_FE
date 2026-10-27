@@ -1,6 +1,7 @@
-import { Alert, Box, LinearProgress, Snackbar } from "@mui/material";
+import { Box, LinearProgress } from "@mui/material";
+import { confirmDelete } from "@/components/feedback/feedback";
 import { Delete, Edit } from "@mui/icons-material";
-import { clearEpisodeError, deleteEpisode, fetchEpisodes, selectEpisode } from "@/store/slices/episodes.slice";
+import { deleteEpisode, fetchEpisodes, selectEpisode } from "@/store/slices/episodes.slice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
@@ -10,16 +11,14 @@ import { Episode } from "@/lib/types/episodes.types";
 import { GridColDef } from "@mui/x-data-grid";
 import RowActions from "../rowActions/rowActions";
 import StyledDataGrid from "../styledDatagrid/styledDatagrid";
-import Swal from "sweetalert2";
 import { useTranslation } from "react-i18next";
 
 const EpisodesList = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  const { episodes, loading, selectedEpisode, error } = useAppSelector((state) => state.episodeData);
+  const { episodes, loading, selectedEpisode } = useAppSelector((state) => state.episodeData);
 
   const [editOpen, setEditOpen] = useState(false);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   useEffect(() => {
     dispatch(fetchEpisodes());
@@ -32,30 +31,14 @@ const EpisodesList = () => {
 
   const handleDelete = useCallback(
     (id: string) => {
-      Swal.fire({
-        title: t("static.areYouSure"),
-        text: t("static.cannotBeUndone"),
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: t("static.yesDeleteIt"),
-      }).then((result) => {
-        if (result.isConfirmed) {
-          dispatch(deleteEpisode(id))
-            .unwrap()
-            .then(() => Swal.fire(t("static.success"), "", "success"))
-            .catch(() => setSnackbarOpen(true));
+      confirmDelete().then((confirmed) => {
+        if (confirmed) {
+          dispatch(deleteEpisode(id));
         }
       });
     },
     [dispatch]
   );
-
-  const handleCloseSnackbar = () => {
-    setSnackbarOpen(false);
-    dispatch(clearEpisodeError());
-  };
 
   const columns = useMemo<GridColDef[]>(
     () => [
@@ -98,7 +81,6 @@ const EpisodesList = () => {
       {loading && <LinearProgress />}
       <Box sx={{ display: "grid", gridTemplateColumns: "1fr" }}>
         <StyledDataGrid
-          rowHeight={30}
           rows={episodes}
           columns={columns}
           disableRowSelectionOnClick
@@ -118,17 +100,6 @@ const EpisodesList = () => {
           />
         </CustomModal>
       )}
-
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={6000}
-        onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-      >
-        <Alert onClose={handleCloseSnackbar} severity="error" variant="filled">
-          {error}
-        </Alert>
-      </Snackbar>
     </>
   );
 };

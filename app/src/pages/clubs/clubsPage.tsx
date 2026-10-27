@@ -5,6 +5,7 @@ import ClubsList from "@/components/clubs/clubsList";
 import CustomModal from "@/components/customModal/customModal";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import PageActions from "@/components/layout/pageActions";
 
 const ClubsPage = () => {
     
@@ -13,11 +14,11 @@ const ClubsPage = () => {
 
   return (
     <div>
-      <div className="flex justify-end mb-3">
+      <PageActions>
         <Button variant="contained" startIcon={<Add />} onClick={() => setIsOpen(true)} title="Create">
           {t("static.create")}
         </Button>
-      </div>
+      </PageActions>
 
       <ClubsList />
       <CustomModal open={isOpen} setOpen={setIsOpen}>

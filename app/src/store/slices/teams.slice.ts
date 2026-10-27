@@ -1,3 +1,4 @@
+import { errorMessage } from "@/lib/utils/apiError";
 import {
   Team,
   TeamPostDto,
@@ -22,7 +23,7 @@ export const fetchTeams = createAsyncThunk("teams/fetchAll", async (_, { rejectW
     const response = await teamsService.getAll();
     return response.data as Team[];
   } catch (error: any) {
-    return rejectWithValue(error.response?.data?.message || "Failed to fetch teams");
+    return rejectWithValue(errorMessage(error, "Failed to fetch teams"));
   }
 });
 
@@ -31,7 +32,7 @@ export const fetchTeamById = createAsyncThunk("teams/fetchById", async (id: stri
     const response = await teamsService.getById(id);
     return response.data as Team;
   } catch (error: any) {
-    return rejectWithValue(error.response?.data?.message || "Failed to fetch team");
+    return rejectWithValue(errorMessage(error, "Failed to fetch team"));
   }
 });
 
@@ -40,7 +41,7 @@ export const createTeam = createAsyncThunk("teams/create", async (dto: TeamPostD
     const response = await teamsService.create(dto);
     return response.data as Team;
   } catch (error: any) {
-    return rejectWithValue(error.response?.data?.message || "Failed to create team");
+    return rejectWithValue(errorMessage(error, "Failed to create team"));
   }
 });
 
@@ -51,7 +52,7 @@ export const updateTeam = createAsyncThunk(
       await teamsService.update(id, dto);
       return { id, dto };
     } catch (error: any) {
-      return rejectWithValue(error.response?.data?.message || "Failed to update team");
+      return rejectWithValue(errorMessage(error, "Failed to update team"));
     }
   }
 );
@@ -61,7 +62,7 @@ export const deleteTeam = createAsyncThunk("teams/delete", async (id: string, { 
     await teamsService.delete(id);
     return id;
   } catch (error: any) {
-    return rejectWithValue(error.response?.data?.message || "Failed to delete team");
+    return rejectWithValue(errorMessage(error, "Failed to delete team"));
   }
 });
 

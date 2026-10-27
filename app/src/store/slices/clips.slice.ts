@@ -1,3 +1,4 @@
+import { errorMessage } from "@/lib/utils/apiError";
 import { Clip, ClipPostDto, ClipPutDto } from "@/lib/types/clips.types";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
@@ -35,7 +36,7 @@ export const fetchClips = createAsyncThunk(
       const res = await clipsService.getAll(filter);
       return res.data;
     } catch (err: any) {
-      return rejectWithValue(err.response?.data || "Error fetching clips");
+      return rejectWithValue(errorMessage(err, "Error fetching clips"));
     }
   },
 );
@@ -44,7 +45,7 @@ export const fetchClipById = createAsyncThunk("clips/fetchClipbyId", async (clip
     const res = await clipsService.getById(clipId);
     return res.data;
   } catch (err: any) {
-    return rejectWithValue(err.response?.data || "Error fetching clip");
+    return rejectWithValue(errorMessage(err, "Error fetching clip"));
   }
 });
 
@@ -53,7 +54,7 @@ export const createClip = createAsyncThunk("clips/createClip", async (dto: ClipP
     const res = await clipsService.create(dto);
     return res.data;
   } catch (err: any) {
-    return rejectWithValue(err.response?.data || "Error creating clip");
+    return rejectWithValue(errorMessage(err, "Error creating clip"));
   }
 });
 
@@ -64,7 +65,7 @@ export const updateClip = createAsyncThunk(
       await clipsService.update(id, dto);
       return { id, dto };
     } catch (err: any) {
-      return rejectWithValue(err.response?.data || "Error updating clip");
+      return rejectWithValue(errorMessage(err, "Error updating clip"));
     }
   },
 );
@@ -74,7 +75,7 @@ export const deleteClip = createAsyncThunk("clips/deleteClip", async (id: string
     await clipsService.delete(id);
     return id;
   } catch (err: any) {
-    return rejectWithValue(err.response?.data || "Error deleting clip");
+    return rejectWithValue(errorMessage(err, "Error deleting clip"));
   }
 });
 export const createTrimRequest = createAsyncThunk(
@@ -84,7 +85,7 @@ export const createTrimRequest = createAsyncThunk(
       const res = await clipsService.createTrimRequest(clipId);
       return res.data;
     } catch (err: any) {
-      return rejectWithValue(err.response?.data || "Error creating trim request");
+      return rejectWithValue(errorMessage(err, "Error creating trim request"));
     }
   },
 );
@@ -101,7 +102,7 @@ export const createBulkClips = createAsyncThunk(
     try {
       await clipsService.createBulk(dto);
     } catch (err: any) {
-      return rejectWithValue(err.response?.data || "Error creating bulk clips");
+      return rejectWithValue(errorMessage(err, "Error creating bulk clips"));
     }
   },
 );

@@ -1,5 +1,6 @@
 export type TeamMatch = {
   teamId: string;
+  clubId?: number;
   teamName: string;
   clubName: string;
   logo: string;
@@ -18,6 +19,10 @@ export type Match = {
   seasonName: string;
   gameUrl: string;
   clipCount: number;
+  /** Which side the signed-in user's club plays, set by the API. */
+  ownSide?: "home" | "away";
+  /** Result for the signed-in user's club once the match is played. */
+  result?: "win" | "draw" | "loss";
 };
 
 export type MatchPostDto = {

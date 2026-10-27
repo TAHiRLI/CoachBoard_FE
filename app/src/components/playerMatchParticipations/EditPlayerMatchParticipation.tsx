@@ -66,7 +66,7 @@ const EditPlayerMatchParticipation: React.FC<Props> = ({ participation, onSucces
       />
       <TextField multiline rows={3} label={t("static.note")} fullWidth {...formik.getFieldProps("note")} />
       <div className="flex justify-end gap-3">
-        <Button onClick={onCancel} variant="outlined" color="warning">
+        <Button onClick={onCancel} variant="text" color="inherit">
           {t("static.cancel")}
         </Button>
         <Button type="submit" variant="contained" startIcon={<Edit />} disabled={loading}>

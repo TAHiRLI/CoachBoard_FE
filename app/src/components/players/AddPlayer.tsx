@@ -65,7 +65,7 @@ const AddPlayer: React.FC<AddPlayerProps> = ({ onSuccess, onCancel }) => {
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <h1 className="text-2xl my-2 text-center font-bold">{t("static.createPlayer")}</h1>
+      <h2 className="form-title">{t("static.createPlayer")}</h2>
       <div className="flex flex-col gap-3">
         <TextField
           label={t("static.fullName")}
@@ -136,7 +136,7 @@ const AddPlayer: React.FC<AddPlayerProps> = ({ onSuccess, onCancel }) => {
         />
 
         <div className="flex justify-end gap-3">
-          <Button onClick={onCancel} color="warning" variant="contained">
+          <Button onClick={onCancel} color="inherit" variant="text">
             {t("static.cancel")}
           </Button>
           <Button type="submit" variant="contained" startIcon={<Save />} disabled={loading}>

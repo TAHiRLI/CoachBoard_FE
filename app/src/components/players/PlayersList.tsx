@@ -1,7 +1,8 @@
-import { Alert, Box, LinearProgress, Snackbar } from "@mui/material";
+import { Box, LinearProgress } from "@mui/material";
+import { confirmDelete } from "@/components/feedback/feedback";
 import { Delete, Edit } from "@mui/icons-material";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { clearPlayerError, deletePlayer, fetchPlayers, selectPlayer } from "@/store/slices/players.slice";
+import { deletePlayer, fetchPlayers, selectPlayer } from "@/store/slices/players.slice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 
 import CustomModal from "../customModal/customModal";
@@ -11,7 +12,6 @@ import { Link } from "react-router-dom";
 import { Player } from "@/lib/types/players.types";
 import RowActions from "../rowActions/rowActions";
 import StyledDataGrid from "../styledDatagrid/styledDatagrid";
-import Swal from "sweetalert2";
 import dayjs from "dayjs";
 import { minioUrl } from "@/lib/constants/constants";
 import { usePlayerPositions } from "@/hooks/usePlayerPositions";
@@ -20,21 +20,13 @@ import { useTranslation } from "react-i18next";
 const PlayersList: React.FC = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  const { players, selectedPlayer, loading, error } = useAppSelector((state) => state.playerData);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const { players, selectedPlayer, loading } = useAppSelector((state) => state.playerData);
   const [editOpen, setEditOpen] = useState(false);
   const playerPositions = usePlayerPositions();
 
   useEffect(() => {
     dispatch(fetchPlayers());
   }, []);
-
-  const handleCloseSnackbar = () => {
-    setSnackbarOpen(false);
-    if (error) {
-      dispatch(clearPlayerError());
-    }
-  };
 
   const handleEdit = (player: Player) => {
     dispatch(selectPlayer(player));
@@ -45,19 +37,9 @@ const PlayersList: React.FC = () => {
     (id: string) => {
       if (!id) return;
 
-      Swal.fire({
-        title: t("static.areYouSure"),
-        text: t("static.cannotBeUndone"),
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: t("static.yesDeleteIt"),
-      }).then(async (result) => {
-        if (result.isConfirmed) {
-          dispatch(deletePlayer(id))
-            .unwrap()
-            .then(() => Swal.fire(t("static.success"), "", "success"));
+      confirmDelete().then(async (confirmed) => {
+        if (confirmed) {
+          dispatch(deletePlayer(id));
         }
       });
     },
@@ -175,11 +157,6 @@ const PlayersList: React.FC = () => {
           />
         </CustomModal>
       )}
-      <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleCloseSnackbar}>
-        <Alert onClose={handleCloseSnackbar} severity="error" variant="filled">
-          {error}
-        </Alert>
-      </Snackbar>
     </>
   );
 };

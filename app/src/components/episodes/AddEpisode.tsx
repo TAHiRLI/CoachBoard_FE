@@ -39,7 +39,7 @@ const AddEpisode = ({ onSuccess, onCancel }: Props) => {
 
   return (
     <form onSubmit={formik.handleSubmit} className="flex flex-col gap-4">
-      <h1 className="text-xl font-bold text-center">{t("static.addEpisode")}</h1>
+      <h2 className="form-title">{t("static.addEpisode")}</h2>
       <TextField
         fullWidth
         label={t("static.name")}
@@ -55,7 +55,7 @@ const AddEpisode = ({ onSuccess, onCancel }: Props) => {
         {...formik.getFieldProps("description")}
       />
       <div className="flex justify-end gap-3">
-        <Button onClick={onCancel} variant="outlined" color="warning">
+        <Button onClick={onCancel} variant="text" color="inherit">
           {t("static.cancel")}
         </Button>
         <Button type="submit" variant="contained" startIcon={<Save />} disabled={loading}>

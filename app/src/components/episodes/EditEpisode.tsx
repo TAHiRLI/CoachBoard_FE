@@ -38,7 +38,7 @@ const EditEpisode = ({ episode, onSuccess, onCancel }: Props) => {
 
   return (
     <form onSubmit={formik.handleSubmit} className="flex flex-col gap-4">
-      <h1 className="text-xl font-bold text-center">Edit Episode</h1>
+      <h2 className="form-title">Edit Episode</h2>
       <TextField
         fullWidth
         label="Name"

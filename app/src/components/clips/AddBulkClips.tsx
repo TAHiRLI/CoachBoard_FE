@@ -105,7 +105,7 @@ const AddBulkClips: React.FC<AddBulkClipsProps> = ({ matchId, onSuccess, onCance
         </Button>
 
         <Box display="flex" justifyContent="flex-end" gap={2} mt={2}>
-          <Button onClick={onCancel} color="warning" variant="contained">
+          <Button onClick={onCancel} color="inherit" variant="text">
             {t("static.cancel")}
           </Button>
           <Button type="submit" variant="contained" startIcon={<Save />} disabled={loading}>

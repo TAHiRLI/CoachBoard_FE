@@ -1,6 +1,7 @@
-import { Alert, Box, LinearProgress, Snackbar } from "@mui/material";
+import { Box, LinearProgress } from "@mui/material";
+import { confirmDelete } from "@/components/feedback/feedback";
 import { Delete, Edit } from "@mui/icons-material";
-import { clearClubError, deleteClub, fetchClubs, selectClub } from "@/store/slices/clubs.slice";
+import { deleteClub, fetchClubs, selectClub } from "@/store/slices/clubs.slice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
@@ -10,26 +11,18 @@ import EditClub from "@/components/clubs/editClub";
 import { GridColDef } from "@mui/x-data-grid";
 import RowActions from "@/components/rowActions/rowActions";
 import StyledDataGrid from "@/components/styledDatagrid/styledDatagrid";
-import Swal from "sweetalert2";
 import { minioUrl } from "@/lib/constants/constants";
 import { useTranslation } from "react-i18next";
 
 const ClubsList: React.FC = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  const { clubs, selectedClub, loading, error } = useAppSelector((state) => state.clubData);
-
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const { clubs, selectedClub, loading } = useAppSelector((state) => state.clubData);
   const [editOpen, setEditOpen] = useState(false);
 
   useEffect(() => {
     dispatch(fetchClubs());
   }, [dispatch]);
-
-  const handleCloseSnackbar = () => {
-    setSnackbarOpen(false);
-    if (error) dispatch(clearClubError());
-  };
 
   const handleEdit = (club: Club) => {
     dispatch(selectClub(club));
@@ -40,24 +33,9 @@ const ClubsList: React.FC = () => {
     (id: string) => {
       if (!id) return;
 
-      Swal.fire({
-        title: t("static.areYouSure"),
-        text: t("static.cannotBeUndone"),
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: t("static.yesDeleteIt"),
-      }).then((result) => {
-        if (result.isConfirmed && id) {
-          dispatch(deleteClub(id))
-            .unwrap()
-            .then(() => {
-              Swal.fire(t("static.success"), "", "success");
-            })
-            .catch(() => {
-              setSnackbarOpen(true);
-            });
+      confirmDelete().then((confirmed) => {
+        if (confirmed && id) {
+          dispatch(deleteClub(id));
         }
       });
     },
@@ -125,17 +103,6 @@ const ClubsList: React.FC = () => {
           <EditClub club={selectedClub} onSuccess={() => setEditOpen(false)} />
         </CustomModal>
       )}
-
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={6000}
-        onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-      >
-        <Alert onClose={handleCloseSnackbar} severity="error" variant="filled">
-          {error}
-        </Alert>
-      </Snackbar>
     </>
   );
 };

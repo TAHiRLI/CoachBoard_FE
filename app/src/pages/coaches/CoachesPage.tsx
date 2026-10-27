@@ -7,6 +7,7 @@ import { fetchCoaches } from "@/store/slices/coaches.slice";
 import { useAppDispatch } from "@/store/store";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import PageActions from "@/components/layout/pageActions";
 
 const CoachesPage = () => {
   const { t } = useTranslation();
@@ -15,11 +16,11 @@ const CoachesPage = () => {
 
   return (
     <div>
-      <div className="flex justify-end mb-3">
+      <PageActions>
         <Button variant="contained" startIcon={<Add />} onClick={() => setIsOpen(true)} title={t("static.createCoach")}>
           {t("static.createCoach")}
         </Button>
-      </div>
+      </PageActions>
       <CoachesList />
       <CustomModal setOpen={setIsOpen} open={isOpen}>
         <AddCoach

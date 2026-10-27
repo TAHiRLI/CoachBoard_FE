@@ -1,5 +1,15 @@
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import {
+  combineReducers,
+  configureStore,
+  createListenerMiddleware,
+  isFulfilled,
+  isRejected,
+} from "@reduxjs/toolkit";
+import { errorMessage, notify } from "@/components/feedback/feedback";
+
+import i18n from "i18next";
+import { rememberFetch, undoFor } from "./undo";
 import { persistReducer, persistStore } from "redux-persist";
 
 import appUsersSlice from "./slices/appUsers.slice";
@@ -48,6 +58,49 @@ const rootReducer = combineReducers({
   reportsData: reportsSlice.reducer,
 });
 
+// App-wide feedback: every failed request is surfaced, every successful write is acknowledged.
+// Components no longer need their own success popups or error snackbars.
+const feedbackListener = createListenerMiddleware();
+const SILENT_PREFIXES = ["keycloak/", "tags/create"];
+const isSilent = (type: string) => SILENT_PREFIXES.some((prefix) => type.startsWith(prefix));
+const writeVerb = (type: string) => /\/(create|update|delete)/i.exec(type)?.[1]?.toLowerCase();
+
+feedbackListener.startListening({
+  matcher: isRejected,
+  effect: (action) => {
+    const type = action.type.replace(/\/rejected$/, "");
+    if (isSilent(type) || action.meta.aborted || action.meta.condition) return;
+    notify("error", errorMessage(action.payload ?? action.error?.message));
+  },
+});
+
+feedbackListener.startListening({
+  matcher: isFulfilled,
+  effect: (action, api) => {
+    rememberFetch(action);
+    const type = action.type.replace(/\/fulfilled$/, "");
+    const verb = writeVerb(type);
+    if (!verb || isSilent(type) || type === "clips/createTrimRequest") return;
+    if (verb !== "delete") {
+      notify("success", i18n.t("static.savedSuccessfully"));
+      return;
+    }
+
+    const undo = undoFor(action, api.dispatch);
+    notify(
+      "success",
+      i18n.t("static.deletedSuccessfully"),
+      undo && {
+        label: i18n.t("static.undo"),
+        onClick: () =>
+          undo()
+            .then(() => notify("success", i18n.t("static.restored")))
+            .catch((error) => notify("error", errorMessage(error))),
+      }
+    );
+  },
+});
+
 // Wrap rootReducer with persistReducer
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 // Configure store with middleware adjustment
@@ -60,7 +113,7 @@ const store = configureStore({
         ignoredActions: ["persist/PERSIST", "persist/REHYDRATE", "persist/PURGE", "auth/loginSuccess", "auth/setUser"],
         ignoredPaths: ["auth.user"],
       },
-    }),
+    }).prepend(feedbackListener.middleware),
 });
 export const persistor = persistStore(store);
 

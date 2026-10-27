@@ -1,13 +1,23 @@
-import { DataGrid } from "@mui/x-data-grid";
-import { styled } from "@mui/material/styles";
+import { DataGrid, DataGridProps } from "@mui/x-data-grid";
 
-const StyledDataGrid = styled(DataGrid)(({ }) => ({
-    borderRadius: '14px',
-    "& .MuiDataGrid-columnHeaderTitle": {
-    whiteSpace: "normal",
-    textAlign: "center",
-    lineHeight: 1,
-  },
-}));
+import { useTranslation } from "react-i18next";
+
+// Visual styling lives in the theme (MuiDataGrid overrides); this wrapper adds translated
+// empty/no-results states so every list explains itself instead of showing a blank box.
+const StyledDataGrid = (props: DataGridProps) => {
+  const { t } = useTranslation();
+
+  return (
+    <DataGrid
+      {...props}
+      localeText={{
+        noRowsLabel: t("static.noRecordsYet"),
+        noResultsOverlayLabel: t("static.noMatchingRecords"),
+        ...props.localeText,
+      }}
+      sx={{ minHeight: 240, ...props.sx }}
+    />
+  );
+};
 
 export default StyledDataGrid;

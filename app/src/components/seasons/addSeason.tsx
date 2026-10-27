@@ -50,7 +50,7 @@ const AddSeason: React.FC<AddSeasonProps> = ({ onSuccess, onCancel }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <h1 className="text-2xl my-2 text-center font-bold">{t("static.createSeason")}</h1>
+      <h2 className="form-title">{t("static.createSeason")}</h2>
       <div className="flex flex-col gap-3">
         <TextField
           fullWidth
@@ -104,8 +104,8 @@ const AddSeason: React.FC<AddSeasonProps> = ({ onSuccess, onCancel }) => {
         <div className="flex justify-end gap-3">
           <Button
             onClick={onCancel}
-            color="warning"
-            variant="contained"
+            color="inherit"
+            variant="text"
             sx={{ whiteSpace: "nowrap", borderRadius: "8px" }}
           >
             {t("static.cancel")}

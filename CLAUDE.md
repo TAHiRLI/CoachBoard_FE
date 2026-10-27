@@ -17,7 +17,8 @@ CoachBoard FE is a React TypeScript frontend application for a coaching manageme
 - **Internationalization**: i18next
 - **Styling**: Tailwind CSS + Emotion (for MUI)
 - **Charts**: Recharts
-- **Notifications**: SweetAlert2
+- **Notifications**: `notify()` / `confirmDelete()` from `src/components/feedback/feedback.ts` (MUI toasts and dialogs). Failed requests and successful create/update/delete thunks are announced automatically by the listener in `store/store.ts`; deletes of restorable records get an Undo action (`store/undo.ts`). SweetAlert2 remains only on the login pages.
+- **Theme**: tokens and MUI overrides in `src/theme/theme.ts` (light/dark, Geist). Use theme colours (`sx`, palette) rather than Tailwind colour classes, which do not follow dark mode.
 
 ## Project Structure
 

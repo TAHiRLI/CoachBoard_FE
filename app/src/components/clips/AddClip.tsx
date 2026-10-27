@@ -346,7 +346,7 @@ const AddClip: React.FC<AddClipProps> = ({
         )}
 
         <div className="flex justify-end gap-3 mt-3">
-          <Button disabled={formik.isSubmitting} onClick={onCancel} color="warning" variant="contained">
+          <Button disabled={formik.isSubmitting} onClick={onCancel} color="inherit" variant="text">
             {t("static.cancel")}
           </Button>
           <Button type="submit" variant="contained" startIcon={<Save />} disabled={loading}>

@@ -50,7 +50,7 @@ const AddCoach = ({ onSuccess, onCancel }: Props) => {
 
   return (
     <form onSubmit={formik.handleSubmit} className="flex flex-col gap-4">
-      <h1 className="text-2xl my-2 text-center font-bold">{t("static.createCoach")}</h1>
+      <h2 className="form-title">{t("static.createCoach")}</h2>
 
       <TextField
         fullWidth
@@ -83,7 +83,7 @@ const AddCoach = ({ onSuccess, onCancel }: Props) => {
         ))}
       </TextField>
       <div className="flex justify-end gap-2">
-        <Button onClick={onCancel} variant="outlined" color="warning">
+        <Button onClick={onCancel} variant="text" color="inherit">
           {t("static.cancel")}
         </Button>
         <Button type="submit" variant="contained" startIcon={<Save />} disabled={loading}>

@@ -1,7 +1,8 @@
-import { Alert, Box, LinearProgress, Snackbar } from "@mui/material";
+import { Box, LinearProgress } from "@mui/material";
+import { confirmDelete } from "@/components/feedback/feedback";
 import { Delete, Edit } from "@mui/icons-material";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { clearAppUserError, deleteUser, fetchAppUsers, selectAppUser } from "@/store/slices/appUsers.slice";
+import { deleteUser, fetchAppUsers, selectAppUser } from "@/store/slices/appUsers.slice";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 
 import { AppUserDto } from "@/lib/types/appUser.types";
@@ -11,25 +12,18 @@ import EditUser from "./EditUser";
 import { GridColDef } from "@mui/x-data-grid";
 import RowActions from "../rowActions/rowActions";
 import StyledDataGrid from "../styledDatagrid/styledDatagrid";
-import Swal from "sweetalert2";
 import { useTranslation } from "react-i18next";
 
 const UsersList: React.FC = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  const { appUsers, selectedAppUser, loading, error } = useAppSelector((s) => s.appUserData);
+  const { appUsers, selectedAppUser, loading } = useAppSelector((s) => s.appUserData);
 
   const [editOpen, setEditOpen] = useState(false);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   useEffect(() => {
     dispatch(fetchAppUsers());
   }, []);
-
-  const handleCloseSnackbar = () => {
-    setSnackbarOpen(false);
-    if (error) dispatch(clearAppUserError());
-  };
 
   const handleEdit = (user: AppUserDto) => {
     dispatch(selectAppUser(user));
@@ -39,19 +33,9 @@ const UsersList: React.FC = () => {
   const handleDelete = useCallback(
     (id: string) => {
       if (!id) return;
-      Swal.fire({
-        title: t("static.areYouSure"),
-        text: t("static.cannotBeUndone"),
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: t("static.yesDeleteIt"),
-      }).then((result) => {
-        if (result.isConfirmed) {
-          dispatch(deleteUser(id))
-            .unwrap()
-            .then(() => Swal.fire(t("static.success"), "", "success"));
+      confirmDelete({ text: t("static.cannotBeUndone") }).then((confirmed) => {
+        if (confirmed) {
+          dispatch(deleteUser(id));
         }
       });
     },
@@ -118,7 +102,6 @@ const UsersList: React.FC = () => {
         <StyledDataGrid
           rows={appUsers}
           columns={columns}
-          rowHeight={30}
           disableRowSelectionOnClick
           loading={loading}
           
@@ -136,17 +119,6 @@ const UsersList: React.FC = () => {
           />
         </CustomModal>
       )}
-
-      <Snackbar
-        open={snackbarOpen || !!error}
-        autoHideDuration={6000}
-        onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-      >
-        <Alert onClose={handleCloseSnackbar} severity="error" variant="filled">
-          {error}
-        </Alert>
-      </Snackbar>
     </>
   );
 };

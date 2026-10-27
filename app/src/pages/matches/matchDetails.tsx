@@ -1,16 +1,17 @@
 // keep existing imports
 
-import { Box, Button, Tab, Tabs } from "@mui/material";
+import { Box, Button, Paper, Skeleton, Tab, Tabs, Typography } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { useEffect, useState } from "react";
 
-import { Add, MovieCreationOutlined } from "@mui/icons-material";
+import { Add, ArrowBack, MovieCreationOutlined } from "@mui/icons-material";
 import AddBulkClips from "@/components/clips/AddBulkClips";
 import AddClip from "@/components/clips/AddClip";
 import CustomModal from "@/components/customModal/customModal";
 import MatchClips from "./matchClips";
 import MatchInfoCard from "@/components/matches/matchInfoCard";
 import MatchParticipations from "./matchParticipations";
+import SectionHeader from "@/components/layout/sectionHeader";
 import { fetchClips } from "@/store/slices/clips.slice";
 import { fetchMatchById } from "@/store/slices/matches.slice";
 import { useFlag } from "@unleash/proxy-client-react";
@@ -25,10 +26,9 @@ const MatchDetailsPage = () => {
 
   const isBulkClipCreationEnabled = useFlag("fe_bulk_clip_creation");
 
-  // 👇 tab type depends on flag
   const [tab, setTab] = useState<0 | 1>(0);
 
-  const { selectedMatch } = useAppSelector((state) => state.matchData);
+  const { selectedMatch, loading: matchLoading, error: matchError } = useAppSelector((state) => state.matchData);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -39,39 +39,65 @@ const MatchDetailsPage = () => {
     setTab(0);
   }, [isOpen, isBulkClipCreationEnabled]);
 
+  const { clips } = useAppSelector((state) => state.clipData);
+  const isCurrentMatch = selectedMatch?.id?.toString() === id;
+
+  if (!matchLoading && matchError && !isCurrentMatch) {
+    return (
+      <Paper sx={{ py: 8, px: 3, textAlign: "center" }}>
+        <Typography variant="h3" gutterBottom>
+          {t("static.matchNotFound")}
+        </Typography>
+        <Button component={Link} to="/" startIcon={<ArrowBack />}>
+          {t("static.matches")}
+        </Button>
+      </Paper>
+    );
+  }
+
+  if (!selectedMatch || !isCurrentMatch) {
+    return (
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }} aria-busy>
+        <Skeleton variant="text" width={120} />
+        <Skeleton variant="rounded" height={200} />
+        <Skeleton variant="rounded" height={260} />
+      </Box>
+    );
+  }
+
   return (
-    <div>
-      <h1 className="page-title">
-        {selectedMatch?.homeTeam.teamName} vs {selectedMatch?.awayTeam.teamName}
-      </h1>
-      <p className="page-subtitle">{t("static.matchAnalysisSubtitle")}</p>
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 4 }}>
+      <Box>
+        <Button component={Link} to="/" startIcon={<ArrowBack />} color="inherit" size="small" sx={{ mb: 1.5, color: "text.secondary" }}>
+          {t("static.matches")}
+        </Button>
+        <MatchInfoCard match={selectedMatch} />
+      </Box>
 
-      <div className="my-4">{selectedMatch && <MatchInfoCard match={selectedMatch} />}</div>
-
-      <div className="my-4">
-        {selectedMatch && (
-          <>
-            <div className="my-3 justify-end flex">
+      <section>
+        <SectionHeader
+          title={t("static.clips")}
+          count={clips.length}
+          actions={
+            <>
+              <Button onClick={() => setIsOpen(true)} variant="outlined" startIcon={<Add />}>
+                {t("static.addClip")}
+              </Button>
               <Button
                 component={Link}
                 to={`/Matches/${selectedMatch.id}/clip-editor`}
                 variant="contained"
                 startIcon={<MovieCreationOutlined />}
-                sx={{ mr: 1 }}
               >
                 {t("clipEditor.openEditor")}
               </Button>
-              <Button onClick={() => setIsOpen(true)} variant="contained" startIcon={<Add />}>
-                {t("static.addClip")}
-              </Button>
-            </div>
+            </>
+          }
+        />
+        <MatchClips match={selectedMatch} />
+      </section>
 
-            <MatchClips match={selectedMatch} />
-          </>
-        )}
-      </div>
-
-      <div className="my-4">{selectedMatch && <MatchParticipations match={selectedMatch} />}</div>
+      <MatchParticipations match={selectedMatch} />
 
       <CustomModal open={isOpen} setOpen={setIsOpen}>
         <Box sx={{ width: "100%" }}>
@@ -108,7 +134,7 @@ const MatchDetailsPage = () => {
           )}
         </Box>
       </CustomModal>
-    </div>
+    </Box>
   );
 };
 

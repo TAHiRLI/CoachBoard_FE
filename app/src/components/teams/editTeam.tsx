@@ -54,7 +54,7 @@ const EditTeam: React.FC<EditTeamProps> = ({ team, onSuccess, onCancel }) => {
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <h1 className="text-2xl my-2 text-center font-bold">{t("static.editTeam")}</h1>
+      <h2 className="form-title">{t("static.editTeam")}</h2>
       <div className="flex flex-col gap-3">
         <TextField
           label={t("static.name")}
@@ -85,7 +85,7 @@ const EditTeam: React.FC<EditTeamProps> = ({ team, onSuccess, onCancel }) => {
           ))}
         </TextField>
         <div className="flex justify-end gap-3">
-          <Button onClick={onCancel} color="warning" variant="contained">
+          <Button onClick={onCancel} color="inherit" variant="text">
             {t("static.cancel")}
           </Button>
           <Button type="submit" variant="contained" startIcon={<Edit />} disabled={loading}>

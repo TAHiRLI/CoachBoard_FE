@@ -3,6 +3,7 @@ import { IconButton, ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/mat
 import React, { useState } from 'react';
 
 import { MoreVert as MoreVertIcon } from '@mui/icons-material';
+import { useTranslation } from 'react-i18next';
 
 export interface ActionItem {
   icon: React.ReactNode;
@@ -16,6 +17,7 @@ interface RowActionsProps {
 }
 
 const RowActions: React.FC<RowActionsProps> = ({ actions }) => {
+  const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -35,7 +37,7 @@ const RowActions: React.FC<RowActionsProps> = ({ actions }) => {
   return (
     <>
       <IconButton
-        aria-label="actions"
+        aria-label={t("static.actions")}
         aria-controls={open ? "row-actions-menu" : undefined}
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
@@ -54,12 +56,14 @@ const RowActions: React.FC<RowActionsProps> = ({ actions }) => {
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
         {actions.map((action, index) => (
-          <MenuItem 
-            key={index} 
+          <MenuItem
+            key={index}
             onClick={() => handleAction(action.onClick)}
+            // Colour is reserved for destructive actions; everything else stays neutral.
+            sx={action.color === 'error' ? { color: 'error.main' } : undefined}
           >
             {action.icon && (
-              <ListItemIcon sx={{ color: action.color || 'inherit' }}>
+              <ListItemIcon sx={{ color: action.color === 'error' ? 'error.main' : 'text.secondary' }}>
                 {action.icon}
               </ListItemIcon>
             )}

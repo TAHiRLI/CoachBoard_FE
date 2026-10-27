@@ -1,120 +1,59 @@
-import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
+import { CssBaseline, ThemeProvider } from "@mui/material";
+import { ColorMode, buildTheme } from "@/theme/theme";
 import React, { ReactNode, createContext, useContext, useEffect, useMemo, useState } from "react";
 
-// import { light } from "@mui/material/styles/createPalette";
-
-// https://coolors.co/palette/e7ecef-274c77-6096ba-a3cef1-8b8c89
-
-// Define the structure of the color mode context
 interface ColorModeContextType {
+  mode: ColorMode;
   colorMode: {
     toggleColorMode: () => void;
-    setColorMode: (mode: "light" | "dark") => void
+    setColorMode: (mode: ColorMode) => void;
   };
 }
 
-// Define props for ColorModeProvider
 interface ColorModeProviderProps {
-  children: ReactNode; // React children
+  children: ReactNode;
 }
 
-// Create a context with default value
 const ColorModeContext = createContext<ColorModeContextType>({
+  mode: "light",
   colorMode: { toggleColorMode: () => {}, setColorMode: () => {} },
 });
 
-// Design tokens function for theme configuration
-const getDesignTokens = (mode: "light" | "dark") =>
-  ({
-    palette: {
-      mode,
-      ...(mode === "light"
-        ? {
-            primary: {
-              main: "#2258de", // Vibrant primary color
-              dark: "#3e2c80",
-            },
-            secondary: {
-              main: "#B3B4BD", // Light grey as secondary
-            },
-            background: {
-              default: "#fff",
-              paper: "#fff",
-            },
-            text: {
-              primary: "#141619", // Very dark grey for text
-              secondary: "#2C2E3A", // Slightly lighter for secondary text
-              light: "#FFF",
-            },
-            divider: "#8B8C89",
-          }
-        : {
-            primary: {
-              main: "#3e2c80", // Vibrant blue
-              dark: "#0ca5e9", // Deep blue for dark mode
-            },
-            secondary: {
-              main: "#B3B4BD", // Grey as secondary
-            },
-            background: {
-              default: "#212121", // Dark background
-              paper: "#2f2f2f", // Slightly lighter background
-            },
-            text: {
-              primary: "#FFFFFF", // White text
-              secondary: "#B3B4BD", // Light grey secondary text
-              light: "#FFF",
-            },
-            divider: "#2C2E3A",
-          }),
-    },
-    components: {
-      MuiDataGrid: {
-        defaultProps: {
-          disableRipple: false,
-        },
-        styleOverrides: {
-          root: {
-            "& .MuiDataGrid-columnHeaders": {
-              backgroundColor: mode === "light" ? "#B3B4BD" : "#050A44", // Header color
-            },
-            "& .MuiDataGrid-columnHeaderTitle": {
-              fontWeight: "bold",
-              color: mode === "light" ? "#141619" : "#FFFFFF",
-            },
-          },
-        },
-      },
-    },
-  } as any);
+const readInitialMode = (): ColorMode => {
+  try {
+    const stored = localStorage.getItem("themeMode");
+    if (stored === "light" || stored === "dark") return stored;
+  } catch {
+    // Storage can be unavailable (private mode); fall back to the system preference.
+  }
+  return window.matchMedia?.("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+};
 
-// Provider component for managing theme
 export const ColorModeProvider: React.FC<ColorModeProviderProps> = ({ children }) => {
-  const initialMode = (localStorage.getItem("themeMode") as "light" | "dark") || "light";
-  const [mode, setMode] = useState<"light" | "dark">(initialMode);
+  const [mode, setMode] = useState<ColorMode>(readInitialMode);
 
-  // Effect to save mode to localStorage whenever it changes
   useEffect(() => {
-    localStorage.setItem("themeMode", mode);
+    // Lets plain CSS (and the Tailwind compatibility layer in index.css) follow the theme.
+    document.documentElement.dataset.theme = mode;
+    try {
+      localStorage.setItem("themeMode", mode);
+    } catch {
+      // Ignore storage failures; the mode still applies for this session.
+    }
   }, [mode]);
-  // Memoized toggle function
+
   const colorMode = useMemo(
     () => ({
-      toggleColorMode: () => {
-        setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
-      },
-      setColorMode: (mode: "light" | "dark") => {
-        setMode(mode);
-      },
+      toggleColorMode: () => setMode((prev) => (prev === "light" ? "dark" : "light")),
+      setColorMode: (next: ColorMode) => setMode(next),
     }),
     []
   );
 
-  // Create theme based on current mode
-  const theme = useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
+  const theme = useMemo(() => buildTheme(mode), [mode]);
 
   return (
-    <ColorModeContext.Provider value={{ colorMode }}>
+    <ColorModeContext.Provider value={{ mode, colorMode }}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         {children}
@@ -123,7 +62,4 @@ export const ColorModeProvider: React.FC<ColorModeProviderProps> = ({ children }
   );
 };
 
-// Custom hook to consume the color mode context
-export const useColorMode = (): ColorModeContextType => {
-  return useContext(ColorModeContext);
-};
+export const useColorMode = (): ColorModeContextType => useContext(ColorModeContext);

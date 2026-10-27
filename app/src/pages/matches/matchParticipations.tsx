@@ -1,10 +1,11 @@
-import { Button, Card, CardContent, CardHeader, Typography } from "@mui/material";
+import { Button } from "@mui/material";
 import { FC, useEffect, useState } from "react";
 
 import { Add } from "@mui/icons-material";
 import AddPlayerMatchParticipation from "@/components/playerMatchParticipations/AddPlayerMatchParticipation";
 import CustomModal from "@/components/customModal/customModal";
 import { Match } from "@/lib/types/matches.types";
+import SectionHeader from "@/components/layout/sectionHeader";
 import PlayerMatchParticipationsList from "@/components/playerMatchParticipations/playerMatchParticipationList";
 import { fetchParticipations } from "@/store/slices/playerMatchParticipation.slice";
 import { useAppDispatch } from "@/store/store";
@@ -24,29 +25,16 @@ const MatchParticipations: FC<Props> = ({ match }) => {
   }, [dispatch, match]);
 
   return (
-    <Card className="p-3">
-      <CardHeader
-        title={
-          <Typography variant="h6" className="text-xl font-semibold">
-            {t("static.matchParticipations")}
-          </Typography>
-        }
-        action={
-          <Button
-            data-testid="btn-ship-create"
-            variant="contained"
-            startIcon={<Add />}
-            onClick={() => setIsOpen(true)}
-            title="Create"
-          >
-            {t("static.create")}
+    <section>
+      <SectionHeader
+        title={t("static.matchParticipations")}
+        actions={
+          <Button variant="outlined" startIcon={<Add />} onClick={() => setIsOpen(true)}>
+            {t("static.addParticipation")}
           </Button>
         }
-        className="border-b border-gray-200"
       />
-      <CardContent>
-        <PlayerMatchParticipationsList />
-      </CardContent>
+      <PlayerMatchParticipationsList />
 
       <CustomModal setOpen={setIsOpen} open={isOpen}>
         <AddPlayerMatchParticipation
@@ -58,7 +46,7 @@ const MatchParticipations: FC<Props> = ({ match }) => {
           }}
         />
       </CustomModal>
-    </Card>
+    </section>
   );
 };
 

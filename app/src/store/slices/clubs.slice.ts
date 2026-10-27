@@ -1,3 +1,4 @@
+import { errorMessage } from "@/lib/utils/apiError";
 import {
   Club,
   ClubPostDto,
@@ -23,7 +24,7 @@ export const fetchClubs = createAsyncThunk("clubs/fetchAll", async (_, { rejectW
     const response = await clubsService.getAll();
     return response.data as Club[];
   } catch (error: any) {
-    return rejectWithValue(error.response?.data?.message || "Failed to fetch clubs");
+    return rejectWithValue(errorMessage(error, "Failed to fetch clubs"));
   }
 });
 
@@ -32,7 +33,7 @@ export const fetchClubById = createAsyncThunk("clubs/fetchById", async (id: stri
     const response = await clubsService.getById(id);
     return response.data as ClubWithTeams;
   } catch (error: any) {
-    return rejectWithValue(error.response?.data?.message || "Failed to fetch club");
+    return rejectWithValue(errorMessage(error, "Failed to fetch club"));
   }
 });
 
@@ -45,7 +46,7 @@ export const createClub = createAsyncThunk("clubs/create", async (dto: ClubPostD
     const response = await clubsService.create(formData);
     return response.data as Club;
   } catch (error: any) {
-    return rejectWithValue(error.response?.data?.message || "Failed to create club");
+    return rejectWithValue(errorMessage(error, "Failed to create club"));
   }
 });
 
@@ -60,7 +61,7 @@ export const updateClub = createAsyncThunk(
       await clubsService.update(id, formData);
       return { id, dto };
     } catch (error: any) {
-      return rejectWithValue(error.response?.data?.message || "Failed to update club");
+      return rejectWithValue(errorMessage(error, "Failed to update club"));
     }
   }
 );
@@ -70,7 +71,7 @@ export const deleteClub = createAsyncThunk("clubs/delete", async (id: string, { 
     await clubsService.delete(id);
     return id;
   } catch (error: any) {
-    return rejectWithValue(error.response?.data?.message || "Failed to delete club");
+    return rejectWithValue(errorMessage(error, "Failed to delete club"));
   }
 });
 

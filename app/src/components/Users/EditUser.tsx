@@ -142,7 +142,7 @@ const EditUser: React.FC<EditUserProps> = ({ user, onSuccess, onCancel }) => {
         </FormControl>
       </div>
       <div className="flex justify-end gap-3 mt-3">
-        <Button onClick={onCancel} color="warning" variant="contained">
+        <Button onClick={onCancel} color="inherit" variant="text">
           {t("static.cancel")}
         </Button>
         <Button type="submit" variant="contained" startIcon={<Save />} disabled={loading}>
